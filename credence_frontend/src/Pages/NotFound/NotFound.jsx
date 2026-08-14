@@ -155,7 +155,7 @@ const NotFound = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            <span className="enroll-text">Enroll Now</span>
+                            <span className="enroll-text">Enroll now</span>
                         </motion.span>
 
                         <motion.div
@@ -176,7 +176,7 @@ const NotFound = () => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                         >
-                            Sign in
+                            Log in
                         </motion.span>
                     </div>
                 </motion.div>
