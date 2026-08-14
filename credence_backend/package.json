@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.962.0",
+    "axios": "^1.13.5",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "exceljs": "^4.4.0",
+    "express": "^5.2.1",
+    "init": "^0.1.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.1.1",
+    "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^7.0.12",
+    "qpdf-compress": "^0.6.3",
+    "sharp": "^0.35.0",
+    "uuid": "^13.0.0",
+    "winston": "^3.19.0"
+  },
+  "name": "credence_backend",
+  "version": "1.0.0",
+  "description": "Credence Software Backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "techorses",
+  "license": "ISC"
+}

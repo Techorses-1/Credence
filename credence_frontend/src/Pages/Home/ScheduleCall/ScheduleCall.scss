@@ -1,0 +1,412 @@
+// ===== FONT IMPORTS =====
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+  font-family: "LightHeading";
+  src: url("../../../assets/fonts/cy-grotesk-wide-light.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Heading";
+  src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+// ===== ANIMATION PREPARATION =====
+.schedule-call-section,
+.sc-container,
+.sc-heading,
+.sc-description,
+.sc-form,
+.sc-form input,
+.sc-form button,
+.sc-footer {
+  will-change: transform, opacity;
+}
+
+// ===== MAIN SECTION =====
+.schedule-call-section {
+  background-color: #ffffff;
+  padding: 80px 20px;
+
+  @media (max-width: 768px) {
+    padding: 60px 16px;
+  }
+}
+
+// ===== CONTAINER =====
+.sc-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// ===== HEADING =====
+.sc-heading {
+  font-family: "Heading", sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 20px;
+  margin-top: 0px;
+  line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 30px;
+    padding: 0 10px;
+  }
+}
+
+.sc-highlight {
+  color: #7cd64b;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    text-shadow: 0 0 15px rgba(124, 214, 75, 0.3);
+  }
+}
+
+.sc-underline {
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  background-color: #7cd64b;
+  transform-origin: left;
+}
+
+// ===== DESCRIPTION =====
+.sc-description {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #000;
+  margin-bottom: 40px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background: rgba(124, 214, 75, 0.05);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 10px;
+    
+    br {
+      display: none;
+    }
+  }
+}
+
+// ===== FORM =====
+.sc-form {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 0 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+// ===== FORM INPUTS =====
+.sc-form input {
+  // background-color: #000; 
+  background-color: #FFF;
+  color: #000;
+  border: 2px solid black;
+  padding: 16px;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  width: 100%;
+  max-width: 260px;
+  outline: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  // Animated border on focus
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #7cd64b;
+    transition: width 0.3s ease;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 2px #7cd64b;
+    
+    &::after {
+      width: 100%;
+    }
+  }
+
+  &::placeholder {
+    color: #000;
+    letter-spacing: 1px;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+  }
+  
+  &:focus::placeholder {
+    opacity: 0.5;
+    transform: translateY(-5px);
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 13px;
+    
+    &::placeholder {
+      font-size: 13px;
+    }
+  }
+}
+
+// ===== FORM BUTTON =====
+.sc-form button {
+  background-color: #7cd64b;
+  color: #000;
+  border: none;
+  padding: 16px 28px;
+  font-family: "Arimo", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  min-width: 140px;
+  position: relative;
+  overflow: hidden;
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+    
+    &::before {
+      display: none;
+    }
+    
+    &:hover {
+      background-color: #7cd64b;
+      box-shadow: none;
+    }
+  }
+  
+  // Ripple effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  &:hover:not(:disabled) {
+    background-color: #6acb48;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+    
+    &::before {
+      width: 300px;
+      height: 300px;
+    }
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+}
+
+// ===== BOTTOM TEXT =====
+.sc-footer {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  color: #000;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 10px;
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(124, 214, 75, 0.05);
+    box-shadow: 0 4px 12px rgba(124, 214, 75, 0.1);
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    padding: 10px 16px;
+    line-height: 1.5;
+  }
+}
+
+// ===== ACCESSIBILITY =====
+.sc-visually-hidden {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+// ===== MOBILE SPECIFIC FIXES =====
+@media (max-width: 768px) {
+  .schedule-call-section {
+    overflow-x: hidden;
+  }
+  
+  .sc-container {
+    padding: 0;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+  
+  .sc-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}
+
+// ===== SMALL MOBILE (480px and below) =====
+@media (max-width: 480px) {
+  .schedule-call-section {
+    padding: 40px 12px;
+  }
+  
+  .sc-heading {
+    font-size: 28px;
+    padding: 0 5px;
+  }
+  
+  .sc-description {
+    font-size: 15px;
+    padding: 0 8px;
+  }
+  
+  .sc-form {
+    padding: 0 8px;
+    gap: 16px;
+    
+    input {
+      padding: 12px 14px;
+    }
+    
+    button {
+      padding: 14px;
+    }
+  }
+  
+  .sc-footer {
+    font-size: 15px;
+    padding: 0 8px;
+  }
+}
+
+// ===== ANIMATION KEYFRAMES =====
+@keyframes pulseShadow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(124, 214, 75, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(124, 214, 75, 0.3);
+  }
+}
+
+// Pulsing animation to button
+.sc-form button:not(:disabled):hover {
+  animation: pulseShadow 1.5s ease-in-out infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.sc-form input:invalid:not(:focus):not(:placeholder-shown) {
+  animation: shake 0.5s ease-in-out;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+// ===== LOADING ANIMATION =====
+@keyframes loadingPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.sc-form button:disabled {
+  animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+// ===== FORM SUCCESS/ERROR STATES =====
+.sc-form input.success {
+  border: 2px solid #7cd64b;
+}
+
+.sc-form input.error {
+  border: 2px solid #ff6b6b;
+  animation: shake 0.5s ease-in-out;
+}

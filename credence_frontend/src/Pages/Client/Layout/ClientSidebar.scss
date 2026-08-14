@@ -1,0 +1,620 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+// Theme Variables - Using our color scheme
+:root {
+  --sidebar-bg: #000000;
+  --sidebar-active-bg: #7cd64b;
+  --sidebar-active-text: #000000;
+  --sidebar-inactive-text: #ffffff; // Changed to white for better visibility
+  --sidebar-hover-text: #ffffff;
+  --page-bg: #ffffff;
+  --nav-bg: #111111;
+  --text-color: #333333;
+  --red: #ff4b4b;
+  --green: #7cd64b;
+}
+
+/* ---------- CLIENT LAYOUT CONTAINER ---------- */
+.client-layout-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--page-bg);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ---------- CLIENT SIDEBAR ---------- */
+#client-sidebar {
+  width: 220px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid #333333;
+  transition: width 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  box-shadow: 0 0 30px rgba(124, 214, 75, 0.05);
+}
+
+#client-sidebar.hide {
+  width: 60px;
+}
+
+/* logo */
+#client-sidebar .client-logo {
+  padding: 15px 15px 20px;
+  border-bottom: 1px solid #333333;
+}
+
+.client-logoBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+}
+
+.client-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--green);
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+
+  svg {
+    background: rgba(124, 214, 75, 0.2);
+    padding: 6px;
+    border-radius: 8px;
+  }
+}
+
+#client-sidebar.hide .client-sidebar-logo span {
+  display: none;
+}
+
+.client-menuIconHidden {
+  color: var(--green);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    color: #9ce76a;
+    transform: scale(1.1);
+  }
+}
+
+/* ---------- CLIENT MENU LIST ---------- */
+#client-sidebar .client-side-menu {
+  list-style: none;
+  padding: 15px 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) transparent;
+}
+
+#client-sidebar .client-side-menu::-webkit-scrollbar {
+  width: 4px;
+}
+
+#client-sidebar .client-side-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#client-sidebar .client-side-menu::-webkit-scrollbar-thumb {
+  background: var(--green);
+  border-radius: 10px;
+}
+
+#client-sidebar .client-side-menu li {
+  margin: 4px 10px;
+  position: relative;
+}
+
+#client-sidebar .client-side-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #ffffff; // Changed from var(--sidebar-inactive-text) to white
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.03); // Added light background for non-active links
+}
+
+#client-sidebar .client-side-menu li a:hover {
+  color: var(--sidebar-hover-text);
+  background: rgba(255, 255, 255, 0.08); // Slightly darker on hover
+}
+
+#client-sidebar .client-side-menu li a svg {
+  font-size: 18px;
+  flex-shrink: 0;
+  color: #ffffff; // Changed from var(--sidebar-inactive-text) to white
+  transition: all 0.2s ease;
+}
+
+#client-sidebar .client-side-menu li a:hover svg {
+  color: var(--green);
+}
+
+/* ---------- TERMS BUTTON ---------- */
+.client-terms-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #ffffff; // White text like other non-active links
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.03); // Same background as other links
+  border: none;
+  cursor: pointer;
+  
+  .client-menu-icon svg {
+    font-size: 18px;
+    flex-shrink: 0;
+    color: #ffffff; // White icon color like other non-active links
+    transition: all 0.2s ease;
+  }
+  
+  &:hover {
+    color: var(--sidebar-hover-text);
+    background: rgba(255, 255, 255, 0.08); // Same hover as other links
+  }
+  
+  &:hover .client-menu-icon svg {
+    color: var(--green);
+  }
+}
+
+/* Center icons when sidebar is collapsed */
+#client-sidebar.hide .client-side-menu li a,
+#client-sidebar.hide .client-terms-button {
+  justify-content: center;
+  padding: 10px;
+}
+
+#client-sidebar.hide .client-side-menu li a .client-menu-title,
+#client-sidebar.hide .client-terms-button .client-menu-title {
+  display: none;
+}
+
+/* ---------- ACTIVE STYLE ---------- */
+/* Expanded sidebar active style */
+#client-sidebar:not(.hide) .client-side-menu li.active a,
+#client-sidebar:not(.hide) .client-side-menu li a.active {
+  background: var(--green); // Changed from rgba(124, 214, 75, 0.15) to solid green
+  color: #000000; // Black text for contrast
+  font-weight: 600;
+}
+
+#client-sidebar:not(.hide) .client-side-menu li.active a svg,
+#client-sidebar:not(.hide) .client-side-menu li a.active svg {
+  background: #000000; // Black background for contrast
+  color: var(--green); // Green icon
+  border-radius: 6px;
+  padding: 4px;
+}
+
+/* Active state for terms button (if you want it to show as active when clicked) */
+#client-sidebar:not(.hide) .client-terms-button.active {
+  background: var(--green);
+  color: #000000;
+  font-weight: 600;
+  
+  .client-menu-icon svg {
+    background: #000000;
+    color: var(--green);
+    border-radius: 6px;
+    padding: 4px;
+  }
+}
+
+/* Collapsed sidebar active style */
+#client-sidebar.hide .client-side-menu li.active a svg,
+#client-sidebar.hide .client-side-menu li a.active svg,
+#client-sidebar.hide .client-terms-button.active .client-menu-icon svg {
+  background: var(--green);
+  color: #000000;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+/* ---------- MAIN CONTENT AREA ---------- */
+#client-main-content {
+  flex: 1;
+  margin-left: 220px;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+#client-main-content.expanded {
+  margin-left: 60px;
+}
+
+/* ---------- TOP NAVBAR ---------- */
+.client-top-nav {
+  height: 60px;
+  background: var(--nav-bg);
+  padding: 0 20px 0 40px;
+  width: 92%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  margin: 0 auto;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.client-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.client-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.client-menuIcon {
+  cursor: pointer;
+  color: var(--green);
+  font-size: 20px;
+  display: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: #9ce76a;
+    transform: scale(1.1);
+  }
+}
+
+/* ---------- CLIENT PAGE TITLE ---------- */
+.client-page-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--green);
+  margin: 0;
+  letter-spacing: 0.3px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ---------- PROFILE SECTION ---------- */
+.client-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.client-profile-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(124, 214, 75, 0.15);
+  color: var(--green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border: 1px solid rgba(124, 214, 75, 0.3);
+}
+
+/* Icon-buttons */
+.client-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--green);
+  color: #000000;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.client-icon-button:hover {
+  background: #9ce76a;
+  transform: scale(1.05);
+}
+
+/* ---------- LOGOUT BUTTON ---------- */
+.client-logout-menu-item {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.client-sidebar-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: var(--red);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  background: rgba(255, 75, 75, 0.06);
+  border: 1px solid rgba(255, 75, 75, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.client-sidebar-logout-btn:hover {
+  background: rgba(255, 75, 75, 0.12);
+}
+
+.client-sidebar-logout-btn svg {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+#client-sidebar.hide .client-sidebar-logout-btn {
+  justify-content: center;
+  padding: 8px;
+}
+
+#client-sidebar.hide .client-sidebar-logout-btn span {
+  display: none;
+}
+
+/* ---------- PAGE CONTENT ---------- */
+.client-page-content {
+  padding: 20px;
+  min-height: calc(100vh - 60px);
+  background: var(--page-bg);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Loading state */
+.client-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--page-bg);
+  color: var(--green);
+  font-family: 'Poppins', sans-serif;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(124, 214, 75, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--green);
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- CLIENT SIDEBAR FOOTER ---------- */
+.client-sidebar-footer {
+  padding: 12px 10px;
+  border-top: 1px solid #333333;
+  text-align: center;
+  font-size: 11px;
+  color: #888888;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.4;
+}
+
+.client-footer-link {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.client-footer-link:hover {
+  color: #9ce76a;
+  text-decoration: underline;
+}
+
+/* Hide footer text when sidebar collapsed */
+#client-sidebar.hide .client-sidebar-footer span,
+#client-sidebar.hide .client-footer-link {
+  display: none;
+}
+
+/* Dot indicator when collapsed */
+#client-sidebar.hide .client-sidebar-footer::after {
+  content: "•";
+  color: var(--green);
+  font-size: 16px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  #client-sidebar {
+    width: 250px;
+    transform: translateX(-100%);
+  }
+
+  #client-sidebar:not(.hide) {
+    transform: translateX(0);
+  }
+
+  #client-main-content {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .client-menuIcon {
+    display: block;
+  }
+
+  /* Adjust top nav for mobile */
+   .client-top-nav {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .client-page-title {
+    font-size: 16px;
+  }
+
+  .client-page-content {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .client-top-nav {
+    padding: 0;
+    height: 55px;
+  }
+
+  .client-nav-left {
+    gap: 10px;
+  }
+
+  .client-page-title {
+    font-size: 15px;
+  }
+
+  .client-page-content {
+    padding: 12px;
+  }
+
+  .client-profile {
+    gap: 8px;
+  }
+
+  .client-profile-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .client-icon-button {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+
+/* ---------- FINANCIAL STATEMENTS BUTTON ---------- */
+.client-financial-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #ffffff; // White text like other non-active links
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.03); // Same background as other links
+  border: none;
+  cursor: pointer;
+  
+  .client-menu-icon svg {
+    font-size: 18px;
+    flex-shrink: 0;
+    color: #ffffff; // White icon color like other non-active links
+    transition: all 0.2s ease;
+  }
+  
+  &:hover {
+    color: var(--sidebar-hover-text);
+    background: rgba(255, 255, 255, 0.08); // Same hover as other links
+    
+    .client-menu-icon svg {
+      color: var(--green);
+    }
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: #ffffff;
+      
+      .client-menu-icon svg {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+/* Center icons when sidebar is collapsed */
+#client-sidebar.hide .client-financial-button {
+  justify-content: center;
+  padding: 10px;
+}
+
+#client-sidebar.hide .client-financial-button .client-menu-title {
+  display: none;
+}
+
+/* Active style for expanded sidebar */
+#client-sidebar:not(.hide) .client-financial-button.active {
+  background: var(--green);
+  color: #000000;
+  font-weight: 600;
+  
+  .client-menu-icon svg {
+    background: #000000;
+    color: var(--green);
+    border-radius: 6px;
+    padding: 4px;
+  }
+}
+
+/* Active style for collapsed sidebar */
+#client-sidebar.hide .client-financial-button.active .client-menu-icon svg {
+  background: var(--green);
+  color: #000000;
+  border-radius: 6px;
+  padding: 4px;
+}

@@ -1,0 +1,4351 @@
+{
+  "timestamp": "2026-05-27T10:21:55.690Z",
+  "mode": "DRY_RUN (No changes made)",
+  "summary": {
+    "totalFieldsMigrated": 1139,
+    "oldCollectionPaymentStatus": 531,
+    "oldCollectionHistory": 457,
+    "newCollectionPaymentStatus": 110,
+    "newCollectionHistory": 41,
+    "clientsAffected": [
+      {
+        "clientId": "3875483b-181f-4ad9-8d6a-cbe285de68e4",
+        "clientName": "Nayan  Lad",
+        "email": "vwnayu299@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 0,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "5d442776-9538-41c2-8329-1db506dd9473",
+        "clientName": "Nayan  Lad",
+        "email": "piyushmant300488@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 0,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "862e7012-9775-484e-86db-4b15cd71540b",
+        "clientName": "Binal Lad",
+        "email": "lad.taxcon@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 0,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "4c542975-f059-4b6e-943d-2e13c82a50be",
+        "clientName": "Sajay Singh",
+        "email": "pooniasajay@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 11,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "db7dd4eb-2ef3-474f-8b09-f62055cd7fd2",
+        "clientName": "Nandani  Mehta ",
+        "email": "jani1502nandani@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 6,
+        "months": [
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "589635ac-419d-4b0a-a473-f8786761b660",
+        "clientName": "Meet Koladiya",
+        "email": "meetkoladiya857@gmail.com",
+        "paymentStatusFields": 10,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)",
+          "2026-5 (paymentStatus: true → paid)",
+          "2026-6 (paymentStatus: false → pending)",
+          "2026-8 (paymentStatus: false → pending)",
+          "2026-10 (paymentStatus: false → pending)",
+          "2026-11 (paymentStatus: false → pending)",
+          "2026-12 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "96be371c-f7e0-4b5b-a85c-723beb60d212",
+        "clientName": "Tarang  Kathiriya ",
+        "email": "tarangd25@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "68d3e5fe-bab1-4977-b92d-6ad5871e2b83",
+        "clientName": "Monu  Dhama",
+        "email": "m.dhama9567@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "6373e37a-a6e9-470a-a78f-4cc0bf7280c2",
+        "clientName": "Piyushbhai Lad",
+        "email": "piyush300488@gmail.com",
+        "paymentStatusFields": 2,
+        "historyFields": 0,
+        "months": [
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "e0ad64c3-c41a-4701-8a06-d9329cefd1a4",
+        "clientName": "Amit  Choudhary ",
+        "email": "amychoudhary100@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "fd57d33a-911c-4bb8-b696-d66a814e1897",
+        "clientName": "Arul karthick  Viswanathan ",
+        "email": "arul.karthick@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "925a7680-71e6-4a5d-b1c6-7bea7f8da19c",
+        "clientName": "Ajay Ajay",
+        "email": "ajay.ajay1998@outlook.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "b77242ff-9253-46ae-b54d-7e86d4745ec7",
+        "clientName": "Shama Rani",
+        "email": "ranishama279@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 1,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "79cf38a9-505b-4686-b39f-e9d15d46aab9",
+        "clientName": "Eniola Titilope Fashola",
+        "email": "fasholaeniola834@yahoo.com",
+        "paymentStatusFields": 3,
+        "historyFields": 1,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "58dc17a8-8f5a-4ab8-a8c8-58ac731331f7",
+        "clientName": "Hemangi Pawar",
+        "email": "hemangipawar395@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 0,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "f6596237-0bc9-4935-97df-8e21dad7f5af",
+        "clientName": "Amitkumar Patel",
+        "email": "amitpatel7478@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "ea810aa3-6fae-46fa-b3a2-186f0c192dec",
+        "clientName": "Pinalbhai Rana",
+        "email": "rahulraj00747@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "e86e668d-7e49-4d02-8dda-4405049022d5",
+        "clientName": "Kush Rathod",
+        "email": "kushrathod17@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "83a763f2-c0a2-47b3-a292-f5e7a7d798f1",
+        "clientName": "Jigar  Parekh",
+        "email": "parekhjigar814@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "f4014c45-bbd6-484a-b1c7-b531ae0b856c",
+        "clientName": "Manish Rana",
+        "email": "mr1553830@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "7ceb6800-5687-4c12-8bf8-115b1651ef84",
+        "clientName": "Vinit Savani",
+        "email": "vinitsavani2002@gmail.com",
+        "paymentStatusFields": 1,
+        "historyFields": 0,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "6df8a3ce-59ed-404b-9911-4f75f95f5b96",
+        "clientName": "Prajapati jinay bharatbhai",
+        "email": "jinayprajapati519@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "29f12ffd-f8a1-4eb6-9a8e-9449bfe24e25",
+        "clientName": "Sanjeev Bhujel",
+        "email": "sanjeevsanvwork@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "e8635dbe-79cb-409a-9a5e-2b414d4fd42d",
+        "clientName": "Nayan patel",
+        "email": "nayanpatel16071989@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "568511fb-77d5-4d0d-8de5-58ece89842e3",
+        "clientName": "Bankimkumar Nalinbhai patel",
+        "email": "bankimpatel2710@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "f809bd88-9781-4475-8a8b-212392b09ac4",
+        "clientName": "Anjali Kumari kandu",
+        "email": "anjalikandu650@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "ef39572b-54ad-4ad4-8ecc-291e5b6fe812",
+        "clientName": "Vedant gajjar ",
+        "email": "gajjarvedant1996@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "5cb19381-1a81-4006-919d-b40f62e3f3b9",
+        "clientName": "Jignesh devendrabhai Patel",
+        "email": "pjignesh13795@gmail.com",
+        "paymentStatusFields": 2,
+        "historyFields": 2,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "90b65d60-686d-4b70-a195-b0b40288f1ba",
+        "clientName": "Nikita Solanki",
+        "email": "nikita.solanki2211@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "5892e955-e6de-43f4-b00c-494391d1fb33",
+        "clientName": "Rajanbhai Vairaj",
+        "email": "rajan1612tadhani@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "e2b12808-8b68-49e4-8103-431ae8cf17bf",
+        "clientName": "Jagdishbhai Masarubhai  Chaudhary",
+        "email": "jagdishbhaichaudhary709@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 2,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "90100e5d-dca7-4f9d-9d4b-e0e68e7f0e15",
+        "clientName": "Nishit jigneshbhai  Panchal",
+        "email": "panchalnishit771@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 9,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "dee6d0f1-7f81-479f-ba63-8759e3e466aa",
+        "clientName": "Kamalkumar nariya",
+        "email": "kamalkumarnariya1996@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "3c77b261-ad47-4c9d-9a26-fd3bbf52bbe9",
+        "clientName": "Chirag Solanki",
+        "email": "chiragsolanki6101997@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "f675bf5a-9e2f-4462-bb9f-f6ea947bc4fe",
+        "clientName": "Om Krishna Shrestha",
+        "email": "omkrishna.shrestha85@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "a7000fe3-e76c-4ba3-a829-63fe823505fb",
+        "clientName": "Kalpesh Bhai",
+        "email": "patelkalpesh1923@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "24d03c66-a2b3-4fee-b003-244d7d9b7a51",
+        "clientName": "Weerasekara Olugala Bellangamage Sandaru Muvimal",
+        "email": "wsandaru060@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "d8f9b692-cf49-4604-8581-12b2499bc65f",
+        "clientName": "Binod  Rimal",
+        "email": "binodrimal84@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "0acf82be-36c6-45bc-bbba-87dbba851911",
+        "clientName": "SUNJEY KUMAR",
+        "email": "skumar_modi@outlook.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "1c8cf4b8-f675-46e9-8c9e-60b7623b2ac1",
+        "clientName": "Bhavisha Pinalkumar  Rana",
+        "email": "bhavisharana11997@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "b73660ba-9157-475a-b580-2eb60b440e94",
+        "clientName": "Santosh  Pokhrel",
+        "email": "santoshpokhrel13236@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "2c2fb9e1-b9ce-4f28-a03a-3112afcb2783",
+        "clientName": " Susmita manishkumar   Rana",
+        "email": "ranasusmita813@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "0063cf96-5576-46a1-a95a-9825e7c65a66",
+        "clientName": "Virani Hardikkumar  Himmatbhai",
+        "email": "hardikvirani18@gmail.com",
+        "paymentStatusFields": 2,
+        "historyFields": 2,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "983cd714-fdd2-4697-bf89-2eac37371fd2",
+        "clientName": "Rajbir  Kaur",
+        "email": "rajbirfin01@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "4eb5e333-567d-4525-8564-86baebe369c6",
+        "clientName": "RABARI DHRUVKUMAR  JAYESHBHAI",
+        "email": "rabaridhruv5744@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 2,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "7d01c6cf-d88e-4d7e-8681-9697e37b0519",
+        "clientName": "Javed hashamali  lalani",
+        "email": "lalanijaved272@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "9afd3f17-4137-4852-b226-0d57cd057827",
+        "clientName": "Rishva Darshil  Shah",
+        "email": "rishva1011@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "d091b521-c38a-470b-a0a0-d73a57534fe5",
+        "clientName": "Keshav   Sapkota",
+        "email": "blinkkeshav17@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "c5f12f77-f4af-4c53-b2c2-dd882ab3dbac",
+        "clientName": "Mehta  Dhruvit",
+        "email": "dhruvitmehta019@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 2,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "b82682b3-5a20-4d87-a2d4-ed062b44608d",
+        "clientName": "Chukwuma Justice  Okereke",
+        "email": "cjpounds1st@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "4b17e626-aebf-4817-9216-cc58ad88e0f0",
+        "clientName": "Darshil  Shah",
+        "email": "darshilshah178@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "c4580273-9c9b-407f-95e5-be0508ca5833",
+        "clientName": "Patel Jaykumar  Uttama",
+        "email": "pjay6970@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "bc972c67-84fc-4f8d-b26e-aa79ee73b1d0",
+        "clientName": "Harshal  Sakhiya",
+        "email": "harshalsakhiyafin@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "8f4f5a6d-e744-442a-be90-b0da0aa27628",
+        "clientName": "Vaibhavi  tadhani",
+        "email": "vaibhavitadhani@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "0410becb-5551-4967-8a08-dba2c3158f0a",
+        "clientName": "Bhumi Dharmendrabhai  Patel ",
+        "email": "patelbhumi116@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "494cb990-3064-47d7-a433-a10c5249501b",
+        "clientName": "Bhavadeep  Dobariya ",
+        "email": "dbhavadeep4@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 7,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "5e218602-8cbf-4dfd-8850-f814d590d93d",
+        "clientName": "Pardeep  Kumar",
+        "email": "pardeepfin01@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "471f7fea-a567-497f-9256-8d9c66dca6f8",
+        "clientName": "Martin  Mbugua",
+        "email": "martinezhazard@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "d1209c6b-ba6a-4eab-bd4f-9aa741760acc",
+        "clientName": "Rajendra   sapkota",
+        "email": "rajyand@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "a63cb04a-e78c-4960-934d-0e1df420b366",
+        "clientName": "Mohammad i  Qasim Naim",
+        "email": "qasimnaimi@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 1,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "eb704fdc-f666-4159-bac0-a879984fe609",
+        "clientName": "Patel bhargav   Ashokbhai",
+        "email": "bhargav3031@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "24dbc4ce-1f90-4cfd-9edd-63ff4ced7b9a",
+        "clientName": "Gajjar Jainika  Vedant",
+        "email": "jainikavedantgajjar@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 2,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "e720d42a-1105-4d0d-bfa9-10a5b2bb5695",
+        "clientName": "Jeel  Korat",
+        "email": "jeelkorat762@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "b4d15205-142a-4ef7-8468-d1bcc7a71c6c",
+        "clientName": "Tarangkumar   Patel",
+        "email": "tarangtc118@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "b0542324-39ec-4e0e-96f4-4445e269e608",
+        "clientName": "Josiah stephen  Idutubija",
+        "email": "josiah47@hotmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "c399ea27-5648-43a5-b984-5460193088c6",
+        "clientName": "Akshay Chaturbhai Bhalala",
+        "email": "akshay0404bhalala@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "406550b3-db08-48c8-ab21-ddeef5041274",
+        "clientName": "Gurpreet Singh Na",
+        "email": "garrykandola8199@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "2e2dc0b6-437b-4823-815a-287cc9819945",
+        "clientName": "Bhanderi Oy",
+        "email": "bhanderinikul0@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 7,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "78f4d1d7-e09d-4b00-972d-8575925afc08",
+        "clientName": "Hanuman Enterprise",
+        "email": "patelkuldeep5508@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "aa2ad667-e698-45c5-ad8e-8ae63a7a95ea",
+        "clientName": "YatraConnect Oy",
+        "email": "yatraconnectoy@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "9603f006-4983-468b-a4ec-5ffef22178e5",
+        "clientName": "Sonali Sonali",
+        "email": "dahiyasonalidoot1996@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "43b54b17-7711-40ac-bb67-0905f5153726",
+        "clientName": "Patel Dhrumil Santoshkumar",
+        "email": "dhrumilpatel2428@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 6,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "2a1dba3b-cad9-45e5-a98e-8ac7f4b243e1",
+        "clientName": "Kapil Sureshbhai Savra",
+        "email": "kapilsavra@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "657ccc0f-8911-48ed-84d8-4dad5d476d90",
+        "clientName": "Patel Binita Indravadan",
+        "email": "pbinita405@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 1,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "1ff0cfa9-d868-4234-b611-76bf4de8e106",
+        "clientName": "Darshankumar Bhagvandas Parekh",
+        "email": "darshparekh046@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "34a4414b-e4e9-4f80-b808-5742f28b7fc7",
+        "clientName": "Jagraj  Singh",
+        "email": "jagrajseonkh3443@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 1,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "a0dfb7aa-d443-40a5-8e90-dc10728da7da",
+        "clientName": "Ronica Iris Ronald",
+        "email": "ronicairis.83@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "7ba0b114-d658-4e3c-8c27-0bd71cf503a9",
+        "clientName": "Desai  Nikul",
+        "email": "dnikul744@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "02f29f64-af60-465f-b5d5-8f74fd8d6eae",
+        "clientName": "Devam Jatin Vyas",
+        "email": "devanvyas8@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "bde86c86-4e29-4f05-a2a9-071bde4aca8e",
+        "clientName": "Milan  Chaudhary",
+        "email": "milanchaudhary33440103@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "80ff6a04-7d1e-48cd-8cb5-20abfdca983b",
+        "clientName": "PAWAN  RAI",
+        "email": "panirc.007@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "59f47cc9-c19a-483d-a632-33b5248e6acc",
+        "clientName": "Saloni Jajoo",
+        "email": "salonijajoo9@gmail.com",
+        "paymentStatusFields": 2,
+        "historyFields": 0,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "b325d295-8446-40c9-a4df-12de8343598e",
+        "clientName": "Naveen Sharma",
+        "email": "naveen78168@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "9d0fe84d-44ad-420c-964b-0d6711c2bcb1",
+        "clientName": "Sourav Das Shuvo",
+        "email": "souravshuvo002@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "af650379-671f-4e7e-b004-e8cc55585f4d",
+        "clientName": "Dineshbhai Rupavatiya",
+        "email": "aakarmotors31@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "47a1d81c-981d-4b4c-8b42-81ffa53dd5a8",
+        "clientName": "Vraj  Patel",
+        "email": "vrajpatel787878@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 2,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "1069f1b6-e146-4667-831b-6b0876b7ca18",
+        "clientName": "Dada's Deli Navnit Anand",
+        "email": "navnitanand14@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "0f23e55a-a754-4043-90ac-9411b5c83174",
+        "clientName": "Rutvi Jariwala",
+        "email": "rutvijariwala.way@outlook.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "cb277698-cb8d-47e0-a5a3-139cc088c8c8",
+        "clientName": "Ajaykumar Patel",
+        "email": "patelajaykumarvipulbhai@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 1,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "05b4bafc-ddd1-4749-b743-f0713d1ca8e9",
+        "clientName": "Rahul Khanal",
+        "email": "khanalrahul590@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "dd958fd8-0bb0-450b-a7c0-77bc6ab0f397",
+        "clientName": "Priyanka Jhaveri",
+        "email": "jhaveripriyanka29@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "097ad07d-2cd6-46d5-8de8-08cc6ed160b5",
+        "clientName": "Ravi Katariya",
+        "email": "ravikatariya667@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 1,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "fc60a9e0-3d80-4043-9cb0-849a92000a9a",
+        "clientName": "Anandbhai  Jariwala",
+        "email": "anandjariwala2504@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 6,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "be6d7ac9-aa5c-4119-acf0-1a52370fb7ac",
+        "clientName": "Arjun Singh Nagra Choudhary",
+        "email": "arjunsinghnagra563@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "f25dbd57-3ec8-4a4f-be59-2bd71aa55ec3",
+        "clientName": "Aayush Patel",
+        "email": "aayushnp1998@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "c43a07c1-519b-44e5-8562-216cd71a57e4",
+        "clientName": "Daksh Patel",
+        "email": "pateldakshp54@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "4ceb4f0c-bfae-46d2-a431-d6144f3dacdd",
+        "clientName": "Sandeep Singh",
+        "email": "sandeepssingh700@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 6,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "f643b423-a4b6-492c-903b-4a10a87b47b9",
+        "clientName": "Rahul Kumar Sharma",
+        "email": "punhulsharma@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "662fcc24-64f4-49a2-947e-7ae29bdc9800",
+        "clientName": "Patel Kalpeshkumar",
+        "email": "kalpeshkumarpatel271@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "1cb88e47-ef0f-4411-b1dd-72ea3a5a0e4f",
+        "clientName": "Fardinbhai Zuberbhai Dhanga",
+        "email": "dhangafardin77@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "7e816f4c-aa0c-40f1-a451-f7c7fccd50a8",
+        "clientName": "Milankumar Ghadiya",
+        "email": "milanghadiya95@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "1e5f96d7-2c9c-4b40-b3e3-41b17ec92276",
+        "clientName": "Jaykumar Kanubhai Patel",
+        "email": "pateljay22499@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "60065733-32d0-4f68-aa38-c38c662d5be8",
+        "clientName": "Aniket Patel",
+        "email": "ap9736479@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "ccfcdfbb-3d1b-4f52-afd0-16b184f70a01",
+        "clientName": "Hetalben Alpeshkumar  Patel",
+        "email": "patelhetu2608@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "67baadfd-51b7-49af-9b96-e35e4a68b0c1",
+        "clientName": "Parth  Miyani",
+        "email": "miyani432@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "ba302ae8-3dbe-4427-afee-ff88614857a8",
+        "clientName": "OM HARESHBHAI DHANANI",
+        "email": "omdhanani60@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "cd3beda5-9e75-408f-9bdc-5bdcc06c0416",
+        "clientName": "Akshay Sundar Irattu",
+        "email": "movingtl88@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "501434f7-9c08-4e77-9671-61bd6feb6023",
+        "clientName": "Ahmed Abdiasis Ibrahim",
+        "email": "abibrah@outlook.com",
+        "paymentStatusFields": 3,
+        "historyFields": 2,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "5bd1bc13-47d8-4384-ab65-2d09e48110be",
+        "clientName": "Tirth Prakashsinh Chauhan",
+        "email": "tirthchauhan5277@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "58390f2d-c64a-4ad0-9f35-6461f5c224e4",
+        "clientName": "Pratik Maganbhai Desai",
+        "email": "pratikmaldhari207@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 1,
+        "months": [
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "9f6c3e19-c5b8-46c7-b0dc-bf093e93fab9",
+        "clientName": "Sanjay Kumar Kanu Baniya",
+        "email": "kanubaniyasanjaykumar@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 2,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "beaa3b0b-3367-492c-a2ba-6ac75b5028b3",
+        "clientName": "Bhargav Kantibhai Chodavadiya",
+        "email": "bhargavchodavadiya0609@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "a616a749-12b9-45ee-a935-e9064eee8b7d",
+        "clientName": "Prarthna Pareshbhai Kakadiya",
+        "email": "krushnviworld@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "38cfd654-492a-42c4-9d07-2dff385dc06e",
+        "clientName": "Tanishi Enterprise OY",
+        "email": "tanishienterpriseoy@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "dcaa3a02-688a-4292-9af1-e0547b7dcc74",
+        "clientName": "Papa's pizzeria Oy",
+        "email": "papaspizzeriaoy@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "cb2b422f-d73f-4dd9-9769-470182dabce5",
+        "clientName": "Papa's kitchen Oy",
+        "email": "papaskitchen001@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 4,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "6b614b9e-89bf-405f-8746-3990d5e6f9de",
+        "clientName": "Aura Leaf Oy",
+        "email": "meetpatel9692@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 7,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "1ab76ced-ef39-4d2b-be7f-6af83ee92beb",
+        "clientName": "RadheKrishna Group Oy",
+        "email": "radhekrishnagroupoy@gmail.com",
+        "paymentStatusFields": 2,
+        "historyFields": 2,
+        "months": [
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "e7a058dd-f81d-49cc-bef9-d14e616b9a33",
+        "clientName": "Nitinbhai Vallabhbhai Hirpara",
+        "email": "nitinhirpara97@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 6,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "ea4f76d6-8434-45cb-8083-f73a58abaa81",
+        "clientName": "Taiga Taxi",
+        "email": "osman.mohammadi699@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 0,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "a900a8be-b254-42ba-965e-3970d3a7d382",
+        "clientName": "Dhrupankumar Pravinbhai Parmar",
+        "email": "parmardhrupan@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 1,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "2c96a4e4-522a-4ea5-8a1e-4733fcd8786a",
+        "clientName": " Sahil Janmahmad  Ajmeri",
+        "email": "sahilajmeri0800@gmail.com",
+        "paymentStatusFields": 2,
+        "historyFields": 3,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "ecca8fab-d087-42c9-91fa-e3056a349910",
+        "clientName": "Thomas  Sudhakar Duraisingh",
+        "email": "tomminfinland@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "d78d7759-3226-43bd-aa2d-f2a08d74d2e7",
+        "clientName": "Shrey Android ",
+        "email": "shreydave.th12@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 0,
+        "months": [
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "9bec40d3-cb81-4882-a215-58cd9326b22e",
+        "clientName": "Shrey  iOS ",
+        "email": "jemisha.th12@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 0,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "b101474b-b989-426b-ac0c-522c9035ed3b",
+        "clientName": "Rachana l Bajagain Bhuje",
+        "email": "bajagainrachana@gmail.com",
+        "paymentStatusFields": 3,
+        "historyFields": 3,
+        "months": [
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "222bfcc3-b3be-4c4c-b92d-0f095abf369e",
+        "clientName": "Anamika  Mainali",
+        "email": "anamikamainali87@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "f5d0ca7d-4a5a-4ef5-ba3f-808346fee80a",
+        "clientName": "Sanket Shiroya",
+        "email": "jmvautokorjamo@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 0,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "6be53416-a8a0-4111-8014-1e6e7cf1c939",
+        "clientName": "Siddheshwar Oy",
+        "email": "siddheshwaroy@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 1,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "3e76bfdf-7276-46d6-9f16-a89e2d9412f0",
+        "clientName": "Neel Patel",
+        "email": "neelpatel070197@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 1,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "a156677a-198e-40cb-9a93-fac21747ffcf",
+        "clientName": "Denish  Patel",
+        "email": "patel.denish.1440@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 0,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "7812e104-59b4-46c5-916b-91c6afce86d8",
+        "clientName": "Ravi Tej Kode",
+        "email": "koderavitej176@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 3,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      },
+      {
+        "clientId": "88e45dfb-aa48-4ae0-b5be-07e0bb061e53",
+        "clientName": "Sujitkumar Dilipsinh Niyoliya",
+        "email": "sujitniyoliya@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 0,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "fbd77aa7-b5a5-493d-acd6-62d5a841fce5",
+        "clientName": "Rajat pal Singh",
+        "email": "rajatpalsingh29@gmail.com",
+        "paymentStatusFields": 4,
+        "historyFields": 0,
+        "months": [
+          "2026-1 (paymentStatus: false → pending)",
+          "2026-2 (paymentStatus: false → pending)",
+          "2026-3 (paymentStatus: false → pending)",
+          "2026-4 (paymentStatus: false → pending)"
+        ]
+      },
+      {
+        "clientId": "e279acb4-17bc-4bd4-9b88-ca0698682162",
+        "clientName": "Mehta  KripalKumar Bharatbhai",
+        "email": "kripalkumarmehta@gmail.com",
+        "paymentStatusFields": 5,
+        "historyFields": 5,
+        "months": [
+          "2026-1 (paymentStatus: true → paid)",
+          "2026-2 (paymentStatus: true → paid)",
+          "2026-3 (paymentStatus: true → paid)",
+          "2026-4 (paymentStatus: true → paid)",
+          "2026-5 (paymentStatus: true → paid)"
+        ]
+      }
+    ],
+    "errors": []
+  },
+  "details": {
+    "oldCollection": [
+      {
+        "clientId": "3875483b-181f-4ad9-8d6a-cbe285de68e4",
+        "clientName": "Nayan  Lad",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 0,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "5d442776-9538-41c2-8329-1db506dd9473",
+        "clientName": "Nayan  Lad",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 0,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "862e7012-9775-484e-86db-4b15cd71540b",
+        "clientName": "Binal Lad",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 0,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "4c542975-f059-4b6e-943d-2e13c82a50be",
+        "clientName": "Sajay Singh",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 11,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "db7dd4eb-2ef3-474f-8b09-f62055cd7fd2",
+        "clientName": "Nandani  Mehta ",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 6,
+          "months": [
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "589635ac-419d-4b0a-a473-f8786761b660",
+        "clientName": "Meet Koladiya",
+        "changes": {
+          "paymentStatus": 10,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: true → paid)",
+            "2026-6 (paymentStatus: false → pending)",
+            "2026-8 (paymentStatus: false → pending)",
+            "2026-10 (paymentStatus: false → pending)",
+            "2026-11 (paymentStatus: false → pending)",
+            "2026-12 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "96be371c-f7e0-4b5b-a85c-723beb60d212",
+        "clientName": "Tarang  Kathiriya ",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "68d3e5fe-bab1-4977-b92d-6ad5871e2b83",
+        "clientName": "Monu  Dhama",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "6373e37a-a6e9-470a-a78f-4cc0bf7280c2",
+        "clientName": "Piyushbhai Lad",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 0,
+          "months": [
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "e0ad64c3-c41a-4701-8a06-d9329cefd1a4",
+        "clientName": "Amit  Choudhary ",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "fd57d33a-911c-4bb8-b696-d66a814e1897",
+        "clientName": "Arul karthick  Viswanathan ",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "925a7680-71e6-4a5d-b1c6-7bea7f8da19c",
+        "clientName": "Ajay Ajay",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "b77242ff-9253-46ae-b54d-7e86d4745ec7",
+        "clientName": "Shama Rani",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 1,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "79cf38a9-505b-4686-b39f-e9d15d46aab9",
+        "clientName": "Eniola Titilope Fashola",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 1,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "58dc17a8-8f5a-4ab8-a8c8-58ac731331f7",
+        "clientName": "Hemangi Pawar",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 0,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "f6596237-0bc9-4935-97df-8e21dad7f5af",
+        "clientName": "Amitkumar Patel",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "ea810aa3-6fae-46fa-b3a2-186f0c192dec",
+        "clientName": "Pinalbhai Rana",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "e86e668d-7e49-4d02-8dda-4405049022d5",
+        "clientName": "Kush Rathod",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "83a763f2-c0a2-47b3-a292-f5e7a7d798f1",
+        "clientName": "Jigar  Parekh",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "f4014c45-bbd6-484a-b1c7-b531ae0b856c",
+        "clientName": "Manish Rana",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "7ceb6800-5687-4c12-8bf8-115b1651ef84",
+        "clientName": "Vinit Savani",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 0,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "6df8a3ce-59ed-404b-9911-4f75f95f5b96",
+        "clientName": "Prajapati jinay bharatbhai",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "29f12ffd-f8a1-4eb6-9a8e-9449bfe24e25",
+        "clientName": "Sanjeev Bhujel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "e8635dbe-79cb-409a-9a5e-2b414d4fd42d",
+        "clientName": "Nayan patel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "568511fb-77d5-4d0d-8de5-58ece89842e3",
+        "clientName": "Bankimkumar Nalinbhai patel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "f809bd88-9781-4475-8a8b-212392b09ac4",
+        "clientName": "Anjali Kumari kandu",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "ef39572b-54ad-4ad4-8ecc-291e5b6fe812",
+        "clientName": "Vedant gajjar ",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "5cb19381-1a81-4006-919d-b40f62e3f3b9",
+        "clientName": "Jignesh devendrabhai Patel",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 2,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "90b65d60-686d-4b70-a195-b0b40288f1ba",
+        "clientName": "Nikita Solanki",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "5892e955-e6de-43f4-b00c-494391d1fb33",
+        "clientName": "Rajanbhai Vairaj",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "e2b12808-8b68-49e4-8103-431ae8cf17bf",
+        "clientName": "Jagdishbhai Masarubhai  Chaudhary",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 2,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "90100e5d-dca7-4f9d-9d4b-e0e68e7f0e15",
+        "clientName": "Nishit jigneshbhai  Panchal",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 9,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "dee6d0f1-7f81-479f-ba63-8759e3e466aa",
+        "clientName": "Kamalkumar nariya",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "3c77b261-ad47-4c9d-9a26-fd3bbf52bbe9",
+        "clientName": "Chirag Solanki",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "f675bf5a-9e2f-4462-bb9f-f6ea947bc4fe",
+        "clientName": "Om Krishna Shrestha",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "a7000fe3-e76c-4ba3-a829-63fe823505fb",
+        "clientName": "Kalpesh Bhai",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "24d03c66-a2b3-4fee-b003-244d7d9b7a51",
+        "clientName": "Weerasekara Olugala Bellangamage Sandaru Muvimal",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "d8f9b692-cf49-4604-8581-12b2499bc65f",
+        "clientName": "Binod  Rimal",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "0acf82be-36c6-45bc-bbba-87dbba851911",
+        "clientName": "SUNJEY KUMAR",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "1c8cf4b8-f675-46e9-8c9e-60b7623b2ac1",
+        "clientName": "Bhavisha Pinalkumar  Rana",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "b73660ba-9157-475a-b580-2eb60b440e94",
+        "clientName": "Santosh  Pokhrel",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "2c2fb9e1-b9ce-4f28-a03a-3112afcb2783",
+        "clientName": " Susmita manishkumar   Rana",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "0063cf96-5576-46a1-a95a-9825e7c65a66",
+        "clientName": "Virani Hardikkumar  Himmatbhai",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 2,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "983cd714-fdd2-4697-bf89-2eac37371fd2",
+        "clientName": "Rajbir  Kaur",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "4eb5e333-567d-4525-8564-86baebe369c6",
+        "clientName": "RABARI DHRUVKUMAR  JAYESHBHAI",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 2,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "7d01c6cf-d88e-4d7e-8681-9697e37b0519",
+        "clientName": "Javed hashamali  lalani",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "9afd3f17-4137-4852-b226-0d57cd057827",
+        "clientName": "Rishva Darshil  Shah",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "d091b521-c38a-470b-a0a0-d73a57534fe5",
+        "clientName": "Keshav   Sapkota",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "c5f12f77-f4af-4c53-b2c2-dd882ab3dbac",
+        "clientName": "Mehta  Dhruvit",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 2,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "b82682b3-5a20-4d87-a2d4-ed062b44608d",
+        "clientName": "Chukwuma Justice  Okereke",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "4b17e626-aebf-4817-9216-cc58ad88e0f0",
+        "clientName": "Darshil  Shah",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "c4580273-9c9b-407f-95e5-be0508ca5833",
+        "clientName": "Patel Jaykumar  Uttama",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "bc972c67-84fc-4f8d-b26e-aa79ee73b1d0",
+        "clientName": "Harshal  Sakhiya",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "8f4f5a6d-e744-442a-be90-b0da0aa27628",
+        "clientName": "Vaibhavi  tadhani",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "0410becb-5551-4967-8a08-dba2c3158f0a",
+        "clientName": "Bhumi Dharmendrabhai  Patel ",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "494cb990-3064-47d7-a433-a10c5249501b",
+        "clientName": "Bhavadeep  Dobariya ",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 7,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "5e218602-8cbf-4dfd-8850-f814d590d93d",
+        "clientName": "Pardeep  Kumar",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "471f7fea-a567-497f-9256-8d9c66dca6f8",
+        "clientName": "Martin  Mbugua",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "d1209c6b-ba6a-4eab-bd4f-9aa741760acc",
+        "clientName": "Rajendra   sapkota",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "a63cb04a-e78c-4960-934d-0e1df420b366",
+        "clientName": "Mohammad i  Qasim Naim",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 1,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "eb704fdc-f666-4159-bac0-a879984fe609",
+        "clientName": "Patel bhargav   Ashokbhai",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "24dbc4ce-1f90-4cfd-9edd-63ff4ced7b9a",
+        "clientName": "Gajjar Jainika  Vedant",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 2,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "e720d42a-1105-4d0d-bfa9-10a5b2bb5695",
+        "clientName": "Jeel  Korat",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "b4d15205-142a-4ef7-8468-d1bcc7a71c6c",
+        "clientName": "Tarangkumar   Patel",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "b0542324-39ec-4e0e-96f4-4445e269e608",
+        "clientName": "Josiah stephen  Idutubija",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "c399ea27-5648-43a5-b984-5460193088c6",
+        "clientName": "Akshay Chaturbhai Bhalala",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "406550b3-db08-48c8-ab21-ddeef5041274",
+        "clientName": "Gurpreet Singh Na",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "2e2dc0b6-437b-4823-815a-287cc9819945",
+        "clientName": "Bhanderi Oy",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 7,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "78f4d1d7-e09d-4b00-972d-8575925afc08",
+        "clientName": "Hanuman Enterprise",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "aa2ad667-e698-45c5-ad8e-8ae63a7a95ea",
+        "clientName": "YatraConnect Oy",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "9603f006-4983-468b-a4ec-5ffef22178e5",
+        "clientName": "Sonali Sonali",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "43b54b17-7711-40ac-bb67-0905f5153726",
+        "clientName": "Patel Dhrumil Santoshkumar",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 6,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "2a1dba3b-cad9-45e5-a98e-8ac7f4b243e1",
+        "clientName": "Kapil Sureshbhai Savra",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "657ccc0f-8911-48ed-84d8-4dad5d476d90",
+        "clientName": "Patel Binita Indravadan",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 1,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "1ff0cfa9-d868-4234-b611-76bf4de8e106",
+        "clientName": "Darshankumar Bhagvandas Parekh",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "34a4414b-e4e9-4f80-b808-5742f28b7fc7",
+        "clientName": "Jagraj  Singh",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 1,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "a0dfb7aa-d443-40a5-8e90-dc10728da7da",
+        "clientName": "Ronica Iris Ronald",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "7ba0b114-d658-4e3c-8c27-0bd71cf503a9",
+        "clientName": "Desai  Nikul",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "02f29f64-af60-465f-b5d5-8f74fd8d6eae",
+        "clientName": "Devam Jatin Vyas",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "bde86c86-4e29-4f05-a2a9-071bde4aca8e",
+        "clientName": "Milan  Chaudhary",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "80ff6a04-7d1e-48cd-8cb5-20abfdca983b",
+        "clientName": "PAWAN  RAI",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "59f47cc9-c19a-483d-a632-33b5248e6acc",
+        "clientName": "Saloni Jajoo",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 0,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "b325d295-8446-40c9-a4df-12de8343598e",
+        "clientName": "Naveen Sharma",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "9d0fe84d-44ad-420c-964b-0d6711c2bcb1",
+        "clientName": "Sourav Das Shuvo",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "af650379-671f-4e7e-b004-e8cc55585f4d",
+        "clientName": "Dineshbhai Rupavatiya",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "47a1d81c-981d-4b4c-8b42-81ffa53dd5a8",
+        "clientName": "Vraj  Patel",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 2,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "1069f1b6-e146-4667-831b-6b0876b7ca18",
+        "clientName": "Dada's Deli Navnit Anand",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "0f23e55a-a754-4043-90ac-9411b5c83174",
+        "clientName": "Rutvi Jariwala",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "cb277698-cb8d-47e0-a5a3-139cc088c8c8",
+        "clientName": "Ajaykumar Patel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 1,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "05b4bafc-ddd1-4749-b743-f0713d1ca8e9",
+        "clientName": "Rahul Khanal",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "dd958fd8-0bb0-450b-a7c0-77bc6ab0f397",
+        "clientName": "Priyanka Jhaveri",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "097ad07d-2cd6-46d5-8de8-08cc6ed160b5",
+        "clientName": "Ravi Katariya",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 1,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "fc60a9e0-3d80-4043-9cb0-849a92000a9a",
+        "clientName": "Anandbhai  Jariwala",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 6,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "be6d7ac9-aa5c-4119-acf0-1a52370fb7ac",
+        "clientName": "Arjun Singh Nagra Choudhary",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "f25dbd57-3ec8-4a4f-be59-2bd71aa55ec3",
+        "clientName": "Aayush Patel",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "c43a07c1-519b-44e5-8562-216cd71a57e4",
+        "clientName": "Daksh Patel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "4ceb4f0c-bfae-46d2-a431-d6144f3dacdd",
+        "clientName": "Sandeep Singh",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 6,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "f643b423-a4b6-492c-903b-4a10a87b47b9",
+        "clientName": "Rahul Kumar Sharma",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "662fcc24-64f4-49a2-947e-7ae29bdc9800",
+        "clientName": "Patel Kalpeshkumar",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "1cb88e47-ef0f-4411-b1dd-72ea3a5a0e4f",
+        "clientName": "Fardinbhai Zuberbhai Dhanga",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "7e816f4c-aa0c-40f1-a451-f7c7fccd50a8",
+        "clientName": "Milankumar Ghadiya",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "1e5f96d7-2c9c-4b40-b3e3-41b17ec92276",
+        "clientName": "Jaykumar Kanubhai Patel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "60065733-32d0-4f68-aa38-c38c662d5be8",
+        "clientName": "Aniket Patel",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "ccfcdfbb-3d1b-4f52-afd0-16b184f70a01",
+        "clientName": "Hetalben Alpeshkumar  Patel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "67baadfd-51b7-49af-9b96-e35e4a68b0c1",
+        "clientName": "Parth  Miyani",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "ba302ae8-3dbe-4427-afee-ff88614857a8",
+        "clientName": "OM HARESHBHAI DHANANI",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "cd3beda5-9e75-408f-9bdc-5bdcc06c0416",
+        "clientName": "Akshay Sundar Irattu",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "501434f7-9c08-4e77-9671-61bd6feb6023",
+        "clientName": "Ahmed Abdiasis Ibrahim",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 2,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "5bd1bc13-47d8-4384-ab65-2d09e48110be",
+        "clientName": "Tirth Prakashsinh Chauhan",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "58390f2d-c64a-4ad0-9f35-6461f5c224e4",
+        "clientName": "Pratik Maganbhai Desai",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 1,
+          "months": [
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "9f6c3e19-c5b8-46c7-b0dc-bf093e93fab9",
+        "clientName": "Sanjay Kumar Kanu Baniya",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 2,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "beaa3b0b-3367-492c-a2ba-6ac75b5028b3",
+        "clientName": "Bhargav Kantibhai Chodavadiya",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "a616a749-12b9-45ee-a935-e9064eee8b7d",
+        "clientName": "Prarthna Pareshbhai Kakadiya",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "38cfd654-492a-42c4-9d07-2dff385dc06e",
+        "clientName": "Tanishi Enterprise OY",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "dcaa3a02-688a-4292-9af1-e0547b7dcc74",
+        "clientName": "Papa's pizzeria Oy",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "cb2b422f-d73f-4dd9-9769-470182dabce5",
+        "clientName": "Papa's kitchen Oy",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 4,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "6b614b9e-89bf-405f-8746-3990d5e6f9de",
+        "clientName": "Aura Leaf Oy",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 7,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "1ab76ced-ef39-4d2b-be7f-6af83ee92beb",
+        "clientName": "RadheKrishna Group Oy",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 2,
+          "months": [
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "e7a058dd-f81d-49cc-bef9-d14e616b9a33",
+        "clientName": "Nitinbhai Vallabhbhai Hirpara",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 6,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "ea4f76d6-8434-45cb-8083-f73a58abaa81",
+        "clientName": "Taiga Taxi",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 0,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "a900a8be-b254-42ba-965e-3970d3a7d382",
+        "clientName": "Dhrupankumar Pravinbhai Parmar",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 1,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "2c96a4e4-522a-4ea5-8a1e-4733fcd8786a",
+        "clientName": " Sahil Janmahmad  Ajmeri",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 3,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "ecca8fab-d087-42c9-91fa-e3056a349910",
+        "clientName": "Thomas  Sudhakar Duraisingh",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "d78d7759-3226-43bd-aa2d-f2a08d74d2e7",
+        "clientName": "Shrey Android ",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 0,
+          "months": [
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "9bec40d3-cb81-4882-a215-58cd9326b22e",
+        "clientName": "Shrey  iOS ",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "b101474b-b989-426b-ac0c-522c9035ed3b",
+        "clientName": "Rachana l Bajagain Bhuje",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 3,
+          "months": [
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "222bfcc3-b3be-4c4c-b92d-0f095abf369e",
+        "clientName": "Anamika  Mainali",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "f5d0ca7d-4a5a-4ef5-ba3f-808346fee80a",
+        "clientName": "Sanket Shiroya",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "6be53416-a8a0-4111-8014-1e6e7cf1c939",
+        "clientName": "Siddheshwar Oy",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 1,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "3e76bfdf-7276-46d6-9f16-a89e2d9412f0",
+        "clientName": "Neel Patel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 1,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "a156677a-198e-40cb-9a93-fac21747ffcf",
+        "clientName": "Denish  Patel",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "7812e104-59b4-46c5-916b-91c6afce86d8",
+        "clientName": "Ravi Tej Kode",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 3,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "88e45dfb-aa48-4ae0-b5be-07e0bb061e53",
+        "clientName": "Sujitkumar Dilipsinh Niyoliya",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "fbd77aa7-b5a5-493d-acd6-62d5a841fce5",
+        "clientName": "Rajat pal Singh",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "e279acb4-17bc-4bd4-9b88-ca0698682162",
+        "clientName": "Mehta  KripalKumar Bharatbhai",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 5,
+          "months": [
+            "2026-1 (paymentStatus: true → paid)",
+            "2026-2 (paymentStatus: true → paid)",
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      }
+    ],
+    "newCollection": [
+      {
+        "clientId": "8dcd44bf-386d-42e4-b589-7e3bbcf252c0",
+        "clientName": "astha kharadi",
+        "clientEmail": "asthakharadi2511@gmail.com",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "589635ac-419d-4b0a-a473-f8786761b660",
+        "clientName": "Meet Koladiya",
+        "clientEmail": "meetkoladiya857@gmail.com",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 1,
+          "months": [
+            "2027-1 (paymentStatus: true → paid)",
+            "2027-2 (paymentStatus: false → pending)",
+            "2027-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "bb853441-3308-46d2-8527-b77d0c1b08f1",
+        "clientName": "Ujjwol Dahal",
+        "clientEmail": "ujjwoldahal980@gmail.com",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "d091b521-c38a-470b-a0a0-d73a57534fe5",
+        "clientName": "Keshav   Sapkota",
+        "clientEmail": "blinkkeshav17@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "5892e955-e6de-43f4-b00c-494391d1fb33",
+        "clientName": "Rajanbhai Vairaj",
+        "clientEmail": "rajan1612tadhani@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "e279acb4-17bc-4bd4-9b88-ca0698682162",
+        "clientName": "Mehta  KripalKumar Bharatbhai",
+        "clientEmail": "kripalkumarmehta@gmail.com",
+        "changes": {
+          "paymentStatus": 12,
+          "history": 0,
+          "months": [
+            "2025-1 (paymentStatus: false → pending)",
+            "2025-2 (paymentStatus: false → pending)",
+            "2025-3 (paymentStatus: false → pending)",
+            "2025-4 (paymentStatus: false → pending)",
+            "2025-5 (paymentStatus: false → pending)",
+            "2025-6 (paymentStatus: false → pending)",
+            "2025-7 (paymentStatus: false → pending)",
+            "2025-8 (paymentStatus: false → pending)",
+            "2025-9 (paymentStatus: false → pending)",
+            "2025-10 (paymentStatus: false → pending)",
+            "2025-11 (paymentStatus: false → pending)",
+            "2025-12 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "bca095a5-21cd-476e-a6db-edc998d3142a",
+        "clientName": "Nehal Kumar  Sunar",
+        "clientEmail": "bknehal292@gmail.com",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "eb704fdc-f666-4159-bac0-a879984fe609",
+        "clientName": "Patel bhargav   Ashokbhai",
+        "clientEmail": "bhargav3031@gmail.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 1,
+          "months": [
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "9f6c3e19-c5b8-46c7-b0dc-bf093e93fab9",
+        "clientName": "Sanjay Kumar Kanu Baniya",
+        "clientEmail": "kanubaniyasanjaykumar@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "02f29f64-af60-465f-b5d5-8f74fd8d6eae",
+        "clientName": "Devam Jatin Vyas",
+        "clientEmail": "devanvyas8@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "bc972c67-84fc-4f8d-b26e-aa79ee73b1d0",
+        "clientName": "Harshal  Sakhiya",
+        "clientEmail": "harshalsakhiyafin@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "c4580273-9c9b-407f-95e5-be0508ca5833",
+        "clientName": "Patel Jaykumar  Uttama",
+        "clientEmail": "pjay6970@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "1ab76ced-ef39-4d2b-be7f-6af83ee92beb",
+        "clientName": "RadheKrishna Group Oy",
+        "clientEmail": "radhekrishnagroupoy@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "2c96a4e4-522a-4ea5-8a1e-4733fcd8786a",
+        "clientName": " Sahil Janmahmad  Ajmeri",
+        "clientEmail": "sahilajmeri0800@gmail.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "f643b423-a4b6-492c-903b-4a10a87b47b9",
+        "clientName": "Rahul Kumar Sharma",
+        "clientEmail": "punhulsharma@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 2,
+          "months": [
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "406550b3-db08-48c8-ab21-ddeef5041274",
+        "clientName": "Gurpreet Singh Na",
+        "clientEmail": "garrykandola8199@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "f4014c45-bbd6-484a-b1c7-b531ae0b856c",
+        "clientName": "Manish Rana",
+        "clientEmail": "mr1553830@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "fd57d33a-911c-4bb8-b696-d66a814e1897",
+        "clientName": "Arul karthick  Viswanathan ",
+        "clientEmail": "arul.karthick@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "05b4bafc-ddd1-4749-b743-f0713d1ca8e9",
+        "clientName": "Rahul Khanal",
+        "clientEmail": "khanalrahul590@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "c5f12f77-f4af-4c53-b2c2-dd882ab3dbac",
+        "clientName": "Mehta  Dhruvit",
+        "clientEmail": "dhruvitmehta019@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 0,
+          "months": [
+            "2026-3 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "0063cf96-5576-46a1-a95a-9825e7c65a66",
+        "clientName": "Virani Hardikkumar  Himmatbhai",
+        "clientEmail": "hardikvirani18@gmail.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 4,
+          "months": [
+            "2026-3 (paymentStatus: true → paid)",
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "662fcc24-64f4-49a2-947e-7ae29bdc9800",
+        "clientName": "Patel Kalpeshkumar",
+        "clientEmail": "kalpeshkumarpatel271@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-3 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "2fafbee3-2a63-4f8f-b914-76b06b1b7aad",
+        "clientName": "Sachin Magara",
+        "clientEmail": "sachinmagra3@gmail.com",
+        "changes": {
+          "paymentStatus": 4,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "2e2dc0b6-437b-4823-815a-287cc9819945",
+        "clientName": "Bhanderi Oy",
+        "clientEmail": "bhanderinikul0@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "5cb19381-1a81-4006-919d-b40f62e3f3b9",
+        "clientName": "Jignesh devendrabhai Patel",
+        "clientEmail": "pjignesh13795@gmail.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 0,
+          "months": [
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "e8635dbe-79cb-409a-9a5e-2b414d4fd42d",
+        "clientName": "Nayan patel",
+        "clientEmail": "nayanpatel16071989@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "7ceb6800-5687-4c12-8bf8-115b1651ef84",
+        "clientName": "Vinit Savani",
+        "clientEmail": "vinitsavani2002@gmail.com",
+        "changes": {
+          "paymentStatus": 3,
+          "history": 0,
+          "months": [
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "a7000fe3-e76c-4ba3-a829-63fe823505fb",
+        "clientName": "Kalpesh Bhai",
+        "clientEmail": "patelkalpesh1923@gmail.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "59f47cc9-c19a-483d-a632-33b5248e6acc",
+        "clientName": "Saloni Jajoo",
+        "clientEmail": "salonijajoo9@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 0,
+          "months": [
+            "2026-4 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "cd3beda5-9e75-408f-9bdc-5bdcc06c0416",
+        "clientName": "Akshay Sundar Irattu",
+        "clientEmail": "movingtl88@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "e8a110ca-5fbe-477a-bc0d-8b3903dfbeb6",
+        "clientName": "Keval  Savaliya",
+        "clientEmail": "kevalkeval81294@gmail.com",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 1,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "83a763f2-c0a2-47b3-a292-f5e7a7d798f1",
+        "clientName": "Jigar  Parekh",
+        "clientEmail": "parekhjigar814@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "7ba0b114-d658-4e3c-8c27-0bd71cf503a9",
+        "clientName": "Desai  Nikul",
+        "clientEmail": "dnikul744@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "9d0fe84d-44ad-420c-964b-0d6711c2bcb1",
+        "clientName": "Sourav Das Shuvo",
+        "clientEmail": "souravshuvo002@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "3c77b261-ad47-4c9d-9a26-fd3bbf52bbe9",
+        "clientName": "Chirag Solanki",
+        "clientEmail": "chiragsolanki6101997@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "c399ea27-5648-43a5-b984-5460193088c6",
+        "clientName": "Akshay Chaturbhai Bhalala",
+        "clientEmail": "akshay0404bhalala@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "af650379-671f-4e7e-b004-e8cc55585f4d",
+        "clientName": "Dineshbhai Rupavatiya",
+        "clientEmail": "aakarmotors31@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "983cd714-fdd2-4697-bf89-2eac37371fd2",
+        "clientName": "Rajbir  Kaur",
+        "clientEmail": "rajbirfin01@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "38cfd654-492a-42c4-9d07-2dff385dc06e",
+        "clientName": "Tanishi Enterprise OY",
+        "clientEmail": "tanishienterpriseoy@gmail.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 0,
+          "months": [
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "b101474b-b989-426b-ac0c-522c9035ed3b",
+        "clientName": "Rachana l Bajagain Bhuje",
+        "clientEmail": "bajagainrachana@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "fbd77aa7-b5a5-493d-acd6-62d5a841fce5",
+        "clientName": "Rajat pal Singh",
+        "clientEmail": "rajatpalsingh29@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "ba302ae8-3dbe-4427-afee-ff88614857a8",
+        "clientName": "OM HARESHBHAI DHANANI",
+        "clientEmail": "omdhanani60@gmail.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 0,
+          "months": [
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "0410becb-5551-4967-8a08-dba2c3158f0a",
+        "clientName": "Bhumi Dharmendrabhai  Patel ",
+        "clientEmail": "patelbhumi116@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 0,
+          "months": [
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "aa1272f1-649a-4208-bfe0-cd03d4e93e6f",
+        "clientName": "Riddhi Patel",
+        "clientEmail": "riddhi.patel.rp37@gmail.com",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "e720d42a-1105-4d0d-bfa9-10a5b2bb5695",
+        "clientName": "Jeel  Korat",
+        "clientEmail": "jeelkorat762@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "ea810aa3-6fae-46fa-b3a2-186f0c192dec",
+        "clientName": "Pinalbhai Rana",
+        "clientEmail": "rahulraj00747@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "b1730fba-2f6c-4d30-bd4f-e075cedcf4d5",
+        "clientName": "Ankit Rupapara",
+        "clientEmail": "ankitrupapara53@gmail.com",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "501434f7-9c08-4e77-9671-61bd6feb6023",
+        "clientName": "Ahmed Abdiasis Ibrahim",
+        "clientEmail": "abibrah@outlook.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 2,
+          "months": [
+            "2026-4 (paymentStatus: true → paid)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "6df8a3ce-59ed-404b-9911-4f75f95f5b96",
+        "clientName": "Prajapati jinay bharatbhai",
+        "clientEmail": "jinayprajapati519@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 1,
+          "months": [
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "dd958fd8-0bb0-450b-a7c0-77bc6ab0f397",
+        "clientName": "Priyanka Jhaveri",
+        "clientEmail": "jhaveripriyanka29@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 0,
+          "months": [
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "41692a09-0602-48dc-95f1-b947daff942b",
+        "clientName": "Benson Cosmas",
+        "clientEmail": "smalleybenson@gmail.com",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "5f062756-c708-4429-ba02-aa04dbbe0e5d",
+        "clientName": "Velnora  Oy",
+        "clientEmail": "velnoraoy@gmail.com",
+        "changes": {
+          "paymentStatus": 5,
+          "history": 0,
+          "months": [
+            "2026-1 (paymentStatus: false → pending)",
+            "2026-2 (paymentStatus: false → pending)",
+            "2026-3 (paymentStatus: false → pending)",
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      },
+      {
+        "clientId": "657ccc0f-8911-48ed-84d8-4dad5d476d90",
+        "clientName": "Patel Binita Indravadan",
+        "clientEmail": "pbinita405@gmail.com",
+        "changes": {
+          "paymentStatus": 2,
+          "history": 1,
+          "months": [
+            "2026-4 (paymentStatus: false → pending)",
+            "2026-5 (paymentStatus: true → paid)"
+          ]
+        }
+      },
+      {
+        "clientId": "471f7fea-a567-497f-9256-8d9c66dca6f8",
+        "clientName": "Martin  Mbugua",
+        "clientEmail": "martinezhazard@gmail.com",
+        "changes": {
+          "paymentStatus": 1,
+          "history": 0,
+          "months": [
+            "2026-5 (paymentStatus: false → pending)"
+          ]
+        }
+      }
+    ]
+  }
+}

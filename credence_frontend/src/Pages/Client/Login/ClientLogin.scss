@@ -1,0 +1,30 @@
+.client-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2f7;
+
+  &__card {
+    width: 360px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  input {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 10px;
+  }
+
+  .error {
+    color: red;
+    margin-bottom: 10px;
+  }
+
+  .link {
+    margin-top: 10px;
+  }
+}

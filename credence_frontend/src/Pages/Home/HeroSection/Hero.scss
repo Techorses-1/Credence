@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+  font-family: "LightHeading";
+  src: url("../../../assets/fonts/cy-grotesk-wide-light.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Heading";
+  src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "NavFont";
+  src: url("../../../assets/fonts/ARIALMTLIGHT.TTF") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+.hero {
+    min-height: 93vh;
+    padding: 24px;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0 0 40px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ================= BACKGROUND IMAGE ================= */
+.hero-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.hero-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+}
+
+/* ================= NAVBAR ================= */
+.hero-navbar-wrapper {
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+}
+
+.hero-navbar {
+    width: 80%;
+    background: #000;
+    border-radius: 50px;
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .nav-link {
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+        font-family: "NavFont", sans-serif;
+        transition: opacity 0.3s ease;
+        
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    .logo {
+        color: #6aff00;
+        letter-spacing: 6px;
+        font-weight: 600;
+        font-size: 16px;
+    }
+}
+
+/* ================= CONTENT ================= */
+.hero-content {
+    max-width: 520px;
+    margin: 100px 0 20px;
+    padding-left: 200px;
+    z-index: 2;
+    position: relative;
+
+    h1 {
+        display: flex;
+        flex-direction: column;
+        font-size: 44px;
+        line-height: 1.15;
+
+        span {
+            font-weight: 400;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+    }
+
+    .tagline {
+        margin-top: 16px;
+        font-size: 14px;
+        font-family: "Arimo", sans-serif;
+        text-align: left;
+    }
+
+    .desc {
+        margin-top: 12px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #222;
+        font-family: "Inter", sans-serif;
+        text-align: left;
+    }
+
+    .light {
+        font-family: "LightHeading", sans-serif;
+        color: #000;
+    }
+    
+    .dark {
+        font-family: "Heading", sans-serif;
+        color: #000;
+    }
+}
+
+/* ================= CTA BUTTON ================= */
+.cta-button {
+    margin-top: 28px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 40px;
+    border: 1px solid #000;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+
+    span {
+        padding: 12px 26px;
+        font-size: 14px;
+        white-space: nowrap;
+        font-family: "Arimo", sans-serif;
+    }
+
+    .left {
+        background: transparent;
+        color: #000;
+        border-radius: 40px 0 0 40px;
+    }
+
+    .right {
+        background: #000;
+        color: #fff;
+        border-radius: 40px;
+        margin-left: -20px;
+        padding-left: 36px;
+        padding-right: 30px;
+    }
+}
+
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .hero {
+        padding: 16px;
+        min-height: 65vh; // ✅ Changed to 65vh only for mobile
+    }
+
+    .hero-navbar {
+        width: 100%;
+        padding: 10px 18px;
+
+        .nav-link {
+            font-size: 14px; // ✅ Reduced font size for mobile
+        }
+
+        .logo {
+            font-size: 14px;
+            letter-spacing: 4px;
+        }
+    }
+
+    .hero-content {
+        padding-left: 0;
+        margin: 40px 0 20px; // Reduced margin for mobile
+        max-width: 100%;
+
+        h1 {
+            font-size: 32px;
+            text-align: left; // ✅ Heading left aligned on mobile
+        }
+
+        .tagline {
+            text-align: center; // ✅ Center aligned for mobile
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        .desc {
+            text-align: center; // ✅ Center aligned for mobile
+            font-size: 13px;
+            line-height: 1.5;
+            color: #333;
+        }
+    }
+
+    .hero-bg-image {
+        object-position: center;
+    }
+
+    .cta-button {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        width: fit-content;
+        transform: scale(0.95);
+        -top: 5px;
+        
+        /* ✅ Keep the overlap/spacing between left and right */
+        .right {
+            margin-left: -20px;
+            padding-left: 36px;
+            padding-right: 30px;
+        }
+        
+        .left {
+            padding-right: 30px; /* Add spacing on the right */
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content {
+        margin: 30px 0 15px;
+        
+        h1 {
+            font-size: 28px;
+        }
+        
+        .tagline {
+            font-size: 12px;
+        }
+        
+        .desc {
+            font-size: 12.5px;
+        }
+    }
+    
+    .hero-bg-image {
+        object-position: 65% center;
+    }
+    
+    .hero-navbar {
+        padding: 8px 14px;
+        
+        .nav-link {
+            font-size: 13px; // Even smaller for very small screens
+        }
+        
+        .logo {
+            font-size: 13px;
+            letter-spacing: 3px;
+        }
+    }
+    
+    .cta-button {
+        span {
+            padding: 8px 18px;
+            font-size: 12px;
+        }
+        
+        .right {
+            padding-left: 28px;
+            padding-right: 22px;
+        }
+    }
+}
+
+
+// Add this at the top of your Hero.scss
+.hero-navbar-wrapper,
+.hero-content,
+.cta-button {
+  will-change: transform, opacity;
+}
+
+// Smooth scroll behavior for the whole page
+html {
+  scroll-behavior: smooth;
+}

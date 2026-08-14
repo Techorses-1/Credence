@@ -1,0 +1,1092 @@
+// ===== FONTS IMPORT =====
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+  font-family: "Heading";
+  src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LightHeading";
+  src: url("../../../assets/fonts/cy-grotesk-wide-light.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+// ===== HEADER SECTION =====
+.plans-header {
+  padding: 0px 0 0px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: #ffffff;
+  display: none;
+}
+
+// ===== HEADER CONTENT =====
+.plans-header-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px 20px;
+  text-align: center;
+  z-index: 3;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  display: none;
+
+  h1 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 45px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 3;
+
+    .plans-heading-line {
+      display: inline;
+      margin-bottom: 0;
+      white-space: nowrap;
+
+      &:first-child {
+        margin-right: 5px;
+      }
+    }
+
+    span {
+      font-weight: 400;
+      display: inline;
+    }
+  }
+
+  .plans-heading-light {
+    font-family: "LightHeading", sans-serif;
+    color: #1a1a1a;
+  }
+
+  .plans-heading-dark {
+    font-family: "Heading", sans-serif;
+    color: #1a1a1a;
+  }
+
+  .plans-subtitle {
+    margin-top: 16px;
+    font-size: 18px;
+    font-family: "Arimo", sans-serif;
+    color: #666666;
+    max-width: 600px;
+    line-height: 1.5;
+    position: relative;
+    z-index: 3;
+  }
+}
+
+// ===== FULL WIDTH HERO IMAGE STYLES =====
+.plans-hero-image-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  // margin-top: 10px; 
+  isolation: isolate;
+}
+
+.plans-hero-image {
+  width: 100%;
+  height: auto;
+  max-height: 700px;
+  object-fit: cover;
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+// ===== PACKAGES SECTION =====
+.packages {
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 60px 20px 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+// HEADING
+.packages-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  h2 {
+    font-family: "Heading", sans-serif;
+    font-size: 36px;
+    margin: 0;
+    color: #1a1a1a;
+  }
+
+  .underline {
+    width: 60px;
+    height: 3px;
+    background: #7cd64b;
+    margin: 10px auto 18px;
+    display: block;
+  }
+
+  p {
+    font-family: "Arimo", sans-serif;
+    font-size: 15px;
+    color: #666666;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+// TABLE WRAPPER
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  max-width: 1250px;
+  height: 410px;
+  margin: 0 auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+// PRICING TABLE
+.pricing-table {
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: collapse;
+  border: 2px solid #7cd64b;
+  font-family: "Inter", sans-serif;
+  transform-origin: top center;
+  background: #ffffff;
+}
+
+.pricing-table th {
+  background: #7cd64b;
+  color: #1a1a1a;
+  padding: 14px;
+  font-weight: 600;
+  border: 1px solid #ffffff;
+  font-family: "Inter", sans-serif;
+  transform-origin: center;
+}
+
+.pricing-table td {
+  padding: 14px;
+  border: 1px solid #7cd64b;
+  text-align: center;
+  font-size: 14px;
+  font-family: "Inter", sans-serif;
+  transform-origin: center;
+}
+
+.pricing-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+// COLUMN COLORS
+.features {
+  background: rgba(124, 214, 75, 0.08);
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.lite {
+  background: rgba(124, 214, 75, 0.02);
+  color: #1a1a1a;
+}
+
+.taxi {
+  background: rgba(124, 214, 75, 0.04);
+  color: #1a1a1a;
+}
+
+.premium {
+  background: rgba(124, 214, 75, 0.02);
+  color: #1a1a1a;
+}
+
+.pro {
+  background: rgba(124, 214, 75, 0.04);
+  color: #1a1a1a;
+}
+
+.restaurant {
+  background: rgba(124, 214, 75, 0.02);
+  color: #1a1a1a;
+}
+
+// YES/NO
+.yes {
+  color: #7cd64b;
+  font-weight: 600;
+}
+
+.no {
+  color: #ff4d4d;
+  font-weight: 600;
+}
+
+// INVOICE CELL WITH BUTTON
+.invoice-cell {
+  position: relative;
+  padding-bottom: 30px !important;
+}
+
+.cell-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.pricing-table button {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%) !important;
+  background: #ffffff;
+  border: 2px solid #7cd64b;
+  color: #7cd64b;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 3;
+  font-family: "Arimo", sans-serif;
+  transition: all 0.3s ease !important;
+  min-width: 90px;
+  transform-origin: center;
+
+  &:hover {
+    background: #7cd64b !important;
+    color: #1a1a1a !important;
+    transform: translateX(-50%) scale(1.05) !important;
+    box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+  }
+}
+
+// ===== ADDITIONAL SERVICES SECTION =====
+.additional-services {
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 60px 20px 50px;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+
+  h2 {
+    font-family: "Heading", sans-serif;
+    font-size: 34px;
+    margin: 0;
+    color: #1a1a1a;
+  }
+
+  .underline {
+    width: 60px;
+    height: 3px;
+    background: #7cd64b;
+    margin: 10px auto 18px;
+    display: block;
+  }
+
+  p {
+    font-family: "Arimo", sans-serif;
+    font-size: 14px;
+    color: #666666;
+  }
+}
+
+// SERVICES BOX
+.services-box {
+  max-width: 1000px;
+  margin: 0 auto 50px;
+  border: 1.5px solid #7cd64b;
+  border-radius: 22px;
+  padding: 40px;
+  display: flex;
+  align-items: stretch;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transform-origin: center;
+}
+
+// COLUMNS
+.service-col {
+  flex: 1;
+
+  h3 {
+    font-size: 22px;
+    color: #7cd64b;
+    margin-bottom: 18px;
+    font-family: "Arimo", sans-serif;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: "Inter", sans-serif;
+  }
+
+  ul li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1a1a1a;
+    transform-origin: left center;
+
+    &::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #7cd64b;
+      font-size: 18px;
+      line-height: 1;
+    }
+  }
+}
+
+// DIVIDER
+.divider {
+  width: 1px;
+  background: #7cd64b;
+  margin: 0 40px;
+}
+
+// ===== CONNECT US BUTTON =====
+.connect-us-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.connect-us-btn {
+  background: #7cd64b;
+  color: #1a1a1a;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 30px;
+  font-family: "Arimo", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform-origin: center;
+
+  &:hover {
+    background: #6ac94c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+}
+
+// ===== CONNECT US MODAL =====
+.connect-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.connect-modal-container {
+  background: #ffffff;
+  border: 2px solid #7cd64b;
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  color: #1a1a1a;
+  margin: auto;
+  z-index: 9999;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.connect-modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #7cd64b;
+  font-size: 28px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 10000;
+
+  &:hover {
+    background: rgba(124, 214, 75, 0.1);
+  }
+}
+
+.connect-modal-heading {
+  font-family: "Heading", sans-serif;
+  color: #1a1a1a;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.connect-modal-subtitle {
+  font-family: "Arimo", sans-serif;
+  text-align: center;
+  color: #666666;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+// CONNECT FORM
+.connect-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.connect-form-row {
+  width: 100%;
+}
+
+.connect-form-input {
+  width: 94%;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 14px;
+  color: #1a1a1a;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: #999999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #7cd64b;
+    box-shadow: 0 0 0 2px rgba(124, 214, 75, 0.2);
+  }
+}
+
+.connect-form-select {
+  width: 100%;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 14px;
+  color: #1a1a1a;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  appearance: none;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  option {
+    background: #ffffff;
+    color: #1a1a1a;
+    font-size: 14px;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #7cd64b;
+  }
+}
+
+.connect-submit-btn {
+  width: 100%;
+  padding: 16px;
+  background: #7cd64b;
+  color: #1a1a1a;
+  border: none;
+  border-radius: 8px;
+  font-family: "Arimo", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background: #6ac94c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124, 214, 75, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+}
+
+// ===== ANIMATION FOR FORM INPUTS =====
+.connect-form-input:focus,
+.connect-form-select:focus {
+  animation: inputFocus 0.3s ease;
+}
+
+@keyframes inputFocus {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.01);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+// ===== ERROR STATE ANIMATION =====
+@keyframes shakeError {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.connect-form-input:invalid:not(:focus):not(:placeholder-shown) {
+  animation: shakeError 0.5s ease-in-out;
+  background-color: rgba(255, 0, 0, 0.05);
+}
+
+// ===== TABLE NOTES STYLES =====
+.table-note {
+  max-width: 1250px;
+  margin: 20px auto 0;
+  padding: 15px 20px;
+  background: rgba(124, 214, 75, 0.05);
+  border-left: 4px solid #7cd64b;
+  border-radius: 0 8px 8px 0;
+  font-family: "Arimo", sans-serif;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #666666;
+    line-height: 1.6;
+    font-style: italic;
+  }
+}
+
+// ===== OSAKEYHTIÖ TABLE SPECIFIC STYLES =====
+.oy-packages {
+  margin-top: 20px;
+}
+
+.oy-table-wrapper {
+  height: 280px;
+
+  .pricing-table {
+    min-width: 800px;
+  }
+}
+
+// ===== HIDE UNUSED NAVBAR STYLES =====
+.pulse-layer,
+.flow-particle,
+.plans-header-bg {
+  display: none;
+}
+
+// ===== NEW SELECT PLAN BUTTON STYLES =====
+.new-select-plan-btn {
+  display: none;
+}
+
+// ===== MOBILE RESPONSIVE =====
+@media (max-width: 768px) {
+  .plans-header-content {
+    padding: 20px 16px;
+
+    h1 {
+      display: flex;
+      flex-direction: column;
+      font-size: 32px;
+      gap: 4px;
+      margin-bottom: 16px;
+
+      .plans-heading-line {
+        display: block;
+        margin-bottom: 0;
+        white-space: normal;
+
+        &:first-child {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .plans-subtitle {
+      font-size: 14px;
+      padding: 0;
+      max-width: 100%;
+      line-height: 1.5;
+    }
+  }
+
+  .plans-hero-image {
+    width: 100%;
+    max-height: 420px;
+    object-fit: cover;
+  }
+
+  .packages {
+    padding: 40px 16px 30px;
+  }
+
+  .packages-header {
+    h2 {
+      font-size: 30px;
+    }
+
+    p {
+      font-size: 14px;
+      padding: 0 10px;
+    }
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    height: 440px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .pricing-table {
+    min-width: 1100px;
+  }
+
+  .oy-table-wrapper {
+    height: 300px;
+
+    .pricing-table {
+      min-width: 700px;
+    }
+  }
+
+  .table-note {
+    margin: 15px 16px 0;
+    padding: 12px 16px;
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .additional-services {
+    padding: 40px 16px;
+  }
+
+  .section-header {
+    h2 {
+      font-size: 28px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .services-box {
+    flex-direction: column;
+    border: 1.5px solid #7cd64b;
+    border-radius: 22px;
+    padding: 0;
+    background: transparent;
+    margin-bottom: 30px;
+    box-shadow: none;
+    width: 100%;
+  }
+
+  .service-col {
+    border: none;
+    border-radius: 22px;
+    padding: 24px;
+    margin-bottom: 0;
+    background: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+
+    h3 {
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    ul li {
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    &:first-child {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:last-child {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .connect-us-container {
+    margin-top: 30px;
+  }
+
+  .connect-us-btn {
+    padding: 12px 28px;
+    font-size: 14px;
+  }
+
+  .connect-modal-overlay {
+    padding: 10px;
+  }
+
+  .connect-modal-container {
+    padding: 30px 20px;
+    margin: 10px;
+    width: 100%;
+    max-width: 90%;
+    box-sizing: border-box;
+  }
+
+  .connect-modal-heading {
+    font-size: 24px;
+  }
+
+  .connect-modal-subtitle {
+    font-size: 13px;
+  }
+
+  .connect-form {
+    gap: 16px;
+  }
+
+  .connect-form-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  .connect-form-select {
+    padding: 12px;
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .connect-submit-btn {
+    padding: 14px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .plans-header-content {
+    padding: 16px 12px;
+
+    h1 {
+      font-size: 24px;
+
+      .plans-heading-line {
+        font-size: 24px;
+      }
+    }
+
+    .plans-subtitle {
+      font-size: 13px;
+    }
+  }
+
+  .plans-hero-image {
+    max-height: 200px;
+  }
+
+  .packages-header {
+    h2 {
+      font-size: 26px;
+    }
+  }
+
+  .packages {
+    padding: 30px 12px 20px;
+  }
+
+  .section-header {
+    h2 {
+      font-size: 24px;
+    }
+  }
+
+  .service-col {
+    padding: 20px;
+
+    h3 {
+      font-size: 18px;
+    }
+
+    ul li {
+      font-size: 12px;
+      padding-left: 14px;
+    }
+  }
+
+  .table-note {
+    margin: 10px 12px 0;
+    padding: 10px 14px;
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .connect-modal-container {
+    padding: 20px 16px;
+  }
+
+  .connect-modal-heading {
+    font-size: 22px;
+  }
+
+  .connect-modal-subtitle {
+    font-size: 12px;
+  }
+
+  .connect-form-input,
+  .connect-form-select {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .connect-submit-btn {
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+
+// ===== MEDIA QUERIES FOR LARGER SCREENS (1600px to 2400px) =====
+@media screen and (min-width: 1600px) and (max-width: 1799px) {
+  .plans-hero-image {
+    max-height: 900px;
+  }
+}
+
+@media screen and (min-width: 1800px) and (max-width: 1999px) {
+  .plans-hero-image {
+    max-height: 1000px;
+  }
+}
+
+@media screen and (min-width: 2000px) and (max-width: 2199px) {
+  .plans-hero-image {
+    max-height: 1000px;
+  }
+}
+
+@media screen and (min-width: 2200px) and (max-width: 2400px) {
+  .plans-hero-image {
+    max-height: 1100px;
+  }
+}
+
+// For screens above 2400px
+@media screen and (min-width: 2401px) {
+  .plans-hero-image {
+    max-height: 1200px;
+  }
+}
+
+
+
+
+
+// ===== UPDATED NOTE STYLES WITH NOTE NUMBERS =====
+.table-note {
+  max-width: 1250px;
+  margin: 20px auto 0;
+  padding: 15px 20px;
+  background: rgba(124, 214, 75, 0.05);
+  border-left: 4px solid #7cd64b;
+  border-radius: 0 8px 8px 0;
+  font-family: "Arimo", sans-serif;
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #666666;
+    line-height: 1.6;
+  }
+
+  .note-number {
+    font-weight: 700;
+    color: #7cd64b;
+    margin-right: 8px;
+    font-family: "Heading", sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  a {
+    color: #7cd64b;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: #5fb03a;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Special styling for document limit note
+.document-note {
+  border-left-color: #ff9800;
+  background: rgba(255, 152, 0, 0.05);
+  margin-top: 10px;
+
+  .note-number {
+    color: #ff9800;
+  }
+
+  a {
+    color: #ff9800;
+
+    &:hover {
+      color: #e68900;
+    }
+  }
+}
+
+// Adjust spacing when multiple notes are present
+.packages {
+  .table-note {
+    &:first-of-type {
+      margin-top: 20px;
+    }
+
+    &+.table-note {
+      margin-top: 10px;
+    }
+  }
+}
+
+// ===== MOBILE RESPONSIVE UPDATES =====
+@media (max-width: 768px) {
+  .table-note {
+    margin: 15px 16px 0;
+    padding: 12px 16px;
+
+    p {
+      font-size: 13px;
+    }
+
+    .note-number {
+      font-size: 12px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    &+.table-note {
+      margin-top: 8px;
+    }
+  }
+
+  .document-note {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-note {
+    margin: 10px 12px 0;
+    padding: 10px 14px;
+
+    p {
+      font-size: 12px;
+    }
+
+    .note-number {
+      font-size: 11px;
+    }
+  }
+}

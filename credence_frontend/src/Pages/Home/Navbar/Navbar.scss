@@ -1,0 +1,194 @@
+// ===== NAVBAR STYLES =====
+.navbar-wrapper {
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  box-sizing: border-box;
+
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .navbar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .navbar-logo-image {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .navbar-cases-link {
+    color: #1a1a1a;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    padding: 8px 24px !important;
+    border-radius: 50px !important;
+    background: #ffffff !important;
+    border: 2px solid #7cd64b !important;
+    transition: all 0.3s ease !important;
+    white-space: nowrap;
+    display: inline-block;
+    text-decoration: none;
+
+    .mobile-text {
+      display: none;
+    }
+
+    &:hover {
+      background: #7cd64b !important;
+      color: #ffffff !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+    }
+
+    &.active {
+      background: #7cd64b !important;
+      color: #ffffff !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+    }
+  }
+
+  .navbar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .navbar-nav-link {
+    color: #1a1a1a;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    padding: 8px 24px !important;
+    border-radius: 50px !important;
+    background: #ffffff !important;
+    border: 2px solid #7cd64b !important;
+    transition: all 0.3s ease !important;
+    white-space: nowrap;
+    display: inline-block;
+    text-decoration: none;
+
+    &:hover {
+      background: #7cd64b !important;
+      color: #ffffff !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+    }
+  }
+}
+
+// ===== MOBILE RESPONSIVE =====
+@media (max-width: 768px) {
+  .navbar {
+    padding: 8px 16px;
+
+    // Make navbar a flat flex row where we control all 3 items:
+    // logo (inside navbar-left), navbar-buttons, cases-link (inside navbar-left)
+    // Solution: navbar-left becomes a flex row that splits logo left + cases right
+    // and navbar-buttons inserts itself between them using negative margin trick
+
+    .navbar-left {
+      gap: 0;
+      display: contents; // ← KEY: dissolves navbar-left, its children become direct navbar flex children
+    }
+
+    .navbar-logo {
+      order: 1;
+    }
+
+    .navbar-logo-image {
+      height: 60px;
+    }
+
+    .navbar-cases-link {
+      order: 3; // far right
+      font-size: 13px;
+      padding: 8px 12px !important;
+      white-space: normal !important;
+      line-height: 1.3 !important;
+      text-align: center;
+      min-width: 100px;
+
+      .desktop-text {
+        display: none;
+      }
+
+      .mobile-text {
+        display: inline-block;
+      }
+    }
+
+    .navbar-buttons {
+      order: 2; // middle — right after logo
+      gap: 8px;
+      flex: 1; // takes up all middle space, pushing cases to far right
+    }
+
+    .navbar-nav-link {
+      font-size: 13px;
+      padding: 6px 12px !important;
+
+      &:first-child {
+        span {
+          display: none;
+        }
+
+        &::before {
+          content: "Enroll";
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 6px 12px;
+
+    .navbar-logo-image {
+      height: 60px;
+    }
+
+    .navbar-cases-link {
+      font-size: 11px;
+      padding: 6px 8px !important;
+      line-height: 1.3 !important;
+      min-width: 85px;
+    }
+
+    .navbar-buttons {
+      gap: 6px;
+    }
+
+    .navbar-nav-link {
+      font-size: 12px;
+      padding: 5px 8px !important;
+      margin-left: 4px;
+    }
+  }
+}

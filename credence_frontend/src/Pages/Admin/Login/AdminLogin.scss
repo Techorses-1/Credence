@@ -1,0 +1,146 @@
+// AdminLogin.scss
+
+.admin-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  &__card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    h2 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 32px;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      border: 2px solid #eef1f5;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: #fafbfc;
+      color: #333;
+
+      &::placeholder {
+        color: #a0a6b1;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #4a6cf7;
+        background-color: white;
+        box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+      }
+
+      &:hover {
+        border-color: #d0d7e2;
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #4a6cf7 0%, #3a56d4 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #3a56d4 0%, #2c46c1 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 7px 20px rgba(74, 108, 247, 0.25);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        background: #a0a6b1;
+        cursor: not-allowed;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .admin-login {
+    padding: 15px;
+    background: white;
+
+    &__card {
+      padding: 30px 25px;
+      box-shadow: none;
+      border: 1px solid #eee;
+
+      &:hover {
+        transform: none;
+        box-shadow: none;
+      }
+
+      h2 {
+        font-size: 24px;
+        margin-bottom: 28px;
+      }
+
+      input {
+        padding: 14px 18px;
+        font-size: 15px;
+      }
+
+      button {
+        padding: 16px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Tablet responsiveness
+@media (min-width: 481px) and (max-width: 768px) {
+  .admin-login {
+    &__card {
+      max-width: 380px;
+      padding: 35px;
+    }
+  }
+}
+
+// Small height devices
+@media (max-height: 600px) {
+  .admin-login {
+    align-items: flex-start;
+    padding-top: 40px;
+    min-height: 100vh;
+  }
+}

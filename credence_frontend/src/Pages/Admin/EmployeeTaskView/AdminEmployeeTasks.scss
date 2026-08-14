@@ -1,0 +1,532 @@
+.admin-employee-tasks-module {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  min-height: calc(100vh - 120px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  font-family: 'Poppins', sans-serif;
+
+  /* ================= MAIN LAYOUT ================= */
+  display: flex;
+  gap: 24px;
+
+  /* ================= SIDEBAR ================= */
+  .admin-tasks-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .admin-sidebar-header {
+      padding: 20px;
+      border-bottom: 2px solid #e5e7eb;
+      background: rgba(124, 214, 75, 0.08);
+
+      h3 {
+        margin: 0 0 8px 0;
+        color: #000000;
+        font-size: 18px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .admin-total-employees {
+        background: #7cd64b;
+        color: #000;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        display: inline-block;
+      }
+    }
+
+    .admin-employee-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+      }
+
+      .admin-employee-item {
+        padding: 15px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: rgba(124, 214, 75, 0.1);
+          border-color: #7cd64b;
+          transform: translateX(5px);
+        }
+
+        &.admin-active {
+          background: rgba(124, 214, 75, 0.15);
+          border-color: #7cd64b;
+          box-shadow: 0 4px 12px rgba(124, 214, 75, 0.1);
+          position: relative;
+
+          &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #7cd64b;
+            border-radius: 4px 0 0 4px;
+          }
+        }
+
+        .admin-employee-name {
+          font-size: 14px;
+          font-weight: 600;
+          color: #000;
+          margin-bottom: 4px;
+        }
+
+        .admin-employee-email {
+          font-size: 12px;
+          color: #666;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+
+  /* ================= MAIN CONTENT ================= */
+  .admin-tasks-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    .admin-content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+
+      h2 {
+        margin: 0;
+        color: #000000;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+      }
+
+      .admin-header-actions {
+        .admin-refresh-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 18px;
+          background: #f8f9fa;
+          border: 1px solid #e5e7eb;
+          border-radius: 8px;
+          color: #333333;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover:not(:disabled) {
+            background: #7cd64b;
+            color: #ffffff;
+            border-color: #7cd64b;
+            transform: translateY(-1px);
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+
+    /* ================= EMPLOYEE INFO ================= */
+    .admin-employee-info {
+      background: rgba(124, 214, 75, 0.08);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(124, 214, 75, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        margin: 0;
+        color: #000;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .admin-assignment-count {
+        background: #7cd64b;
+        color: #000;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+    }
+
+    /* ================= LOADING & ERROR ================= */
+    .admin-loading-spinner,
+    .admin-error-message,
+    .admin-no-data {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+      font-size: 16px;
+      color: #666;
+    }
+
+    .admin-error-message {
+      color: #ef4444;
+      font-weight: 500;
+    }
+
+    .admin-no-data {
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 1px dashed #e5e7eb;
+    }
+
+    /* ================= TABLE CONTAINER ================= */
+    .admin-assignments-container {
+      flex: 1;
+      overflow-y: auto;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+      }
+    }
+
+    /* ================= TABLE STYLING ================= */
+    .admin-assignments-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 800px;
+
+      thead {
+        background: rgba(124, 214, 75, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+
+        tr {
+          th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: #000000;
+            border-bottom: 2px solid #e5e7eb;
+            white-space: nowrap;
+            position: relative;
+
+            &:not(:last-child)::after {
+              content: "";
+              position: absolute;
+              right: 0;
+              top: 20%;
+              height: 60%;
+              width: 1px;
+              background: #e5e7eb;
+            }
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          transition: background-color 0.2s ease;
+
+          &:nth-child(even) {
+            background: #fafafa;
+          }
+
+          &:hover {
+            background: rgba(124, 214, 75, 0.04);
+          }
+
+          td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #333333;
+            font-size: 14px;
+            vertical-align: middle;
+
+            &:first-child {
+              border-left: 4px solid transparent;
+            }
+
+            &.admin-client-name {
+              font-weight: 600;
+              color: #000;
+            }
+
+            &.admin-month-year {
+              color: #5a9e30;
+              font-weight: 600;
+            }
+
+            &.admin-task {
+              .admin-task-badge {
+                background: rgba(124, 214, 75, 0.1);
+                color: #5a9e30;
+                padding: 4px 10px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+                display: inline-block;
+              }
+            }
+
+            &.admin-status {
+              .admin-status-badge {
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 0.3px;
+                text-transform: uppercase;
+
+                &.admin-done {
+                  background: rgba(16, 185, 129, 0.1);
+                  color: #065f46;
+                  border: 1px solid rgba(16, 185, 129, 0.2);
+                }
+
+                &.admin-pending {
+                  background: rgba(245, 158, 11, 0.1);
+                  color: #92400e;
+                  border: 1px solid rgba(245, 158, 11, 0.2);
+                }
+              }
+            }
+
+            &.admin-assigned-date,
+            &.admin-completed-date {
+              color: #666;
+              font-size: 13px;
+            }
+
+            &.admin-assigned-by {
+              font-weight: 500;
+              color: #333;
+            }
+          }
+
+          &:last-child td {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .admin-employee-tasks-module {
+    flex-direction: column;
+    gap: 20px;
+
+    .admin-tasks-sidebar {
+      width: 100%;
+      max-height: 300px;
+
+      .admin-employee-list {
+        .admin-employee-item {
+          padding: 12px;
+        }
+      }
+    }
+
+    .admin-tasks-main {
+      .admin-content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+
+        .admin-header-actions {
+          align-self: stretch;
+
+          .admin-refresh-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      }
+
+      .admin-assignments-container {
+        overflow-x: auto;
+
+        .admin-assignments-table {
+          min-width: 1000px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-employee-tasks-module {
+    padding: 16px;
+    margin: 10px;
+
+    .admin-tasks-sidebar {
+      .admin-sidebar-header {
+        padding: 15px;
+
+        h3 {
+          font-size: 16px;
+        }
+      }
+
+      .admin-employee-list {
+        .admin-employee-item {
+          margin-bottom: 8px;
+
+          .admin-employee-name {
+            font-size: 13px;
+          }
+
+          .admin-employee-email {
+            font-size: 11px;
+          }
+        }
+      }
+    }
+
+    .admin-tasks-main {
+      .admin-content-header {
+        h2 {
+          font-size: 20px;
+        }
+      }
+
+      .admin-employee-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 15px;
+
+        h3 {
+          font-size: 18px;
+        }
+
+        .admin-assignment-count {
+          align-self: flex-start;
+        }
+      }
+
+      .admin-assignments-table {
+        thead tr th,
+        tbody tr td {
+          padding: 12px 15px;
+          font-size: 13px;
+        }
+
+        tbody tr td {
+          &.admin-status .admin-status-badge {
+            padding: 4px 10px;
+            font-size: 11px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-employee-tasks-module {
+    padding: 12px;
+    margin: 8px;
+
+    .admin-tasks-main {
+      .admin-content-header {
+        h2 {
+          font-size: 18px;
+        }
+      }
+
+      .admin-employee-info {
+        padding: 12px;
+
+        h3 {
+          font-size: 16px;
+        }
+
+        .admin-assignment-count {
+          padding: 6px 12px;
+          font-size: 12px;
+        }
+      }
+
+      .admin-assignments-table {
+        min-width: 600px;
+
+        thead tr th,
+        tbody tr td {
+          padding: 10px 12px;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes admin-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

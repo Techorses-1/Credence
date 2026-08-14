@@ -1,0 +1,252 @@
+// ===== FONT IMPORTS =====
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+  font-family: "LightHeading";
+  src: url("../../../assets/fonts/cy-grotesk-wide-light.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Heading";
+  src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+// ===== ANIMATION PREPARATION =====
+.cta-credence-section,
+.cc-container,
+.cc-heading,
+.cc-text,
+.cc-button,
+.cc-shape {
+  will-change: transform, opacity;
+}
+
+// ===== MAIN SECTION =====
+.cta-credence-section {
+  position: relative;
+  background: #ffffff;
+  padding: 40px 20px 50px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 40px 16px;
+  }
+}
+
+// ===== CONTAINER =====
+.cc-container {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+// ===== HEADING =====
+.cc-heading {
+  font-family: "Heading", sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+
+  // --- NEW: line parts & mobile break ---
+  .line-part {
+    display: inline;      // keep parts on same line on desktop
+    white-space: nowrap;  // prevent wrapping inside each part
+  }
+
+  .mobile-break {
+    display: none;        // hide <br> on desktop
+  }
+
+  @media (max-width: 768px) {
+    font-size: 31px;
+    line-height: 0.7;
+
+    .line-part {
+      display: block;     // each part on its own line on mobile
+      white-space: normal;
+    }
+
+    .mobile-break {
+      display: block;     // show <br> (optional, but safe)
+    }
+  }
+}
+
+.cc-black {
+  color: #000;
+  display: inline-block;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: #7cd64b;
+  }
+}
+
+.cc-green {
+  color: #7cd64b;
+  display: inline-block;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    text-shadow: 0 0 10px rgba(124, 214, 75, 0.5);
+    transform: scale(1.2);
+  }
+}
+
+// ===== TEXT =====
+.cc-text {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+  margin-bottom: 35px;
+  color: #000;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+    line-height: 1.6;
+    
+    br {
+      display: none;
+    }
+  }
+  
+  &:hover {
+    background: rgba(124, 214, 75, 0.05);
+  }
+}
+
+// ===== BUTTON =====
+.cc-button {
+  background: #7cd64b;
+  color: #000;
+  border: 1px solid black;
+  padding: 14px 36px;
+  border-radius: 40px;
+  font-family: "Arimo", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: block;
+  margin: 0 auto;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+  
+  &:hover {
+    background: #6ac94c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+    
+    &::after {
+      width: 300px;
+      height: 300px;
+    }
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px 28px;
+    font-size: 14px;
+  }
+}
+
+// ===== DECORATIVE SHAPES =====
+.cc-shape {
+  position: absolute;
+  width: 120px;
+  height: 240px;
+  border-radius: 100px;
+  opacity: 0.1;
+  z-index: 1;
+  transition: all 0.3s ease;
+  display: none;
+  
+  &:hover {
+    opacity: 0.15;
+  }
+}
+
+.cc-left {
+  left: -60px;
+  top: 100px;
+  background: radial-gradient(circle, #7cd64b, transparent 70%);
+
+  @media (max-width: 768px) {
+    left: -80px;
+    width: 80px;
+    height: 160px;
+    opacity: 0.05;
+  }
+}
+
+.cc-right {
+  right: -60px;
+  bottom: 60px;
+  background: radial-gradient(circle, #7cd64b, transparent 70%);
+
+  @media (max-width: 768px) {
+    right: -80px;
+    width: 80px;
+    height: 160px;
+    opacity: 0.05;
+  }
+}
+
+// ===== ANIMATION KEYFRAMES =====
+@keyframes floatShape {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulseShape {
+  0%, 100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+.cc-left {
+  animation: pulseShape 4s ease-in-out infinite;
+}
+
+.cc-right {
+  animation: pulseShape 4s ease-in-out infinite 0.5s;
+}
+
+.cc-left:hover,
+.cc-right:hover {
+  animation: floatShape 2s ease-in-out infinite;
+}

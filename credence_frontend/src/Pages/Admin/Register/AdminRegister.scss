@@ -1,0 +1,44 @@
+.admin-register {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef2f7;
+
+  &__card {
+    width: 380px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #047857;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

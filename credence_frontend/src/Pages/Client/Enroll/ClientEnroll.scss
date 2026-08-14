@@ -1,0 +1,19 @@
+.client-enroll {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__card {
+    width: 380px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+  }
+
+  input {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 10px;
+  }
+}

@@ -1,0 +1,497 @@
+// ===== FONT IMPORTS =====
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "LightHeading";
+    src: url("../../../assets/fonts/cy-grotesk-wide-light.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+// ===== HEADER SECTION WITH NAVBAR =====
+.notfound-header-section {
+    min-height: auto;
+    padding: 24px 24px 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+// ===== NAVBAR STYLES =====
+.notfound-navbar-wrapper {
+    display: flex;
+    justify-content: center;
+    z-index: 3;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.notfound-navbar {
+    width: 75%;
+    background: transparent;
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 3;
+
+    .notfound-nav-link {
+        color: #1a1a1a;
+        font-size: 19.5px;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 7px 22px !important;
+        border-radius: 50px !important;
+        background: #ffffff !important;
+        border: 2px solid #7cd64b !important;
+
+        &:hover {
+            background: #7cd64b !important;
+            color: #ffffff !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+        }
+    }
+
+    .notfound-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .notfound-logo-image {
+        height: 130px;
+        width: auto;
+        object-fit: contain;
+    }
+}
+
+// ===== 404 CONTENT SECTION =====
+.notfound-content {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f5f5;
+    position: relative;
+    overflow: hidden;
+    padding: 40px 20px 80px;
+
+    @media (max-width: 768px) {
+        min-height: calc(100vh - 150px);
+        padding: 20px 16px 60px;
+    }
+}
+
+.notfound-container {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+// ===== 404 NUMBER =====
+.notfound-number {
+    font-family: "Heading", sans-serif;
+    font-size: 180px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    .notfound-4 {
+        color: #333;
+        text-shadow: 4px 4px 0 rgba(108, 194, 74, 0.3);
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .notfound-0 {
+        color: #6cc24a;
+        text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+        display: inline-block;
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(108, 194, 74, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+    }
+
+    @media (max-width: 768px) {
+        font-size: 120px;
+        
+        .notfound-0::before {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        font-size: 80px;
+        
+        .notfound-0::before {
+            width: 70px;
+            height: 70px;
+        }
+    }
+}
+
+// ===== HEADING =====
+.notfound-heading {
+    font-family: "Heading", sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 15px;
+
+    @media (max-width: 768px) {
+        font-size: 32px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 26px;
+    }
+}
+
+// ===== SUBTITLE =====
+.notfound-subtitle {
+    font-family: "Arimo", sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 30px;
+
+    @media (max-width: 768px) {
+        font-size: 16px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 14px;
+    }
+}
+
+// ===== ANIMATED LINE =====
+.notfound-line {
+    width: 100px;
+    height: 3px;
+    background: #6cc24a;
+    margin: 0 auto 30px;
+    transform-origin: center;
+}
+
+// ===== QUICK LINKS =====
+.notfound-quick-links {
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 30px;
+
+    span {
+        font-weight: 600;
+        margin-right: 10px;
+    }
+
+    a {
+        color: #666;
+        text-decoration: none;
+        margin: 0 10px;
+        padding: 5px 10px;
+        transition: all 0.3s ease;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #6cc24a;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        &:hover {
+            color: #6cc24a;
+            
+            &::after {
+                transform: scaleX(1);
+                transform-origin: left;
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        font-size: 14px;
+        
+        span {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        a {
+            display: inline-block;
+            margin: 5px;
+        }
+    }
+}
+
+// ===== BUTTONS =====
+.notfound-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 20px;
+    }
+}
+
+.notfound-btn {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 30px;
+    font-family: "Arimo", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &-primary {
+        background: #6cc24a;
+        color: #000;
+        border: 2px solid #6cc24a;
+
+        &:hover {
+            background: transparent;
+            color: #6cc24a;
+            box-shadow: 0 4px 12px rgba(108, 194, 74, 0.3);
+        }
+    }
+
+    &-secondary {
+        background: transparent;
+        color: #6cc24a;
+        border: 2px solid #6cc24a;
+
+        &:hover {
+            background: #6cc24a;
+            color: #000;
+            box-shadow: 0 4px 12px rgba(108, 194, 74, 0.3);
+        }
+    }
+
+    @media (max-width: 480px) {
+        padding: 12px 24px;
+        font-size: 14px;
+        width: 100%;
+    }
+}
+
+// ===== FUN FACT =====
+.notfound-fun-fact {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: rgba(108, 194, 74, 0.1);
+    border-radius: 50px;
+    font-family: "Arimo", sans-serif;
+    font-size: 14px;
+    color: #666;
+    border: 1px dashed #6cc24a;
+
+    .notfound-fun-icon {
+        font-size: 18px;
+    }
+
+    @media (max-width: 480px) {
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+}
+
+// ===== DECORATION CIRCLES =====
+.notfound-decor-left,
+.notfound-decor-right {
+    position: absolute;
+    width: 250px;
+    height: 500px;
+    border-radius: 100px;
+    opacity: 0.15;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.notfound-decor-left {
+    left: -100px;
+    top: 20%;
+    transform: rotate(15deg);
+    background: radial-gradient(circle, #6cc24a, transparent 70%);
+
+    @media (max-width: 768px) {
+        left: -120px;
+        width: 200px;
+        height: 400px;
+    }
+}
+
+.notfound-decor-right {
+    right: -100px;
+    bottom: 20%;
+    transform: rotate(-15deg);
+    background: radial-gradient(circle, #6cc24a, transparent 70%);
+
+    @media (max-width: 768px) {
+        right: -120px;
+        width: 200px;
+        height: 400px;
+    }
+}
+
+// ===== FLOATING EMOJIS =====
+.notfound-float-item {
+    position: absolute;
+    font-size: 40px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 1;
+    animation: gentleFloat 3s ease-in-out infinite;
+    
+    @media (max-width: 768px) {
+        font-size: 30px;
+    }
+    
+    @media (max-width: 480px) {
+        display: none; // Hide on mobile to prevent clutter
+    }
+}
+
+// ===== ANIMATIONS =====
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.2;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0.3;
+    }
+}
+
+@keyframes gentleFloat {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate(5px, -5px) rotate(5deg);
+    }
+    66% {
+        transform: translate(-5px, 5px) rotate(-5deg);
+    }
+}
+
+// ===== MOBILE RESPONSIVE =====
+@media (max-width: 768px) {
+    .notfound-header-section {
+        padding: 16px 16px 0;
+    }
+
+    .notfound-navbar-wrapper {
+        margin-bottom: 10px;
+    }
+
+    .notfound-navbar {
+        width: 100%;
+        padding: 10px 18px;
+
+        .notfound-nav-link {
+            font-size: 14px;
+            max-width: 70px;
+            width: 100%;
+            text-align: center;
+            padding: 7px 12px !important;
+
+            .enroll-text {
+                display: none;
+            }
+
+            &:first-child::before {
+                content: "Enroll";
+                font-size: 14px;
+                font-weight: 500;
+            }
+        }
+
+        .notfound-logo-image {
+            height: 50px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .notfound-navbar {
+        .notfound-nav-link {
+            font-size: 13px;
+            max-width: 65px;
+        }
+
+        .notfound-logo-image {
+            height: 40px;
+        }
+    }
+}
+
+// ===== PRINT STYLES =====
+@media print {
+    .notfound-content {
+        background: white;
+    }
+
+    .notfound-decor-left,
+    .notfound-decor-right,
+    .notfound-header-section,
+    .notfound-float-item {
+        display: none;
+    }
+}

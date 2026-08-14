@@ -1,0 +1,426 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.consent-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    padding: 16px;
+    backdrop-filter: blur(6px);
+    animation: consentFadeIn 0.25s ease;
+
+    .consent-modal {
+        background: #ffffff;
+        border-radius: 20px;
+        max-width: 560px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+        animation: consentSlideUp 0.3s ease;
+        font-family: 'Poppins', sans-serif;
+
+        // ============================================
+        // HEADER
+        // ============================================
+        .consent-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 24px 28px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            background: linear-gradient(135deg, rgba(124, 214, 75, 0.08), rgba(124, 214, 75, 0.03));
+            border-radius: 20px 20px 0 0;
+
+            .consent-header-icon {
+                width: 52px;
+                height: 52px;
+                border-radius: 14px;
+                background: rgba(124, 214, 75, 0.15);
+                border: 2px solid rgba(124, 214, 75, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #7cd64b;
+                flex-shrink: 0;
+            }
+
+            .consent-header-text {
+                h2 {
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: #000;
+                    margin: 0 0 4px 0;
+                }
+
+                p {
+                    font-size: 13px;
+                    color: #6b7280;
+                    margin: 0;
+                }
+            }
+        }
+
+        // ============================================
+        // ALERT BANNER
+        // ============================================
+        .consent-alert-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 16px 28px 0;
+            padding: 12px 16px;
+            background: rgba(255, 165, 0, 0.08);
+            border: 1px solid rgba(255, 165, 0, 0.25);
+            border-radius: 10px;
+            color: #92400e;
+            font-size: 13px;
+            line-height: 1.5;
+
+            svg {
+                flex-shrink: 0;
+                margin-top: 1px;
+                color: #f59e0b;
+            }
+        }
+
+        // ============================================
+        // BODY
+        // ============================================
+        .consent-modal-body {
+            padding: 20px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            // STEP
+            .consent-step {
+                display: flex;
+                gap: 16px;
+                padding: 20px;
+                background: #f9fafb;
+                border-radius: 14px;
+                border: 2px solid #e5e7eb;
+                transition: all 0.3s;
+
+                &.done {
+                    background: rgba(124, 214, 75, 0.05);
+                    border-color: rgba(124, 214, 75, 0.4);
+                }
+
+                &.disabled {
+                    opacity: 0.55;
+                    pointer-events: none;
+                }
+
+                .consent-step-number {
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: #e5e7eb;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 700;
+                    font-size: 14px;
+                    color: #6b7280;
+                    flex-shrink: 0;
+                    transition: all 0.3s;
+
+                    svg {
+                        color: #7cd64b;
+                    }
+                }
+
+                &.done .consent-step-number {
+                    background: rgba(124, 214, 75, 0.15);
+                    color: #7cd64b;
+                }
+
+                .consent-step-content {
+                    flex: 1;
+                    min-width: 0;
+
+                    h4 {
+                        font-size: 15px;
+                        font-weight: 600;
+                        color: #000;
+                        margin: 0 0 6px 0;
+                    }
+
+                    p {
+                        font-size: 13px;
+                        color: #6b7280;
+                        margin: 0 0 14px 0;
+                        line-height: 1.5;
+                    }
+
+                    // DOWNLOAD BUTTON
+                    .consent-download-btn {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                        padding: 10px 20px;
+                        background: #7cd64b;
+                        color: #000;
+                        border: none;
+                        border-radius: 10px;
+                        font-size: 13px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                        font-family: 'Poppins', sans-serif;
+
+                        &:hover:not(:disabled) {
+                            background: #9ce76a;
+                            transform: translateY(-2px);
+                            box-shadow: 0 6px 16px rgba(124, 214, 75, 0.35);
+                        }
+
+                        &:disabled {
+                            opacity: 0.6;
+                            cursor: not-allowed;
+                            transform: none;
+                        }
+
+                        &.downloaded {
+                            background: rgba(124, 214, 75, 0.15);
+                            color: #166534;
+                            border: 1px solid rgba(124, 214, 75, 0.4);
+
+                            &:hover {
+                                background: rgba(124, 214, 75, 0.2);
+                                transform: none;
+                                box-shadow: none;
+                            }
+                        }
+
+                        &.loading {
+                            background: #d1fae5;
+                            color: #065f46;
+                            cursor: not-allowed;
+                        }
+                    }
+
+                    // CHECKBOX ROW
+                    .consent-checkbox-row {
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 12px;
+                        cursor: pointer;
+                        padding: 12px;
+                        border-radius: 10px;
+                        border: 2px solid #e5e7eb;
+                        background: white;
+                        transition: all 0.2s;
+                        user-select: none;
+
+                        &:hover:not(.locked) {
+                            border-color: #7cd64b;
+                            background: rgba(124, 214, 75, 0.03);
+                        }
+
+                        &.locked {
+                            cursor: not-allowed;
+                            opacity: 0.6;
+                        }
+
+                        .consent-checkbox {
+                            width: 22px;
+                            height: 22px;
+                            border-radius: 6px;
+                            border: 2px solid #d1d5db;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-shrink: 0;
+                            margin-top: 1px;
+                            transition: all 0.2s;
+
+                            &.checked {
+                                background: #7cd64b;
+                                border-color: #7cd64b;
+                                color: #000;
+                            }
+                        }
+
+                        label {
+                            font-size: 13px;
+                            color: #374151;
+                            line-height: 1.6;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .consent-locked-hint {
+                        margin: 8px 0 0 0 !important;
+                        font-size: 12px !important;
+                        color: #9ca3af !important;
+                        font-style: italic;
+                    }
+                }
+            }
+        }
+
+        // ============================================
+        // FOOTER
+        // ============================================
+        .consent-modal-footer {
+            padding: 16px 28px 24px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+
+            .consent-submit-btn {
+                width: 100%;
+                padding: 14px 28px;
+                background: #7cd64b;
+                color: #000;
+                border: none;
+                border-radius: 12px;
+                font-size: 15px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.3s;
+                font-family: 'Poppins', sans-serif;
+
+                &:hover:not(.disabled) {
+                    background: #9ce76a;
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 20px rgba(124, 214, 75, 0.4);
+                }
+
+                &.disabled {
+                    opacity: 0.45;
+                    cursor: not-allowed;
+                    transform: none;
+                    box-shadow: none;
+                }
+            }
+
+            .consent-footer-note {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                color: #9ca3af;
+                margin: 0;
+                text-align: center;
+
+                svg {
+                    flex-shrink: 0;
+                    color: #7cd64b;
+                }
+            }
+        }
+
+        // SCROLLBAR
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: rgba(124, 214, 75, 0.05);
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #7cd64b;
+            border-radius: 10px;
+        }
+    }
+}
+
+// ============================================
+// ANIMATIONS
+// ============================================
+@keyframes consentFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes consentSlideUp {
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+// ============================================
+// RESPONSIVE
+// ============================================
+@media (max-width: 600px) {
+    .consent-modal-overlay {
+        padding: 12px;
+        align-items: flex-end;
+
+        .consent-modal {
+            border-radius: 20px 20px 0 0;
+            max-height: 95vh;
+
+            .consent-modal-header {
+                padding: 20px;
+            }
+
+            .consent-alert-banner {
+                margin: 12px 20px 0;
+            }
+
+            .consent-modal-body {
+                padding: 16px 20px;
+
+                .consent-step {
+                    flex-direction: column;
+                    gap: 12px;
+
+                    .consent-step-number {
+                        width: 28px;
+                        height: 28px;
+                        font-size: 13px;
+                    }
+                }
+            }
+
+            .consent-modal-footer {
+                padding: 14px 20px 20px;
+            }
+        }
+    }
+}
+
+
+// Add this at the END of your ConsentUpdateModal.scss file
+
+// ============================================
+// FIX: TOAST ABOVE MODAL
+// ============================================
+.Toastify__toast-container {
+    z-index: 100000 !important;
+}
+
+.consent-modal-overlay {
+    z-index: 99999 !important;
+}
+
+.Toastify__toast {
+    z-index: 100001 !important;
+    border-radius: 12px !important;
+    font-family: 'Poppins', sans-serif !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+.Toastify__toast-container--top-center {
+    top: 1em !important;
+}

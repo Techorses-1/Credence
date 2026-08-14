@@ -1,0 +1,487 @@
+// Theme Variables - Using our unified color scheme
+:root {
+  --sidebar-bg: #000000;
+  --sidebar-active-bg: #7cd64b;
+  --sidebar-active-text: #000000;
+  --sidebar-inactive-text: #ffffff;
+  --sidebar-hover-text: #ffffff;
+  --page-bg: #ffffff;
+  --nav-bg: #111111;
+  --text-color: #ffffff;
+  --red: #ff4b4b;
+  --green: #7cd64b;
+}
+
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ---------- EMPLOYEE LAYOUT CONTAINER ---------- */
+.employee-layout-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--page-bg);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ---------- EMPLOYEE SIDEBAR ---------- */
+#employee-sidebar {
+  width: 220px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid #333333;
+  transition: width 0.3s ease, transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  box-shadow: 0 0 30px rgba(124, 214, 75, 0.05);
+}
+
+#employee-sidebar.hide {
+  width: 60px;
+}
+
+/* logo */
+#employee-sidebar .employee-logo {
+  padding: 15px 15px 20px;
+  border-bottom: 1px solid #333333;
+}
+
+.employee-logoBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+}
+
+.employee-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--green);
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  
+  svg {
+    background: rgba(124, 214, 75, 0.2);
+    padding: 6px;
+    border-radius: 8px;
+  }
+}
+
+#employee-sidebar.hide .employee-sidebar-logo span {
+  display: none;
+}
+
+.employee-menuIconHidden {
+  color: var(--green);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  
+  &:hover {
+    color: #9ce76a;
+    transform: scale(1.1);
+  }
+}
+
+/* ---------- EMPLOYEE MENU LIST ---------- */
+#employee-sidebar .employee-side-menu {
+  list-style: none;
+  padding: 15px 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) transparent;
+}
+
+#employee-sidebar .employee-side-menu::-webkit-scrollbar {
+  width: 4px;
+}
+
+#employee-sidebar .employee-side-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#employee-sidebar .employee-side-menu::-webkit-scrollbar-thumb {
+  background: var(--green);
+  border-radius: 10px;
+}
+
+#employee-sidebar .employee-side-menu li {
+  margin: 4px 10px;
+  position: relative;
+}
+
+#employee-sidebar .employee-side-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+#employee-sidebar .employee-side-menu li a:hover {
+  color: var(--sidebar-hover-text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#employee-sidebar .employee-side-menu li a svg {
+  font-size: 18px;
+  flex-shrink: 0;
+  color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+#employee-sidebar .employee-side-menu li a:hover svg {
+  color: var(--green);
+}
+
+/* Center icons when sidebar is collapsed */
+#employee-sidebar.hide .employee-side-menu li a {
+  justify-content: center;
+  padding: 10px;
+}
+
+#employee-sidebar.hide .employee-side-menu li a .employee-menu-title {
+  display: none;
+}
+
+/* ---------- ACTIVE STYLE ---------- */
+/* Expanded sidebar active style */
+#employee-sidebar:not(.hide) .employee-side-menu li.active a,
+#employee-sidebar:not(.hide) .employee-side-menu li a.active {
+  background: var(--green);
+  color: #000000;
+  font-weight: 600;
+}
+
+#employee-sidebar:not(.hide) .employee-side-menu li.active a svg,
+#employee-sidebar:not(.hide) .employee-side-menu li a.active svg {
+  background: #000000;
+  color: var(--green);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+/* Collapsed sidebar active style */
+#employee-sidebar.hide .employee-side-menu li.active a svg,
+#employee-sidebar.hide .employee-side-menu li a.active svg {
+  background: var(--green);
+  color: #000000;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+/* ---------- MAIN CONTENT AREA ---------- */
+#employee-main-content {
+  flex: 1;
+  margin-left: 220px;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+#employee-main-content.expanded {
+  margin-left: 60px;
+}
+
+/* ---------- TOP NAVBAR ---------- */
+.employee-top-nav {
+  height: 60px;
+  background: var(--nav-bg);
+  padding: 0 20px 0 40px;
+  width: 92%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  margin: 0 auto;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.employee-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.employee-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.employee-menuIcon {
+  cursor: pointer;
+  color: var(--green);
+  font-size: 20px;
+  display: none;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #9ce76a;
+    transform: scale(1.1);
+  }
+}
+
+/* ---------- EMPLOYEE PAGE TITLE ---------- */
+.employee-page-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--green);
+  margin: 0;
+  letter-spacing: 0.3px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ---------- PROFILE SECTION ---------- */
+.employee-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.employee-profile-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(124, 214, 75, 0.15);
+  color: var(--green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  border: 1px solid rgba(124, 214, 75, 0.3);
+}
+
+/* Icon-buttons */
+.employee-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--green);
+  color: #000000;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.employee-icon-button:hover {
+  background: #9ce76a;
+  transform: scale(1.05);
+}
+
+/* ---------- LOGOUT BUTTON ---------- */
+.employee-logout-menu-item {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.employee-sidebar-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: var(--red);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  background: rgba(255, 75, 75, 0.06);
+  border: 1px solid rgba(255, 75, 75, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.employee-sidebar-logout-btn:hover {
+  background: rgba(255, 75, 75, 0.12);
+}
+
+.employee-sidebar-logout-btn svg {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+#employee-sidebar.hide .employee-sidebar-logout-btn {
+  justify-content: center;
+  padding: 8px;
+}
+
+#employee-sidebar.hide .employee-sidebar-logout-btn span {
+  display: none;
+}
+
+/* ---------- PAGE CONTENT ---------- */
+.employee-page-content {
+  padding: 20px;
+  min-height: calc(100vh - 60px);
+  background: var(--page-bg);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Loading state */
+.employee-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--page-bg);
+  color: var(--green);
+  font-family: 'Poppins', sans-serif;
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(124, 214, 75, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--green);
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- EMPLOYEE SIDEBAR FOOTER ---------- */
+.employee-sidebar-footer {
+  padding: 12px 10px;
+  border-top: 1px solid #333333;
+  text-align: center;
+  font-size: 11px;
+  color: #888888;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.4;
+}
+
+.employee-footer-link {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.employee-footer-link:hover {
+  color: #9ce76a;
+  text-decoration: underline;
+}
+
+/* Hide footer text when sidebar collapsed */
+#employee-sidebar.hide .employee-sidebar-footer span,
+#employee-sidebar.hide .employee-footer-link {
+  display: none;
+}
+
+/* Dot indicator when collapsed */
+#employee-sidebar.hide .employee-sidebar-footer::after {
+  content: "•";
+  color: var(--green);
+  font-size: 16px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  #employee-sidebar {
+    width: 250px;
+    transform: translateX(-100%);
+  }
+
+  #employee-sidebar:not(.hide) {
+    transform: translateX(0);
+  }
+
+  #employee-main-content {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .employee-menuIcon {
+    display: block;
+  }
+
+  /* Adjust top nav for mobile */
+  .employee-top-nav {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    padding: 0 15px;
+  }
+
+  .employee-page-title {
+    font-size: 16px;
+  }
+
+  .employee-page-content {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .employee-top-nav {
+    padding: 0 12px;
+    height: 55px;
+  }
+
+  .employee-nav-left {
+    gap: 10px;
+  }
+
+  .employee-page-title {
+    font-size: 15px;
+  }
+
+  .employee-page-content {
+    padding: 12px;
+    width: 100%;
+  }
+
+  .employee-profile {
+    gap: 8px;
+  }
+
+  .employee-profile-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .employee-icon-button {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}

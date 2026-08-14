@@ -1,0 +1,1887 @@
+const express = require("express");
+const mongoose = require("mongoose");
+const auth = require("../middleware/authMiddleware");
+
+const Client = require("../models/Client");
+const Employee = require("../models/Employee");
+const ActivityLog = require("../models/ActivityLog");
+
+const router = express.Router();
+
+// Console logging
+const logToConsole = (type, operation, data) => {
+  const timestamp = new Date().toLocaleString("en-IN", {
+    timeZone: "Europe/Helsinki"
+  });
+  console.log(`[${timestamp}] ${type}: ${operation}`, data ? JSON.stringify(data, null, 2) : '');
+};
+
+/* ===============================
+   HELPER: GET MONTH RANGE BASED ON FILTER
+================================ */
+const getMonthRange = (timeFilter, customStart = null, customEnd = null) => {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+
+  let months = [];
+
+  switch (timeFilter) {
+    case 'this_month':
+      months = [{ year: currentYear, month: currentMonth }];
+      break;
+
+    case 'last_month':
+      let lastYear = currentYear;
+      let lastMonth = currentMonth - 1;
+      if (lastMonth === 0) {
+        lastMonth = 12;
+        lastYear = currentYear - 1;
+      }
+      months = [{ year: lastYear, month: lastMonth }];
+      break;
+
+    case 'last_3_months':
+      for (let i = 0; i < 3; i++) {
+        let year = currentYear;
+        let month = currentMonth - i;
+        if (month <= 0) {
+          month += 12;
+          year -= 1;
+        }
+        months.push({ year, month });
+      }
+      break;
+
+    case 'custom':
+      if (customStart && customEnd) {
+        const start = new Date(customStart);
+        const end = new Date(customEnd);
+
+        const current = new Date(start.getFullYear(), start.getMonth(), 1);
+        const last = new Date(end.getFullYear(), end.getMonth(), 1);
+
+        while (current <= last) {
+          months.push({
+            year: current.getFullYear(),
+            month: current.getMonth() + 1
+          });
+          current.setMonth(current.getMonth() + 1);
+        }
+      } else {
+        months = [{ year: currentYear, month: currentMonth }];
+      }
+      break;
+
+    default:
+      months = [{ year: currentYear, month: currentMonth }];
+  }
+
+  months.sort((a, b) => {
+    if (a.year !== b.year) return b.year - a.year;
+    return b.month - a.month;
+  });
+
+  return months;
+};
+
+/* ===============================
+   HELPER: GET TASKS ASSIGNED TO EMPLOYEE
+================================ */
+const getEmployeeTasksForMonth = (employeeId, employeeAssignments = [], year, month) => {
+  const allTasks = [
+    { id: 'bookkeeping', name: 'Bookkeeping', required: true },
+    { id: 'vat_computation', name: 'VAT Filing Computation', required: true },
+    { id: 'vat_filing', name: 'VAT Filing', required: true },
+    { id: 'financial_statements', name: 'Financial Statement Generation', required: true }
+  ];
+
+  // Get assignments for this employee and month
+  const monthAssignments = employeeAssignments.filter(assignment =>
+    assignment.year === year &&
+    assignment.month === month &&
+    assignment.employeeId === employeeId &&
+    assignment.isRemoved === false
+  );
+
+  return allTasks.map(task => {
+    const assignment = monthAssignments.find(a => a.task === task.name);
+
+    if (assignment) {
+      return {
+        taskId: task.id,
+        taskName: task.name,
+        status: 'assigned',
+        accountingDone: assignment.accountingDone || false,
+        accountingDoneAt: assignment.accountingDoneAt,
+        accountingDoneBy: assignment.accountingDoneBy,
+        assignedAt: assignment.assignedAt,
+        assignedBy: assignment.assignedBy,
+        adminName: assignment.adminName
+      };
+    }
+
+    return {
+      taskId: task.id,
+      taskName: task.name,
+      status: 'not_assigned',
+      accountingDone: false
+    };
+  });
+};
+
+/* ===============================
+   HELPER: GET NOTES FOR EMPLOYEE WITH VIEW STATUS
+================================ */
+const getEmployeeNotesForMonth = (monthData, employeeId, clientId = null) => {
+  const allNotes = [];
+
+  if (!monthData) {
+    return { total: 0, notes: [], unviewedCount: 0 };
+  }
+
+  // 1. Client notes (month notes + delete reasons) - CHECK VIEW STATUS
+  // Month notes → CLIENT
+  if (monthData.monthNotes && monthData.monthNotes.length > 0) {
+    monthData.monthNotes.forEach(note => {
+      const isUnviewedByEmployee = !note.isViewedByEmployee;
+
+      allNotes.push({
+        type: 'month_note',
+        category: 'General',
+        note: note.note,
+        addedBy: note.addedBy || 'Client',
+        addedAt: note.addedAt,
+        source: 'client',
+        isUnviewedByEmployee,
+        viewedBy: note.viewedBy || [],
+        isViewedByEmployee: note.isViewedByEmployee || false
+      });
+    });
+  }
+
+  // Category notes (delete reasons) → CLIENT
+  ['sales', 'purchase', 'bank'].forEach(category => {
+    const categoryData = monthData[category];
+    if (categoryData && categoryData.categoryNotes && categoryData.categoryNotes.length > 0) {
+      categoryData.categoryNotes.forEach(note => {
+        const isUnviewedByEmployee = !note.isViewedByEmployee;
+
+        allNotes.push({
+          type: 'delete_reason',
+          category: category.charAt(0).toUpperCase() + category.slice(1),
+          note: note.note,
+          addedBy: note.addedBy || 'Client',
+          addedAt: note.addedAt,
+          source: 'client',
+          isUnviewedByEmployee,
+          viewedBy: note.viewedBy || [],
+          isViewedByEmployee: note.isViewedByEmployee || false
+        });
+      });
+    }
+  });
+
+  // 2. File notes → ONLY THIS EMPLOYEE'S NOTES (automatically viewed by them)
+  ['sales', 'purchase', 'bank'].forEach(category => {
+    const categoryData = monthData[category];
+    if (categoryData && categoryData.files) {
+      categoryData.files.forEach(file => {
+        if (file.notes && file.notes.length > 0) {
+          file.notes.forEach(note => {
+            // Only include if note is added by this employee
+            if (note.employeeId === employeeId) {
+              // Employee's own notes are automatically "viewed"
+              allNotes.push({
+                type: 'file_feedback',
+                category: category.charAt(0).toUpperCase() + category.slice(1),
+                fileName: file.fileName,
+                note: note.note,
+                addedBy: note.addedBy || 'You',
+                addedAt: note.addedAt,
+                source: 'employee',
+                isUnviewedByEmployee: false, // Own notes are always viewed
+                viewedBy: note.viewedBy || [],
+                isViewedByEmployee: true
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+  // 3. Other categories
+  if (monthData.other && Array.isArray(monthData.other)) {
+    monthData.other.forEach(otherCat => {
+      if (otherCat.document) {
+        // Category notes → CLIENT
+        if (otherCat.document.categoryNotes && otherCat.document.categoryNotes.length > 0) {
+          otherCat.document.categoryNotes.forEach(note => {
+            const isUnviewedByEmployee = !note.isViewedByEmployee;
+
+            allNotes.push({
+              type: 'delete_reason',
+              category: otherCat.categoryName,
+              note: note.note,
+              addedBy: note.addedBy || 'Client',
+              addedAt: note.addedAt,
+              source: 'client',
+              isUnviewedByEmployee,
+              viewedBy: note.viewedBy || [],
+              isViewedByEmployee: note.isViewedByEmployee || false
+            });
+          });
+        }
+
+        // File notes → ONLY THIS EMPLOYEE'S NOTES
+        if (otherCat.document.files) {
+          otherCat.document.files.forEach(file => {
+            if (file.notes && file.notes.length > 0) {
+              file.notes.forEach(note => {
+                if (note.employeeId === employeeId) {
+                  // Employee's own notes
+                  allNotes.push({
+                    type: 'file_feedback',
+                    category: otherCat.categoryName,
+                    fileName: file.fileName,
+                    note: note.note,
+                    addedBy: note.addedBy || 'You',
+                    addedAt: note.addedAt,
+                    source: 'employee',
+                    isUnviewedByEmployee: false,
+                    viewedBy: note.viewedBy || [],
+                    isViewedByEmployee: true
+                  });
+                }
+              });
+            }
+          });
+        }
+      }
+    });
+  }
+
+  // Sort by date (newest first)
+  allNotes.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+
+  const unviewedCount = allNotes.filter(note => note.isUnviewedByEmployee).length;
+
+  return {
+    total: allNotes.length,
+    notes: allNotes,
+    unviewedCount: unviewedCount
+  };
+};
+
+/* ===============================
+   HELPER: COUNT ALL UNVIEWED CLIENT NOTES FOR EMPLOYEE
+================================ */
+const countUnviewedClientNotesForEmployee = async (employeeId) => {
+  try {
+    // Get all clients assigned to this employee
+    const clients = await Client.find({
+      "employeeAssignments.employeeId": employeeId,
+      "employeeAssignments.isRemoved": false
+    }).lean();
+
+    let totalUnviewed = 0;
+
+    // Iterate through all clients' documents
+    for (const client of clients) {
+      const documents = client.documents || {};
+
+      // Check each year and month
+      for (const year in documents) {
+        if (isNaN(Number(year))) continue;
+
+        const yearData = documents[year];
+        if (!yearData || typeof yearData !== 'object') continue;
+
+        for (const month in yearData) {
+          if (isNaN(Number(month))) continue;
+
+          const monthData = yearData[month];
+          if (!monthData || typeof monthData !== 'object') continue;
+
+          // Check month notes
+          if (monthData.monthNotes && Array.isArray(monthData.monthNotes)) {
+            monthData.monthNotes.forEach(note => {
+              if (note && typeof note === 'object' && !note.isViewedByEmployee) {
+                totalUnviewed++;
+              }
+            });
+          }
+
+          // Check category notes in required categories
+          ['sales', 'purchase', 'bank'].forEach(category => {
+            const categoryData = monthData[category];
+            if (categoryData && categoryData.categoryNotes && Array.isArray(categoryData.categoryNotes)) {
+              categoryData.categoryNotes.forEach(note => {
+                if (note && typeof note === 'object' && !note.isViewedByEmployee) {
+                  totalUnviewed++;
+                }
+              });
+            }
+          });
+
+          // Check other categories
+          if (monthData.other && Array.isArray(monthData.other)) {
+            monthData.other.forEach(otherCat => {
+              if (otherCat && otherCat.document && otherCat.document.categoryNotes &&
+                Array.isArray(otherCat.document.categoryNotes)) {
+                otherCat.document.categoryNotes.forEach(note => {
+                  if (note && typeof note === 'object' && !note.isViewedByEmployee) {
+                    totalUnviewed++;
+                  }
+                });
+              }
+            });
+          }
+        }
+      }
+    }
+
+    return totalUnviewed;
+
+  } catch (error) {
+    logToConsole("ERROR", "COUNT_UNVIEWED_NOTES_FOR_EMPLOYEE_FAILED", {
+      error: error.message,
+      employeeId
+    });
+    return 0;
+  }
+};
+
+/* ===============================
+   HELPER: MARK ALL CLIENT NOTES AS VIEWED BY EMPLOYEE (FIXED)
+================================ */
+const markAllClientNotesAsViewedForEmployee = async (employeeId) => {
+  try {
+    logToConsole("INFO", "MARK_ALL_NOTES_VIEWED_BY_EMPLOYEE_START", {
+      employeeId,
+      timestamp: new Date().toISOString()
+    });
+
+    // Get all clients assigned to this employee
+    const clients = await Client.find({
+      "employeeAssignments.employeeId": employeeId,
+      "employeeAssignments.isRemoved": false
+    });
+
+    let updateCount = 0;
+    const now = new Date();
+    const viewEntry = {
+      userId: employeeId,
+      userType: 'employee',
+      viewedAt: now
+    };
+
+    // Helper function to update a single note
+    const updateNote = (note) => {
+      if (!note || typeof note !== 'object' || note === null) return false;
+      if (!note.note && !note.noteText) return false;
+
+      // Check if already viewed by this employee
+      const alreadyViewed = note.viewedBy?.some(
+        view => view && view.userId === employeeId && view.userType === 'employee'
+      );
+
+      if (!alreadyViewed) {
+        note.viewedBy = note.viewedBy || [];
+        note.viewedBy.push(viewEntry);
+        note.isViewedByEmployee = true;
+        return true;
+      }
+      return false;
+    };
+
+    // Process each client
+    for (const client of clients) {
+      let clientUpdated = false;
+
+      // Convert to plain object to modify
+      const clientObj = client.toObject ? client.toObject() : client;
+      const documents = clientObj.documents || {};
+
+      // Iterate through documents
+      for (const year in documents) {
+        if (isNaN(Number(year))) continue;
+
+        const yearData = documents[year];
+        if (!yearData || typeof yearData !== 'object') continue;
+
+        for (const month in yearData) {
+          if (isNaN(Number(month))) continue;
+
+          const monthData = yearData[month];
+          if (!monthData || typeof monthData !== 'object') continue;
+
+          // Update month notes
+          if (monthData.monthNotes && Array.isArray(monthData.monthNotes)) {
+            monthData.monthNotes.forEach(note => {
+              if (updateNote(note)) {
+                updateCount++;
+                clientUpdated = true;
+              }
+            });
+          }
+
+          // Update category notes in required categories
+          ['sales', 'purchase', 'bank'].forEach(category => {
+            const categoryData = monthData[category];
+            if (categoryData && categoryData.categoryNotes && Array.isArray(categoryData.categoryNotes)) {
+              categoryData.categoryNotes.forEach(note => {
+                if (updateNote(note)) {
+                  updateCount++;
+                  clientUpdated = true;
+                }
+              });
+            }
+          });
+
+          // Update other categories
+          if (monthData.other && Array.isArray(monthData.other)) {
+            monthData.other.forEach(otherCat => {
+              if (otherCat && otherCat.document && otherCat.document.categoryNotes &&
+                Array.isArray(otherCat.document.categoryNotes)) {
+                otherCat.document.categoryNotes.forEach(note => {
+                  if (updateNote(note)) {
+                    updateCount++;
+                    clientUpdated = true;
+                  }
+                });
+              }
+            });
+          }
+        }
+      }
+
+      // Save client if updated - IMPORTANT FIX HERE!
+      if (clientUpdated) {
+        // Update the actual Mongoose document with the modified object
+        Object.assign(client, clientObj);
+        client.markModified('documents');
+        await client.save();
+        logToConsole("DEBUG", "CLIENT_SAVED", {
+          clientId: client.clientId,
+          notesUpdated: updateCount
+        });
+      }
+    }
+
+    logToConsole("SUCCESS", "MARK_ALL_NOTES_VIEWED_BY_EMPLOYEE_COMPLETE", {
+      employeeId,
+      notesMarked: updateCount,
+      clientsProcessed: clients.length
+    });
+
+    return {
+      success: true,
+      notesMarked: updateCount,
+      clientsProcessed: clients.length
+    };
+
+  } catch (error) {
+    logToConsole("ERROR", "MARK_ALL_NOTES_VIEWED_BY_EMPLOYEE_FAILED", {
+      error: error.message,
+      stack: error.stack,
+      employeeId
+    });
+    return {
+      success: false,
+      error: error.message,
+      notesMarked: 0
+    };
+  }
+};
+
+
+
+/* ===============================
+   HELPER: GET ALL NOTES FOR EMPLOYEE ALERT
+================================ */
+const getAllNotesForEmployeeAlert = async (employeeId, limit = 5) => {
+  try {
+    // Get all clients assigned to this employee
+    const clients = await Client.find({
+      "employeeAssignments.employeeId": employeeId,
+      "employeeAssignments.isRemoved": false
+    }).lean();
+
+    const allNotes = [];
+
+    // Process each client
+    for (const client of clients) {
+      const documents = client.documents || {};
+
+      // Iterate through documents
+      for (const year in documents) {
+        if (isNaN(Number(year))) continue;
+
+        const yearData = documents[year];
+        if (!yearData || typeof yearData !== 'object') continue;
+
+        for (const month in yearData) {
+          if (isNaN(Number(month))) continue;
+
+          const monthData = yearData[month];
+          if (!monthData || typeof monthData !== 'object') continue;
+
+          const monthName = new Date(year, month - 1).toLocaleString('default', {
+            month: 'long',
+            timeZone: "Europe/Helsinki"
+          });
+
+          // Month notes → CLIENT
+          if (monthData.monthNotes && Array.isArray(monthData.monthNotes)) {
+            monthData.monthNotes.forEach(note => {
+              const isUnviewedByEmployee = !note.isViewedByEmployee;
+
+              allNotes.push({
+                type: 'month_note',
+                category: 'General',
+                note: note.note,
+                fullNote: note.note,
+                addedBy: note.addedBy || 'Client',
+                addedAt: note.addedAt,
+                source: 'client',
+                clientId: client.clientId,
+                clientName: client.name,
+                clientEmail: client.email,
+                year: parseInt(year),
+                month: parseInt(month),
+                monthName: monthName,
+                isUnviewedByEmployee,
+                isNew: isUnviewedByEmployee,
+                viewedBy: note.viewedBy || [],
+                isViewedByEmployee: note.isViewedByEmployee || false
+              });
+            });
+          }
+
+          // Category notes in required categories → CLIENT
+          ['sales', 'purchase', 'bank'].forEach(category => {
+            const categoryData = monthData[category];
+            if (categoryData && categoryData.categoryNotes && Array.isArray(categoryData.categoryNotes)) {
+              categoryData.categoryNotes.forEach(note => {
+                const isUnviewedByEmployee = !note.isViewedByEmployee;
+
+                allNotes.push({
+                  type: 'delete_reason',
+                  category: category.charAt(0).toUpperCase() + category.slice(1),
+                  note: note.note,
+                  fullNote: note.note,
+                  addedBy: note.addedBy || 'Client',
+                  addedAt: note.addedAt,
+                  source: 'client',
+                  clientId: client.clientId,
+                  clientName: client.name,
+                  clientEmail: client.email,
+                  year: parseInt(year),
+                  month: parseInt(month),
+                  monthName: monthName,
+                  isUnviewedByEmployee,
+                  isNew: isUnviewedByEmployee,
+                  viewedBy: note.viewedBy || [],
+                  isViewedByEmployee: note.isViewedByEmployee || false
+                });
+              });
+            }
+          });
+
+          // File notes → ONLY THIS EMPLOYEE'S NOTES
+          ['sales', 'purchase', 'bank'].forEach(category => {
+            const categoryData = monthData[category];
+            if (categoryData && categoryData.files) {
+              categoryData.files.forEach(file => {
+                if (file.notes && Array.isArray(file.notes)) {
+                  file.notes.forEach(note => {
+                    // Only include if note is added by this employee
+                    if (note.employeeId === employeeId) {
+                      allNotes.push({
+                        type: 'file_feedback',
+                        category: category.charAt(0).toUpperCase() + category.slice(1),
+                        fileName: file.fileName,
+                        note: note.note,
+                        fullNote: note.note,
+                        addedBy: note.addedBy || 'You',
+                        addedAt: note.addedAt,
+                        source: 'employee',
+                        clientId: client.clientId,
+                        clientName: client.name,
+                        clientEmail: client.email,
+                        year: parseInt(year),
+                        month: parseInt(month),
+                        monthName: monthName,
+                        isUnviewedByEmployee: false, // Own notes are always viewed
+                        isNew: false,
+                        viewedBy: note.viewedBy || [],
+                        isViewedByEmployee: true
+                      });
+                    }
+                  });
+                }
+              });
+            }
+          });
+
+          // Other categories
+          if (monthData.other && Array.isArray(monthData.other)) {
+            monthData.other.forEach(otherCat => {
+              if (otherCat && otherCat.document) {
+                // Category notes → CLIENT
+                if (otherCat.document.categoryNotes && Array.isArray(otherCat.document.categoryNotes)) {
+                  otherCat.document.categoryNotes.forEach(note => {
+                    const isUnviewedByEmployee = !note.isViewedByEmployee;
+
+                    allNotes.push({
+                      type: 'delete_reason',
+                      category: otherCat.categoryName,
+                      note: note.note,
+                      fullNote: note.note,
+                      addedBy: note.addedBy || 'Client',
+                      addedAt: note.addedAt,
+                      source: 'client',
+                      clientId: client.clientId,
+                      clientName: client.name,
+                      clientEmail: client.email,
+                      year: parseInt(year),
+                      month: parseInt(month),
+                      monthName: monthName,
+                      isUnviewedByEmployee,
+                      isNew: isUnviewedByEmployee,
+                      viewedBy: note.viewedBy || [],
+                      isViewedByEmployee: note.isViewedByEmployee || false
+                    });
+                  });
+                }
+
+                // File notes → ONLY THIS EMPLOYEE'S NOTES
+                if (otherCat.document.files) {
+                  otherCat.document.files.forEach(file => {
+                    if (file.notes && Array.isArray(file.notes)) {
+                      file.notes.forEach(note => {
+                        if (note.employeeId === employeeId) {
+                          allNotes.push({
+                            type: 'file_feedback',
+                            category: otherCat.categoryName,
+                            fileName: file.fileName,
+                            note: note.note,
+                            fullNote: note.note,
+                            addedBy: note.addedBy || 'You',
+                            addedAt: note.addedAt,
+                            source: 'employee',
+                            clientId: client.clientId,
+                            clientName: client.name,
+                            clientEmail: client.email,
+                            year: parseInt(year),
+                            month: parseInt(month),
+                            monthName: monthName,
+                            isUnviewedByEmployee: false,
+                            isNew: false,
+                            viewedBy: note.viewedBy || [],
+                            isViewedByEmployee: true
+                          });
+                        }
+                      });
+                    }
+                  });
+                }
+              }
+            });
+          }
+        }
+      }
+    }
+
+    // Sort by date (newest first)
+    allNotes.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt));
+
+    const unviewedCount = allNotes.filter(note => note.isUnviewedByEmployee).length;
+    const totalNotes = allNotes.length;
+
+    // Get preview notes
+    const previewNotes = allNotes.slice(0, limit);
+
+    return {
+      notes: allNotes,
+      preview: previewNotes,
+      unviewedCount,
+      totalNotes,
+      hasUnviewedNotes: unviewedCount > 0
+    };
+
+  } catch (error) {
+    logToConsole("ERROR", "GET_ALL_NOTES_FOR_EMPLOYEE_ALERT_FAILED", {
+      error: error.message,
+      employeeId
+    });
+    return { notes: [], preview: [], unviewedCount: 0, totalNotes: 0, hasUnviewedNotes: false };
+  }
+};
+
+/* ===============================
+   NEW 1: GET UNVIEWED NOTES COUNT FOR EMPLOYEE
+================================ */
+router.get("/notes/unviewed-count", auth, async (req, res) => {
+  try {
+    const employeeId = req.user.employeeId;
+
+    logToConsole("INFO", "EMPLOYEE_UNVIEWED_NOTES_COUNT_REQUEST", {
+      employeeId
+    });
+
+    const unviewedCount = await countUnviewedClientNotesForEmployee(employeeId);
+
+    logToConsole("SUCCESS", "EMPLOYEE_UNVIEWED_NOTES_COUNT_FETCHED", {
+      employeeId,
+      unviewedCount
+    });
+
+    res.json({
+      success: true,
+      employeeId,
+      unviewedCount,
+      hasUnviewedNotes: unviewedCount > 0,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    logToConsole("ERROR", "EMPLOYEE_UNVIEWED_NOTES_COUNT_FAILED", {
+      error: error.message,
+      employeeId: req.user?.employeeId
+    });
+
+    res.status(500).json({
+      success: false,
+      message: "Error fetching unviewed notes count"
+    });
+  }
+});
+
+/* ===============================
+   NEW 2: MARK ALL CLIENT NOTES AS VIEWED BY EMPLOYEE
+================================ */
+router.post("/notes/mark-all-viewed", auth, async (req, res) => {
+  try {
+    const employeeId = req.user.employeeId;
+
+    logToConsole("INFO", "EMPLOYEE_MARK_ALL_NOTES_VIEWED_REQUEST", {
+      employeeId,
+      timestamp: new Date().toISOString(),
+      user: req.user.name
+    });
+
+    const result = await markAllClientNotesAsViewedForEmployee(employeeId);
+
+    if (!result.success) {
+      logToConsole("ERROR", "EMPLOYEE_MARK_ALL_NOTES_FAILED", {
+        employeeId,
+        error: result.error
+      });
+
+      return res.status(500).json({
+        success: false,
+        message: "Failed to mark notes as viewed",
+        error: result.error
+      });
+    }
+
+    // Get employee info for activity log
+    const employee = await Employee.findOne({ employeeId }).lean();
+
+    // Create activity log - REMOVED dateTime line
+    await ActivityLog.create({
+      userName: employee?.name || "Employee",
+      role: "EMPLOYEE",
+      employeeId: employeeId,
+      employeeName: employee?.name || "Employee",
+      action: "EMPLOYEE_NOTES_VIEWED",
+      details: `Employee "${employee?.name || "Employee"}" marked ${result.notesMarked} client notes as viewed`,
+      metadata: {
+        employeeId,
+        employeeName: employee?.name || "Employee",
+        notesMarked: result.notesMarked,
+        clientsProcessed: result.clientsProcessed,
+        actionType: "mark_all_viewed",
+        timestamp: new Date().toISOString()
+      }
+    });
+
+    logToConsole("SUCCESS", "EMPLOYEE_ALL_NOTES_MARKED_AS_VIEWED", {
+      employeeId,
+      notesMarked: result.notesMarked,
+      clientsProcessed: result.clientsProcessed
+    });
+
+    res.json({
+      success: true,
+      employeeId,
+      notesMarked: result.notesMarked,
+      clientsProcessed: result.clientsProcessed,
+      message: result.notesMarked > 0
+        ? `Marked ${result.notesMarked} client notes as viewed`
+        : `All notes were already viewed`,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    logToConsole("ERROR", "EMPLOYEE_MARK_ALL_NOTES_VIEWED_FAILED", {
+      error: error.message,
+      stack: error.stack,
+      employeeId: req.user?.employeeId
+    });
+
+    res.status(500).json({
+      success: false,
+      message: "Error marking notes as viewed",
+      error: error.message
+    });
+  }
+});
+
+/* ===============================
+   NEW 3: GET ALL NOTES FOR EMPLOYEE ALERT CARD
+================================ */
+router.get("/notes/alert-preview", auth, async (req, res) => {
+  try {
+    const employeeId = req.user.employeeId;
+    const limit = parseInt(req.query.limit) || 5;
+
+    logToConsole("INFO", "EMPLOYEE_NOTES_ALERT_PREVIEW_REQUEST", {
+      employeeId,
+      limit
+    });
+
+    const result = await getAllNotesForEmployeeAlert(employeeId, limit);
+
+    logToConsole("SUCCESS", "EMPLOYEE_NOTES_ALERT_PREVIEW_FETCHED", {
+      employeeId,
+      totalNotes: result.totalNotes,
+      unviewedCount: result.unviewedCount,
+      previewCount: result.preview.length
+    });
+
+    res.json({
+      success: true,
+      employeeId,
+      summary: {
+        totalNotes: result.totalNotes,
+        unviewedNotes: result.unviewedCount,
+        viewedNotes: result.totalNotes - result.unviewedCount,
+        clientNotes: result.notes.filter(n => n.source === 'client').length,
+        employeeNotes: result.notes.filter(n => n.source === 'employee').length
+      },
+      preview: result.preview.map(note => ({
+        id: `${note.source}_${note.clientId}_${note.year}_${note.month}_${Date.now()}_${Math.random()}`,
+        note: note.note.length > 100 ? note.note.substring(0, 100) + '...' : note.note,
+        fullNote: note.note,
+        addedBy: note.addedBy,
+        addedAt: note.addedAt,
+        category: note.category,
+        type: note.type,
+        source: note.source,
+        clientId: note.clientId,
+        clientName: note.clientName,
+        clientEmail: note.clientEmail,
+        fileName: note.fileName,
+        month: `${note.monthName} ${note.year}`,
+        isUnviewed: note.isUnviewedByEmployee,
+        isNew: note.isNew,
+        isUnviewedByEmployee: note.isUnviewedByEmployee
+      })),
+      hasUnviewedNotes: result.hasUnviewedNotes,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    logToConsole("ERROR", "EMPLOYEE_NOTES_ALERT_PREVIEW_FAILED", {
+      error: error.message,
+      employeeId: req.user?.employeeId
+    });
+
+    res.status(500).json({
+      success: false,
+      message: "Error fetching notes preview"
+    });
+  }
+});
+
+/* ===============================
+   NEW 4: GET ALL NOTES FOR EMPLOYEE MODAL
+================================ */
+router.get("/notes/all-notes", auth, async (req, res) => {
+  try {
+    const employeeId = req.user.employeeId;
+    const limit = parseInt(req.query.limit) || 50;
+
+    logToConsole("INFO", "EMPLOYEE_ALL_NOTES_REQUEST", {
+      employeeId,
+      limit
+    });
+
+    const result = await getAllNotesForEmployeeAlert(employeeId, limit);
+
+    // Get employee info for activity log
+    const employee = await Employee.findOne({ employeeId }).lean();
+
+    // Create activity log - REMOVED dateTime line
+    await ActivityLog.create({
+      userName: employee?.name || "Employee",
+      role: "EMPLOYEE",
+      employeeId: employeeId,
+      employeeName: employee?.name || "Employee",
+      action: "EMPLOYEE_ALL_NOTES_VIEWED",
+      details: `Employee "${employee?.name || "Employee"}" viewed all notes (${result.totalNotes} total, ${result.unviewedCount} unviewed)`,
+      metadata: {
+        employeeId,
+        employeeName: employee?.name || "Employee",
+        totalNotes: result.totalNotes,
+        unviewedNotes: result.unviewedCount,
+        viewedNotes: result.totalNotes - result.unviewedCount,
+        timestamp: new Date().toISOString()
+      }
+    });
+
+    logToConsole("SUCCESS", "EMPLOYEE_ALL_NOTES_FETCHED", {
+      employeeId,
+      totalNotes: result.totalNotes,
+      unviewedCount: result.unviewedCount
+    });
+
+    res.json({
+      success: true,
+      employeeId,
+      employeeName: employee?.name || "Employee",
+      totalNotes: result.totalNotes,
+      unviewedNotes: result.unviewedCount,
+      notes: result.notes.map(note => ({
+        id: `${note.source}_${note.clientId}_${note.year}_${note.month}_${Date.now()}_${Math.random()}`,
+        note: note.note,
+        fullNote: note.note,
+        addedBy: note.addedBy,
+        addedAt: note.addedAt,
+        category: note.category,
+        type: note.type,
+        source: note.source,
+        clientId: note.clientId,
+        clientName: note.clientName,
+        clientEmail: note.clientEmail,
+        fileName: note.fileName,
+        year: note.year,
+        month: note.month,
+        monthName: note.monthName,
+        isUnviewed: note.isUnviewedByEmployee,
+        isNew: note.isNew,
+        isUnviewedByEmployee: note.isUnviewedByEmployee,
+        viewedBy: note.viewedBy,
+        isViewedByEmployee: note.isViewedByEmployee
+      })),
+      hasUnviewedNotes: result.hasUnviewedNotes,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    logToConsole("ERROR", "EMPLOYEE_ALL_NOTES_FAILED", {
+      error: error.message,
+      employeeId: req.user?.employeeId
+    });
+
+    res.status(500).json({
+      success: false,
+      message: "Error fetching all notes"
+    });
+  }
+});
+
+/* ===============================
+   1. GET EMPLOYEE DASHBOARD OVERVIEW - OPTIMIZED (BATCH QUERIES)
+================================ */
+router.get("/dashboard/overview", auth, async (req, res) => {
+  try {
+    const employeeId = req.user.employeeId;
+    const { timeFilter = 'this_month', customStart, customEnd } = req.query;
+
+    logToConsole("INFO", "EMPLOYEE_DASHBOARD_REQUEST_OPTIMIZED", {
+      employeeId,
+      timeFilter,
+      customStart,
+      customEnd
+    });
+
+    // Get employee data
+    const employee = await Employee.findOne(
+      { employeeId },
+      {
+        employeeId: 1,
+        name: 1,
+        email: 1,
+        phone: 1,
+        isActive: 1,
+        createdAt: 1
+      }
+    ).lean();
+
+    if (!employee) {
+      return res.status(404).json({
+        success: false,
+        message: "Employee not found"
+      });
+    }
+
+    // ============= OPTIMIZATION 1: Get ALL assigned clients in ONE query =============
+    const clients = await Client.find(
+      {
+        "employeeAssignments.employeeId": employeeId,
+        "employeeAssignments.isRemoved": false
+      },
+      {
+        clientId: 1,
+        name: 1,
+        email: 1,
+        phone: 1,
+        businessName: 1,
+        documents: 1,
+        employeeAssignments: 1
+      }
+    ).lean();
+
+    if (clients.length === 0) {
+      return res.json({
+        success: true,
+        employee: getEmployeeInfo(employee),
+        timeFilter,
+        months: [],
+        data: [],
+        summaries: {
+          totalClients: 0,
+          tasks: { totalAssigned: 0, totalCompleted: 0, pendingTasks: 0 },
+          notes: { totalNotes: 0, clientNotes: 0, employeeNotes: 0, unviewedNotes: 0 }
+        },
+        alertInfo: { hasUnviewedNotes: false, unviewedNotesCount: 0, totalNotes: 0, previewNotes: [] }
+      });
+    }
+
+    const clientIds = clients.map(c => c.clientId);
+
+    // ============= OPTIMIZATION 2: BATCH LOAD all month data from NEW collection =============
+    const ClientMonthlyData = require("../models/ClientMonthlyData");
+    const allMonthlyData = await ClientMonthlyData.find({
+      clientId: { $in: clientIds }
+    }).lean();
+
+    // Build month data map for O(1) lookup
+    const monthDataMap = new Map(); // key: "clientId-year-month"
+    for (const record of allMonthlyData) {
+      if (record.months && Array.isArray(record.months)) {
+        for (const month of record.months) {
+          const key = `${record.clientId}-${month.year}-${month.month}`;
+          monthDataMap.set(key, month);
+        }
+      }
+    }
+
+    // ============= OPTIMIZATION 3: Build OLD documents map from clients data =============
+    // Process in memory - no extra DB calls
+    const oldDocMap = new Map();
+    for (const client of clients) {
+      if (client.documents && typeof client.documents === 'object') {
+        for (const [yearKey, yearData] of Object.entries(client.documents)) {
+          if (yearData && typeof yearData === 'object') {
+            for (const [monthKey, monthData] of Object.entries(yearData)) {
+              const key = `${client.clientId}-${yearKey}-${monthKey}`;
+              if (!monthDataMap.has(key)) {
+                oldDocMap.set(key, monthData);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Merge old into main map (new takes priority)
+    for (const [key, value] of oldDocMap) {
+      if (!monthDataMap.has(key)) {
+        monthDataMap.set(key, value);
+      }
+    }
+
+    // ============= OPTIMIZATION 4: Get months range once =============
+    const months = getMonthRange(timeFilter, customStart, customEnd);
+    
+    // Build employee assignments map for quick lookup
+    const employeeAssignmentsMap = new Map(); // key: "clientId-year-month-task"
+    for (const client of clients) {
+      if (client.employeeAssignments && Array.isArray(client.employeeAssignments)) {
+        for (const assignment of client.employeeAssignments) {
+          if (assignment.employeeId === employeeId && !assignment.isRemoved) {
+            const key = `${client.clientId}-${assignment.year}-${assignment.month}-${assignment.task}`;
+            employeeAssignmentsMap.set(key, assignment);
+          }
+        }
+      }
+    }
+
+    // ============= OPTIMIZATION 5: Process all data in memory =============
+    const monthData = [];
+    const allTasksSummary = {
+      totalAssigned: 0,
+      totalCompleted: 0,
+      pendingTasks: 0
+    };
+    const allNotesSummary = {
+      totalNotes: 0,
+      clientNotes: 0,
+      employeeNotes: 0,
+      unviewedNotes: 0
+    };
+
+    // Get unviewed notes count from both collections using maps
+    const getAllUnviewedNotesCount = async () => {
+      let count = 0;
+      
+      for (const client of clients) {
+        for (const month of months) {
+          const monthKey = `${client.clientId}-${month.year}-${month.month}`;
+          const monthDataFromMap = monthDataMap.get(monthKey);
+          
+          if (monthDataFromMap) {
+            // Check month notes
+            if (monthDataFromMap.monthNotes && Array.isArray(monthDataFromMap.monthNotes)) {
+              monthDataFromMap.monthNotes.forEach(note => {
+                if (note && !note.isViewedByEmployee) count++;
+              });
+            }
+            
+            // Check category notes
+            ['sales', 'purchase', 'bank'].forEach(cat => {
+              const catData = monthDataFromMap[cat];
+              if (catData && catData.categoryNotes && Array.isArray(catData.categoryNotes)) {
+                catData.categoryNotes.forEach(note => {
+                  if (note && !note.isViewedByEmployee) count++;
+                });
+              }
+            });
+            
+            // Check other categories
+            if (monthDataFromMap.other && Array.isArray(monthDataFromMap.other)) {
+              monthDataFromMap.other.forEach(otherCat => {
+                if (otherCat && otherCat.document && otherCat.document.categoryNotes) {
+                  otherCat.document.categoryNotes.forEach(note => {
+                    if (note && !note.isViewedByEmployee) count++;
+                  });
+                }
+              });
+            }
+          }
+        }
+      }
+      return count;
+    };
+
+    const unviewedNotesCount = await getAllUnviewedNotesCount();
+
+    for (const month of months) {
+      const monthTasks = [];
+      const monthNotes = [];
+      const clientsForMonth = [];
+
+      for (const client of clients) {
+        const monthKey = `${client.clientId}-${month.year}-${month.month}`;
+        const monthDataFromMap = monthDataMap.get(monthKey);
+        
+        // Get tasks for this client-month
+        const taskKeys = [
+          `${client.clientId}-${month.year}-${month.month}-Bookkeeping`,
+          `${client.clientId}-${month.year}-${month.month}-VAT Filing Computation`,
+          `${client.clientId}-${month.year}-${month.month}-VAT Filing`,
+          `${client.clientId}-${month.year}-${month.month}-Financial Statement Generation`
+        ];
+        
+        const assignedTasks = [];
+        for (const taskKey of taskKeys) {
+          const assignment = employeeAssignmentsMap.get(taskKey);
+          if (assignment) {
+            assignedTasks.push({
+              taskId: assignment.task.toLowerCase().replace(/\s+/g, '_'),
+              taskName: assignment.task,
+              status: 'assigned',
+              accountingDone: assignment.accountingDone || false,
+              accountingDoneAt: assignment.accountingDoneAt,
+              accountingDoneBy: assignment.accountingDoneBy,
+              assignedAt: assignment.assignedAt,
+              assignedBy: assignment.assignedBy,
+              adminName: assignment.adminName
+            });
+          }
+        }
+
+        if (assignedTasks.length > 0) {
+          // Extract notes from month data
+          const clientNotes = [];
+          let clientUnviewedCount = 0;
+          
+          if (monthDataFromMap) {
+            // Month notes
+            if (monthDataFromMap.monthNotes && Array.isArray(monthDataFromMap.monthNotes)) {
+              monthDataFromMap.monthNotes.forEach(note => {
+                const isUnviewed = !note.isViewedByEmployee;
+                clientNotes.push({
+                  type: 'month_note',
+                  category: 'General',
+                  note: note.note,
+                  addedBy: note.addedBy || 'Client',
+                  addedAt: note.addedAt,
+                  source: 'client',
+                  clientName: client.name,
+                  isUnviewedByEmployee: isUnviewed,
+                  isViewedByEmployee: note.isViewedByEmployee || false
+                });
+                if (isUnviewed) clientUnviewedCount++;
+              });
+            }
+            
+            // Category notes
+            ['sales', 'purchase', 'bank'].forEach(cat => {
+              const catData = monthDataFromMap[cat];
+              if (catData && catData.categoryNotes && Array.isArray(catData.categoryNotes)) {
+                catData.categoryNotes.forEach(note => {
+                  const isUnviewed = !note.isViewedByEmployee;
+                  clientNotes.push({
+                    type: 'delete_reason',
+                    category: cat.charAt(0).toUpperCase() + cat.slice(1),
+                    note: note.note,
+                    addedBy: note.addedBy || 'Client',
+                    addedAt: note.addedAt,
+                    source: 'client',
+                    clientName: client.name,
+                    isUnviewedByEmployee: isUnviewed,
+                    isViewedByEmployee: note.isViewedByEmployee || false
+                  });
+                  if (isUnviewed) clientUnviewedCount++;
+                });
+              }
+            });
+          }
+
+          const clientPendingTasks = assignedTasks.filter(t => !t.accountingDone);
+          const clientCompletedTasks = assignedTasks.filter(t => t.accountingDone);
+
+          clientsForMonth.push({
+            clientId: client.clientId,
+            clientName: client.name,
+            clientEmail: client.email,
+            clientPhone: client.phone,
+            businessName: client.businessName,
+            tasks: assignedTasks,
+            pendingTasks: clientPendingTasks.length,
+            completedTasks: clientCompletedTasks.length,
+            notes: { clientNotes: clientNotes.length, employeeNotes: 0, unviewedNotes: clientUnviewedCount }
+          });
+
+          monthTasks.push(...assignedTasks.map(task => ({
+            ...task,
+            clientName: client.name,
+            clientId: client.clientId
+          })));
+
+          monthNotes.push(...clientNotes.map(note => ({
+            ...note,
+            clientName: client.name,
+            clientId: client.clientId,
+            isUnviewed: note.isUnviewedByEmployee
+          })));
+
+          allTasksSummary.totalAssigned += assignedTasks.length;
+          allTasksSummary.totalCompleted += assignedTasks.filter(t => t.accountingDone).length;
+          allTasksSummary.pendingTasks += assignedTasks.filter(t => !t.accountingDone).length;
+
+          allNotesSummary.totalNotes += clientNotes.length;
+          allNotesSummary.clientNotes += clientNotes.length;
+          allNotesSummary.unviewedNotes += clientUnviewedCount;
+        }
+      }
+
+      if (clientsForMonth.length > 0) {
+        const pendingTasks = monthTasks.filter(task => !task.accountingDone);
+        const completedTasks = monthTasks.filter(task => task.accountingDone);
+
+        monthData.push({
+          year: month.year,
+          month: month.month,
+          monthName: new Date(month.year, month.month - 1).toLocaleString('default', { month: 'long', timeZone: "Europe/Helsinki" }),
+          clients: clientsForMonth,
+          tasks: {
+            list: monthTasks.slice(0, 5),
+            summary: {
+              totalTasks: monthTasks.length,
+              assignedTasks: monthTasks.length,
+              completedTasks: completedTasks.length,
+              pendingTasks: pendingTasks.length,
+              completionRate: monthTasks.length > 0 ? Math.round((completedTasks.length / monthTasks.length) * 100) : 0
+            }
+          },
+          notes: {
+            list: monthNotes.slice(0, 5),
+            summary: {
+              totalNotes: monthNotes.length,
+              clientNotes: monthNotes.filter(n => n.source === 'client').length,
+              employeeNotes: monthNotes.filter(n => n.source === 'employee').length,
+              unviewedNotes: monthNotes.filter(n => n.isUnviewed).length,
+              unviewedPercentage: monthNotes.length > 0 ? Math.round((monthNotes.filter(n => n.isUnviewed).length / monthNotes.length) * 100) : 0
+            }
+          },
+          monthStatus: {
+            hasPendingTasks: pendingTasks.length > 0,
+            allTasksCompleted: pendingTasks.length === 0 && monthTasks.length > 0,
+            noAssignments: monthTasks.length === 0,
+            hasUnviewedNotes: monthNotes.filter(n => n.isUnviewed).length > 0
+          }
+        });
+      }
+    }
+
+    const employeeInfo = {
+      employeeId: employee.employeeId,
+      name: employee.name,
+      email: employee.email,
+      phone: employee.phone || "Not provided",
+      isActive: employee.isActive ? 'Active' : 'Inactive',
+      statusColor: employee.isActive ? '#7cd64b' : '#ff4b4b',
+      activeSince: new Date(employee.createdAt).toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        timeZone: "Europe/Helsinki"
+      })
+    };
+
+    // Get preview notes for alert
+    const previewNotes = [];
+    for (const client of clients.slice(0, 5)) {
+      for (const month of months.slice(0, 2)) {
+        const monthKey = `${client.clientId}-${month.year}-${month.month}`;
+        const monthDataFromMap = monthDataMap.get(monthKey);
+        if (monthDataFromMap && monthDataFromMap.monthNotes) {
+          monthDataFromMap.monthNotes.slice(0, 2).forEach(note => {
+            if (!note.isViewedByEmployee) {
+              previewNotes.push({
+                ...note,
+                clientName: client.name,
+                clientId: client.clientId,
+                month: `${month.month}/${month.year}`,
+                isUnviewed: true
+              });
+            }
+          });
+        }
+      }
+    }
+
+    // Activity Log
+    try {
+      await ActivityLog.create({
+        userName: employee.name,
+        role: "EMPLOYEE",
+        employeeId: employee.employeeId,
+        employeeName: employee.name,
+        action: "EMPLOYEE_DASHBOARD_VIEWED",
+        details: `Employee "${employee.name}" viewed dashboard with filter: ${timeFilter}`,
+        metadata: {
+          timeFilter,
+          totalAssignedTasks: allTasksSummary.totalAssigned,
+          totalCompletedTasks: allTasksSummary.totalCompleted,
+          pendingTasks: allTasksSummary.pendingTasks,
+          totalClients: clients.length,
+          unviewedNotesCount: unviewedNotesCount
+        }
+      });
+    } catch (logError) {
+      logToConsole("ERROR", "ACTIVITY_LOG_FAILED_EMPLOYEE_DASHBOARD", { error: logError.message });
+    }
+
+    res.json({
+      success: true,
+      employee: employeeInfo,
+      timeFilter,
+      months: months.map(m => ({
+        year: m.year,
+        month: m.month,
+        display: `${new Date(m.year, m.month - 1).toLocaleString('default', { month: 'long', timeZone: "Europe/Helsinki" })} ${m.year}`
+      })),
+      data: monthData,
+      summaries: {
+        totalClients: clients.length,
+        tasks: allTasksSummary,
+        notes: allNotesSummary
+      },
+      alertInfo: {
+        hasUnviewedNotes: unviewedNotesCount > 0,
+        unviewedNotesCount,
+        totalNotes: allNotesSummary.totalNotes,
+        previewNotes: previewNotes.slice(0, 5),
+        lastChecked: new Date().toISOString()
+      }
+    });
+
+  } catch (error) {
+    console.error("Employee dashboard error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching employee dashboard data"
+    });
+  }
+});
+
+// Helper function for employee info
+const getEmployeeInfo = (employee) => ({
+  employeeId: employee.employeeId,
+  name: employee.name,
+  email: employee.email,
+  phone: employee.phone || "Not provided",
+  isActive: employee.isActive ? 'Active' : 'Inactive',
+  statusColor: employee.isActive ? '#7cd64b' : '#ff4b4b',
+  activeSince: new Date(employee.createdAt).toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    timeZone: "Europe/Helsinki"
+  })
+});
+
+/* ===============================
+   2. GET SPECIFIC MONTH DETAILS FOR EMPLOYEE - OPTIMIZED
+================================ */
+router.get("/dashboard/month-details", auth, async (req, res) => {
+  try {
+    const employeeId = req.user.employeeId;
+    const { year, month } = req.query;
+
+    if (!year || !month) {
+      return res.status(400).json({
+        success: false,
+        message: "Year and month are required"
+      });
+    }
+
+    logToConsole("INFO", "EMPLOYEE_MONTH_DETAILS_REQUEST_OPTIMIZED", {
+      employeeId,
+      year,
+      month
+    });
+
+    const employee = await Employee.findOne(
+      { employeeId },
+      { employeeId: 1, name: 1, email: 1 }
+    ).lean();
+
+    if (!employee) {
+      return res.status(404).json({
+        success: false,
+        message: "Employee not found"
+      });
+    }
+
+    const targetYear = parseInt(year);
+    const targetMonth = parseInt(month);
+
+    // ============= OPTIMIZATION: Get all data in batch =============
+    const clients = await Client.find(
+      {
+        "employeeAssignments.employeeId": employeeId,
+        "employeeAssignments.year": targetYear,
+        "employeeAssignments.month": targetMonth,
+        "employeeAssignments.isRemoved": false
+      },
+      {
+        clientId: 1,
+        name: 1,
+        email: 1,
+        phone: 1,
+        businessName: 1,
+        businessNature: 1,
+        vatPeriod: 1,
+        documents: 1,
+        employeeAssignments: 1
+      }
+    ).lean();
+
+    if (clients.length === 0) {
+      return res.json({
+        success: true,
+        employee: { employeeId: employee.employeeId, name: employee.name, email: employee.email },
+        month: { year: targetYear, month: targetMonth, monthName: new Date(targetYear, targetMonth - 1).toLocaleString('default', { month: 'long' }) },
+        clients: [],
+        tasks: { total: 0, pending: 0, completed: 0, list: [] },
+        notes: { total: 0, clientNotes: 0, employeeNotes: 0, unviewedCount: 0, list: [] }
+      });
+    }
+
+    const clientIds = clients.map(c => c.clientId);
+
+    // Batch load month data from NEW collection
+    const ClientMonthlyData = require("../models/ClientMonthlyData");
+    const allMonthlyData = await ClientMonthlyData.find({
+      clientId: { $in: clientIds }
+    }).lean();
+
+    const monthDataMap = new Map();
+    for (const record of allMonthlyData) {
+      if (record.months && Array.isArray(record.months)) {
+        for (const monthData of record.months) {
+          if (monthData.year === targetYear && monthData.month === targetMonth) {
+            const key = `${record.clientId}-${targetYear}-${targetMonth}`;
+            monthDataMap.set(key, monthData);
+          }
+        }
+      }
+    }
+
+    // Build employee assignments map
+    const employeeAssignmentsMap = new Map();
+    for (const client of clients) {
+      if (client.employeeAssignments && Array.isArray(client.employeeAssignments)) {
+        for (const assignment of client.employeeAssignments) {
+          if (assignment.employeeId === employeeId && 
+              assignment.year === targetYear && 
+              assignment.month === targetMonth &&
+              !assignment.isRemoved) {
+            const key = `${client.clientId}-${assignment.task}`;
+            employeeAssignmentsMap.set(key, assignment);
+          }
+        }
+      }
+    }
+
+    const detailedClients = [];
+    const allTasks = [];
+    const allNotes = [];
+
+    for (const client of clients) {
+      const monthKey = `${client.clientId}-${targetYear}-${targetMonth}`;
+      const monthDataFromMap = monthDataMap.get(monthKey);
+      
+      // Get client tasks
+      const taskNames = ['Bookkeeping', 'VAT Filing Computation', 'VAT Filing', 'Financial Statement Generation'];
+      const clientTasks = [];
+      
+      for (const taskName of taskNames) {
+        const taskKey = `${client.clientId}-${taskName}`;
+        const assignment = employeeAssignmentsMap.get(taskKey);
+        if (assignment) {
+          clientTasks.push({
+            taskId: taskName.toLowerCase().replace(/\s+/g, '_'),
+            taskName: taskName,
+            status: 'assigned',
+            accountingDone: assignment.accountingDone || false,
+            accountingDoneAt: assignment.accountingDoneAt,
+            accountingDoneBy: assignment.accountingDoneBy,
+            assignedAt: assignment.assignedAt,
+            assignedBy: assignment.assignedBy,
+            adminName: assignment.adminName
+          });
+        }
+      }
+
+      if (clientTasks.length > 0) {
+        // Extract notes
+        const clientNotes = [];
+        let unviewedCount = 0;
+        
+        if (monthDataFromMap) {
+          // Month notes
+          if (monthDataFromMap.monthNotes && Array.isArray(monthDataFromMap.monthNotes)) {
+            monthDataFromMap.monthNotes.forEach(note => {
+              const isUnviewed = !note.isViewedByEmployee;
+              clientNotes.push({
+                type: 'month_note',
+                category: 'General',
+                note: note.note,
+                addedBy: note.addedBy || 'Client',
+                addedAt: note.addedAt,
+                source: 'client',
+                clientName: client.name,
+                isUnviewedByEmployee: isUnviewed,
+                isViewedByEmployee: note.isViewedByEmployee || false,
+                viewedBy: note.viewedBy || []
+              });
+              if (isUnviewed) unviewedCount++;
+            });
+          }
+          
+          // Category notes
+          ['sales', 'purchase', 'bank'].forEach(cat => {
+            const catData = monthDataFromMap[cat];
+            if (catData && catData.categoryNotes && Array.isArray(catData.categoryNotes)) {
+              catData.categoryNotes.forEach(note => {
+                const isUnviewed = !note.isViewedByEmployee;
+                clientNotes.push({
+                  type: 'delete_reason',
+                  category: cat.charAt(0).toUpperCase() + cat.slice(1),
+                  note: note.note,
+                  addedBy: note.addedBy || 'Client',
+                  addedAt: note.addedAt,
+                  source: 'client',
+                  clientName: client.name,
+                  isUnviewedByEmployee: isUnviewed,
+                  isViewedByEmployee: note.isViewedByEmployee || false,
+                  viewedBy: note.viewedBy || []
+                });
+                if (isUnviewed) unviewedCount++;
+              });
+            }
+          });
+          
+          // Other categories
+          if (monthDataFromMap.other && Array.isArray(monthDataFromMap.other)) {
+            monthDataFromMap.other.forEach(otherCat => {
+              if (otherCat && otherCat.document && otherCat.document.categoryNotes) {
+                otherCat.document.categoryNotes.forEach(note => {
+                  const isUnviewed = !note.isViewedByEmployee;
+                  clientNotes.push({
+                    type: 'delete_reason',
+                    category: otherCat.categoryName,
+                    note: note.note,
+                    addedBy: note.addedBy || 'Client',
+                    addedAt: note.addedAt,
+                    source: 'client',
+                    clientName: client.name,
+                    isUnviewedByEmployee: isUnviewed,
+                    isViewedByEmployee: note.isViewedByEmployee || false,
+                    viewedBy: note.viewedBy || []
+                  });
+                  if (isUnviewed) unviewedCount++;
+                });
+              }
+            });
+          }
+        }
+
+        const pendingTasks = clientTasks.filter(t => !t.accountingDone);
+        const completedTasks = clientTasks.filter(t => t.accountingDone);
+
+        detailedClients.push({
+          clientId: client.clientId,
+          clientName: client.name,
+          clientEmail: client.email,
+          clientPhone: client.phone || "Not provided",
+          businessName: client.businessName || "Not specified",
+          businessNature: client.businessNature || "Not specified",
+          vatPeriod: client.vatPeriod || "Monthly",
+          tasks: clientTasks,
+          pendingTasks: pendingTasks.length,
+          completedTasks: completedTasks.length,
+          notes: clientNotes,
+          unviewedNotes: unviewedCount
+        });
+
+        allTasks.push(...clientTasks.map(task => ({
+          ...task,
+          clientName: client.name,
+          clientId: client.clientId
+        })));
+
+        allNotes.push(...clientNotes.map(note => ({
+          ...note,
+          clientName: client.name,
+          clientId: client.clientId,
+          isUnviewed: note.isUnviewedByEmployee
+        })));
+      }
+    }
+
+    // Activity Log
+    try {
+      await ActivityLog.create({
+        userName: employee.name,
+        role: "EMPLOYEE",
+        employeeId: employee.employeeId,
+        employeeName: employee.name,
+        action: "EMPLOYEE_MONTH_DETAILS_VIEWED",
+        details: `Employee "${employee.name}" viewed details for ${month}/${year}`,
+        metadata: {
+          year: targetYear,
+          month: targetMonth,
+          totalClients: detailedClients.length,
+          totalTasks: allTasks.length,
+          pendingTasks: allTasks.filter(t => !t.accountingDone).length,
+          completedTasks: allTasks.filter(t => t.accountingDone).length,
+          totalNotes: allNotes.length,
+          clientNotes: allNotes.filter(n => n.source === 'client').length,
+          employeeNotes: allNotes.filter(n => n.source === 'employee').length,
+          unviewedNotes: allNotes.filter(n => n.isUnviewed).length
+        }
+      });
+    } catch (logError) {
+      logToConsole("ERROR", "ACTIVITY_LOG_FAILED_MONTH_DETAILS", { error: logError.message });
+    }
+
+    res.json({
+      success: true,
+      employee: {
+        employeeId: employee.employeeId,
+        name: employee.name,
+        email: employee.email
+      },
+      month: {
+        year: targetYear,
+        month: targetMonth,
+        monthName: new Date(targetYear, targetMonth - 1).toLocaleString('default', {
+          month: 'long',
+          timeZone: "Europe/Helsinki"
+        })
+      },
+      clients: detailedClients,
+      tasks: {
+        total: allTasks.length,
+        pending: allTasks.filter(t => !t.accountingDone).length,
+        completed: allTasks.filter(t => t.accountingDone).length,
+        list: allTasks
+      },
+      notes: {
+        total: allNotes.length,
+        clientNotes: allNotes.filter(n => n.source === 'client').length,
+        employeeNotes: allNotes.filter(n => n.source === 'employee').length,
+        unviewedCount: allNotes.filter(n => n.isUnviewed).length,
+        list: allNotes
+      }
+    });
+
+  } catch (error) {
+    console.error("Employee month details error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching month details"
+    });
+  }
+});
+
+/* ===============================
+   3. GET CLIENT CONTACT FOR SPECIFIC TASK
+================================ */
+router.get("/dashboard/client-contact", auth, async (req, res) => {
+  try {
+    const employeeId = req.user.employeeId;
+    const { clientId } = req.query;
+
+    if (!clientId) {
+      return res.status(400).json({
+        success: false,
+        message: "Client ID is required"
+      });
+    }
+
+    // Check if employee is assigned to this client
+    const isAssigned = await Client.findOne({
+      clientId,
+      "employeeAssignments.employeeId": employeeId,
+      "employeeAssignments.isRemoved": false
+    });
+
+    if (!isAssigned) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not assigned to this client"
+      });
+    }
+
+    const client = await Client.findOne(
+      { clientId },
+      {
+        clientId: 1,
+        name: 1,
+        email: 1,
+        phone: 1,
+        address: 1,
+        businessName: 1,
+        businessNature: 1,
+        vatPeriod: 1
+      }
+    ).lean();
+
+    if (!client) {
+      return res.status(404).json({
+        success: false,
+        message: "Client not found"
+      });
+    }
+
+    // Get employee info for activity log
+    const employee = await Employee.findOne(
+      { employeeId },
+      { employeeId: 1, name: 1 }
+    ).lean();
+
+    // ===== ACTIVITY LOG: EMPLOYEE VIEWED CLIENT CONTACT =====
+    try {
+      await ActivityLog.create({
+        userName: employee?.name || "Employee",
+        role: "EMPLOYEE",
+        employeeId: employeeId,
+        employeeName: employee?.name || "Employee",
+        clientId: client.clientId,
+        clientName: client.name,
+        action: "EMPLOYEE_CLIENT_CONTACT_VIEWED",
+        details: `Employee "${employee?.name || "Employee"}" viewed contact details for client "${client.name}"`,
+        metadata: {
+          clientId: client.clientId,
+          clientName: client.name,
+          employeeId: employeeId,
+          employeeName: employee?.name || "Employee"
+        }
+      });
+
+      logToConsole("INFO", "ACTIVITY_LOG_CREATED_CLIENT_CONTACT_VIEW", {
+        employeeId,
+        clientId
+      });
+    } catch (logError) {
+      logToConsole("ERROR", "ACTIVITY_LOG_FAILED_CLIENT_CONTACT", {
+        error: logError.message,
+        employeeId,
+        clientId
+      });
+    }
+
+    logToConsole("SUCCESS", "EMPLOYEE_CLIENT_CONTACT_FETCHED", {
+      employeeId,
+      clientId: client.clientId
+    });
+
+    res.json({
+      success: true,
+      client: {
+        clientId: client.clientId,
+        name: client.name,
+        email: client.email,
+        phone: client.phone || "Not provided",
+        address: client.address || "Not provided",
+        businessName: client.businessName || "Not specified",
+        businessNature: client.businessNature || "Not specified",
+        vatPeriod: client.vatPeriod || "Monthly"
+      }
+    });
+
+  } catch (error) {
+    console.error("Client contact error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching client contact"
+    });
+  }
+});
+
+/* ===============================
+   TEST ROUTE
+================================ */
+router.get("/test", (req, res) => {
+  console.log("✅ EMPLOYEE DASHBOARD TEST ROUTE HIT!");
+  res.json({
+    success: true,
+    message: "Employee Dashboard route is working!",
+    timestamp: new Date().toISOString()
+  });
+});
+
+module.exports = router;

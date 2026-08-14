@@ -1,0 +1,215 @@
+process.env.TZ = 'Europe/Helsinki';
+console.log(new Date());
+
+const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+require("dotenv").config();
+const logger = require("./utils/logger");
+
+const app = express();
+
+app.set("trust proxy", 1);
+
+// ===============================
+// MongoDB Connection
+// ===============================
+const connectDB = require("./config/mongodb");
+connectDB();
+
+// ===============================
+// Middlewares
+// ===============================
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+app.use(cors({
+    origin: [
+        "https://credence-two.vercel.app",
+        "http://localhost:5173",
+        "https://credence.techorses.com",
+        "https://jladgroup.fi"
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+app.use(cookieParser());
+
+
+
+app.use((req, res, next) => {
+    logger.info({
+        type: "REQUEST",
+        method: req.method,
+        url: req.originalUrl,
+        ip: req.ip,
+        userAgent: req.headers["user-agent"]
+    });
+    next();
+});
+
+// ===============================
+// CRON JOBS
+// ===============================
+
+// Import existing cron jobs
+const { schedulePlanChangeCron } = require('./utils/planChangeCron');
+
+// Import the new month lock cron job
+const { scheduleLockJob } = require('./utils/lockPreviousMonth');
+
+// Import the annual backup cron job
+const { scheduleBackupJob } = require('./utils/backupCron');
+
+// Schedule all cron jobs
+console.log("⏰ Initializing all CRON jobs...");
+
+// Schedule plan change cron
+schedulePlanChangeCron();
+
+// Schedule month lock cron (runs on 26th of each month)
+scheduleLockJob();
+
+// Schedule annual backup cron (runs on Jan 1st at 12:00 AM Finland time)
+scheduleBackupJob();
+
+// ===============================
+// ROUTES
+// ===============================
+
+const adminRoutes = require("./routes/admin");
+const ClientEnrollment = require("./routes/clientEnrollment");
+const ClientAuth = require("./routes/clientAuth");
+const AdminEmployee = require("./routes/adminEmployee");
+const EmployeeRoutes = require("./routes/employee");
+const EmployeeTasks = require("./routes/employeeTaskLog");
+const clientUpload = require("./routes/clientUpload");
+const Employee_task_info = require("./routes/employee-task");
+const scheduleCallRoutes = require("./routes/scheduleCallRoutes");
+const paymentReminderRoutes = require("./routes/paymentReminders");
+const documentUploadReminderRoutes = require("./routes/documentUploadReminders");
+const clientManagementRoutes = require("./routes/clientManagement");
+const adminDashboardRoutes = require('./routes/adminDashboard');
+const clientDashboardRoutes = require('./routes/clientDashboardRoutes');
+const employeeDashboard = require('./routes/employeeDashboard');
+const activityLogsRoutes = require("./routes/activityLogs");
+const adminNotesRoutes = require("./routes/adminNotes");
+const employeeNotesRoutes = require('./routes/employeeNotes');
+const financialStatementRoutes = require('./routes/financialStatementRoutes');
+const googleDriveRoutes = require("./routes/googledrive");
+const adminPdfRoutes = require("./routes/adminPdfRoutes");
+const clientConsentRoutes = require("./routes/Clientconsent");
+const blogRoutes = require("./routes/blogRoutes");
+const blogContactRoutes = require("./routes/blogContactRoutes");
+const ogRoutes = require("./routes/ogRoutes");
+const adminMonthLockRoutes = require("./routes/adminMonthLock");
+
+
+app.use("/client-enrollment", ClientEnrollment);
+app.use("/client", ClientAuth);
+app.use("/clientupload", clientUpload);
+app.use("/admin", adminRoutes);
+app.use("/admin-employee", AdminEmployee);
+app.use("/employee", EmployeeRoutes);
+app.use("/employee-task", EmployeeTasks);
+app.use("/admin", Employee_task_info);
+app.use("/schedule-call", scheduleCallRoutes);
+app.use("/payment-reminders", paymentReminderRoutes);
+app.use("/document-upload-reminders", documentUploadReminderRoutes);
+app.use("/client-management", clientManagementRoutes);
+app.use('/admin', adminDashboardRoutes);
+app.use('/client', clientDashboardRoutes);
+app.use('/employee', employeeDashboard);
+app.use("/activity-logs", activityLogsRoutes);
+app.use("/employee", employeeNotesRoutes);
+app.use("/admin/notes", adminNotesRoutes);
+app.use('/employee/notes', employeeNotesRoutes);
+app.use('/client/financial-statement', financialStatementRoutes);
+app.use("/api", googleDriveRoutes);
+app.use("/admin/pdf", adminPdfRoutes);
+app.use("/client-consent", clientConsentRoutes);
+app.use("/blogs", blogRoutes);
+app.use("/blog-contact", blogContactRoutes);
+app.use("/og", ogRoutes);
+app.use("/admin-manage", adminMonthLockRoutes);
+
+
+
+const paymentReminderDebug = require("./routes/paymentReminderDebug");
+app.use("/payment-reminders", paymentReminderDebug);
+
+
+
+
+const fs = require("fs");
+const path = require("path");
+const UPLOAD_DIR = path.join(__dirname, "uploads");
+if (!fs.existsSync(UPLOAD_DIR)) {
+    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+}
+app.use("/uploads", express.static(UPLOAD_DIR));
+
+// ===============================
+// BASIC ROUTE
+// ===============================
+app.get("/", (req, res) => {
+    res.send("NEW jlad GROUP UPDATED WITH SERVER ");
+});
+
+// ===============================
+// REMINDER SYSTEM LOGS
+// ===============================
+console.log("⏰ Payment Reminder System: Checking schedule...");
+console.log("📅 First Reminder: 20th of each month at 12:00 PM Finland time (EET/EEST)");
+console.log("📅 Final Reminder: 25th of each month at 12:00 PM Finland time (EET/EEST)");
+
+console.log("⏰ Document Upload Reminder System: Checking schedule...");
+console.log("📅 Document Upload Reminder: 15th of each month at 12:00 PM Finland time (EET/EEST)");
+
+// Display current and next month info
+const currentDate = new Date();
+const previousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+
+const previousMonthYear = previousMonth.toLocaleDateString("en-GB", {
+    month: "long",
+    year: "numeric"
+});
+
+const nextMonthYear = nextMonth.toLocaleDateString("en-GB", {
+    month: "long",
+    year: "numeric"
+});
+
+console.log(`📊 Next Document Upload Reminder:`);
+console.log(`   - Will remind for: ${previousMonthYear}`);
+console.log(`   - Due on: 15th ${nextMonthYear}`);
+console.log(`   - Deadline: 25th ${nextMonthYear}`);
+
+console.log(`⏰ Current Server Time (Finland): ${new Date().toLocaleString("en-IN", { timeZone: "Europe/Helsinki" })}`);
+
+// ===============================
+// SERVER
+// ===============================
+const PORT = process.env.PORT || 3043;
+// const PORT = process.env.PORT || 3077;
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(`💰 Payment Reminder System: ACTIVE`);
+    console.log(`📄 Document Upload Reminder System: ACTIVE`);
+    console.log(`🔒 Month Auto-Lock System: ACTIVE (Runs on 26th of each month at 12:00 AM Finland time)`);
+    console.log(`📦 Annual Backup System: ACTIVE (Runs on Jan 1st at 12:00 AM Finland time)`);
+});
+
+
+// Global error handlers
+process.on("uncaughtException", (err) => {
+    console.error("UNCAUGHT EXCEPTION:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+    console.error("UNHANDLED REJECTION:", err);
+});
