@@ -45,9 +45,6 @@ const formatDateRange = (fromDate, toDate) => {
   return `${from.toLocaleDateString('en-IN', options)} - ${to.toLocaleDateString('en-IN', options)}`;
 };
 
-// ============================================
-// 1. CREATE NEW REQUEST - NO OVERLAP CHECK!
-// ============================================
 router.post('/request', verifyClientToken, async (req, res) => {
   try {
     const { fromDate, toDate, additionalNotes } = req.body;
@@ -117,13 +114,22 @@ router.post('/request', verifyClientToken, async (req, res) => {
       });
     }
 
-    // ========== Check if this is a FREE or PAID request ==========
-    const existingRequestsInYear = clientDoc.requests.filter(r => r.year === year);
-    const isFirstRequest = existingRequestsInYear.length === 0;
-    const isPaid = !isFirstRequest; // 1st = FREE, 2nd+ = PAID
+    // ====================================================
+    // ✅ UPDATED: Check if this is a FREE or PAID request
+    // ====================================================
+    // CORRECT LOGIC: Check how many requests in THIS YEAR using requestedAt (submission time)
+    const currentYear = new Date().getFullYear();
 
-    console.log(`📊 Request count in ${year}: ${existingRequestsInYear.length}`);
-    console.log(`💰 isPaid: ${isPaid} (${isFirstRequest ? 'FREE' : 'PAID'})`);
+    const existingRequestsInYear = clientDoc.requests.filter(r => {
+      const requestYear = new Date(r.requestedAt).getFullYear();
+      return requestYear === currentYear;
+    });
+
+    const isFirstRequestInYear = existingRequestsInYear.length === 0;
+    const isPaid = !isFirstRequestInYear; // 1st = FREE, 2nd+ = PAID
+
+    console.log(`📊 Existing requests in ${currentYear}: ${existingRequestsInYear.length}`);
+    console.log(`💰 isPaid: ${isPaid} (${isFirstRequestInYear ? 'FREE' : 'PAID'})`);
 
     // Create date range display string
     const dateRangeDisplay = formatDateRange(from, to);
@@ -152,7 +158,7 @@ router.post('/request', verifyClientToken, async (req, res) => {
 
     // ========== Send emails ==========
     const adminEmail = process.env.EMAIL_USER;
-    const paidStatus = isPaid ? '💰 PAID REQUEST' : '✅ FREE REQUEST (1st of the year)';
+    const paidStatus = isPaid ? '💰 PAID REQUEST' : '✅ FREE REQUEST (1st in ' + currentYear + ')';
 
     const adminSubject = `New Financial Statement Request - ${clientName}`;
     const adminHtml = `
@@ -169,8 +175,9 @@ router.post('/request', verifyClientToken, async (req, res) => {
           <p><strong>Request ID:</strong> ${newRequest.requestId}</p>
           <p><strong>Requested At:</strong> ${new Date().toLocaleString('en-IN', { timeZone: "Europe/Helsinki" })}</p>
           <p><strong>Payment Status:</strong> <span style="color: ${isPaid ? '#ff9800' : '#4caf50'}; font-weight: bold;">${paidStatus}</span></p>
+          <p><strong>Reason:</strong> ${isPaid ? `This is the ${existingRequestsInYear.length + 1}th request in ${currentYear}` : `This is the 1st request in ${currentYear} - FREE!`}</p>
           ${additionalNotes ? `<p><strong>Additional Notes:</strong> ${additionalNotes}</p>` : ''}
-          <p><strong>Total Requests in ${year}:</strong> ${existingRequestsInYear.length + 1}</p>
+          <p><strong>Total Requests in ${currentYear}:</strong> ${existingRequestsInYear.length + 1}</p>
         </div>
         <p>Please review this request and prepare the financial statements.</p>
         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
@@ -179,7 +186,7 @@ router.post('/request', verifyClientToken, async (req, res) => {
       </div>
     `;
 
-    const clientSubject = `Financial Statement Request Received${isPaid ? ' (Paid Request)' : ''}`;
+    const clientSubject = `Financial Statement Request Received${isPaid ? ' (Paid Request)' : ' (Free Request)'}`;
     const clientHtml = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #7cd64b;">Request Received Successfully!</h2>
@@ -190,17 +197,17 @@ router.post('/request', verifyClientToken, async (req, res) => {
           <p><strong>From Date:</strong> ${from.toLocaleDateString('en-IN')}</p>
           <p><strong>To Date:</strong> ${to.toLocaleDateString('en-IN')}</p>
           <p><strong>Status:</strong> <span style="color: #ffa500; font-weight: bold;">Pending Review</span></p>
-          <p><strong>Payment:</strong> <span style="color: ${isPaid ? '#ff9800' : '#4caf50'}; font-weight: bold;">${isPaid ? '💰 PAID REQUEST' : '✅ FREE REQUEST (1st of the year)'}</span></p>
+          <p><strong>Payment:</strong> <span style="color: ${isPaid ? '#ff9800' : '#4caf50'}; font-weight: bold;">${isPaid ? '💰 PAID REQUEST' : '✅ FREE REQUEST (1st in ' + currentYear + ')'}</span></p>
           <p><strong>Submitted:</strong> ${new Date().toLocaleString('en-IN', { timeZone: "Europe/Helsinki" })}</p>
-          <p><strong>Total Requests in ${year}:</strong> ${existingRequestsInYear.length + 1}</p>
+          <p><strong>Reason:</strong> ${isPaid ? `This is your ${existingRequestsInYear.length + 1}th request in ${currentYear}` : `This is your 1st request in ${currentYear} - FREE!`}</p>
         </div>
         ${isPaid ? `
         <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ff9800;">
-          <p><strong>💰 Payment Note:</strong> This is your ${existingRequestsInYear.length + 1}th request in ${year}. The first request was free. Additional requests in the same year are paid requests.</p>
+          <p><strong>💰 Payment Note:</strong> This is your ${existingRequestsInYear.length + 1}th request in ${currentYear}. Only the 1st request in a year is FREE. All subsequent requests are PAID.</p>
         </div>
         ` : `
         <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4caf50;">
-          <p><strong>✅ Free Request:</strong> This is your 1st request in ${year} and it's FREE!</p>
+          <p><strong>✅ Free Request:</strong> This is your 1st request in ${currentYear} and it's FREE!</p>
         </div>
         `}
         <p><strong>What happens next?</strong></p>
@@ -242,8 +249,9 @@ router.post('/request', verifyClientToken, async (req, res) => {
         status: newRequest.status,
         requestedAt: newRequest.requestedAt,
         isPaid: isPaid,
-        isFirstRequest: isFirstRequest,
-        totalRequestsInYear: existingRequestsInYear.length + 1
+        isFirstRequestInYear: isFirstRequestInYear,
+        totalRequestsInYear: existingRequestsInYear.length + 1,
+        year: currentYear
       }
     });
 
@@ -255,6 +263,7 @@ router.post('/request', verifyClientToken, async (req, res) => {
     });
   }
 });
+
 
 // ============================================
 // 2. Get client's financial statement requests
