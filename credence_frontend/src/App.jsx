@@ -41,6 +41,7 @@ import Blogs from './Pages/Blogs/Blogs';
 import BlogManagement from './Pages/Admin/BlogManagement/BlogManagement';
 import AdminMonthLock from './Pages/Admin/AdminManage/AdminMonthLock';
 import EmployeeFinanceRequests from './Pages/Employee/FinanceReq/EmployeeFinanceRequests';
+import AppealsHome from './Pages/Appeals/Pages/AppealsHome/AppealsHome';
 
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
@@ -71,6 +72,12 @@ function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/drive" element={<GoogleDrivePicker />} />
           <Route path="*" element={<NotFound />} />
+
+
+          {/* APPEALS ROUTES  */}
+
+          <Route path="/appeals" element={<AppealsHome />} />
+
 
 
           <Route path="/cases" element={<Blogs />} />

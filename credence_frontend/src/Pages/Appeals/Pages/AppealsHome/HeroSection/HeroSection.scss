@@ -1,0 +1,329 @@
+// ===== FONT IMPORTS =====
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "LightHeading";
+    src: url("../../../assets/fonts/cy-grotesk-wide-light.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+// ===== THEME TOKENS =====
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+
+// Nav height used to offset hero height on desktop.
+// Navbar is `position: sticky` so it already reserves layout space —
+// this var exists so the section still behaves correctly if the navbar
+// is ever switched to `position: fixed`.
+:root {
+    --nav-height: 106px;
+}
+
+// ===== HERO SECTION =====
+.hero-section {
+    width: 100%;
+    background: $white;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    margin-top: 20px;
+
+    // Desktop: 80vh minus the navbar height
+    height: 80vh ;
+}
+
+.hero-section__container {
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 60px 20px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 48px;
+    box-sizing: border-box;
+}
+
+// ===== LEFT CONTENT =====
+.hero-section__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.hero-section__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    background: rgba(124, 214, 75, 0.1);
+    border: 1.5px solid $primary-green;
+    padding: 8px 18px;
+    border-radius: 50px;
+    margin-bottom: 22px;
+}
+
+.hero-section__heading {
+    margin: 0 0 22px;
+    font-size: 54px;
+    line-height: 1.12;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-section__heading-line {
+    display: block;
+}
+
+.hero-section__word {
+    display: inline-block;
+}
+
+.hero-section__word--light {
+    font-family: "LightHeading", sans-serif;
+    color: $text-dark;
+}
+
+.hero-section__word--dark {
+    font-family: "Heading", sans-serif;
+    color: $primary-green-hover;
+}
+
+.hero-section__subtitle {
+    font-family: "Inter", sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    color: $text-grey;
+    max-width: 480px;
+    margin: 0 0 34px;
+}
+
+.hero-section__cta-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-section__btn {
+    font-family: "Arimo", sans-serif;
+    font-size: 15.5px;
+    font-weight: 700;
+    padding: 15px 32px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.hero-section__btn--primary {
+    background: $primary-green;
+    color: $white;
+    border: 2px solid $primary-green;
+
+    &:hover {
+        background: $primary-green-hover;
+        border-color: $primary-green-hover;
+        box-shadow: 0 6px 16px rgba(124, 214, 75, 0.35);
+        transform: translateY(-2px);
+    }
+}
+
+.hero-section__btn--secondary {
+    background: $white;
+    color: $text-dark;
+    border: 2px solid $text-dark;
+
+    &:hover {
+        background: $text-dark;
+        color: $white;
+        transform: translateY(-2px);
+    }
+}
+
+// ===== RIGHT VISUAL =====
+.hero-section__visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-section__image-wrapper {
+    width: 100%;
+    aspect-ratio: 4 / 4;
+    border-radius: 28px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+
+    // soft decorative ring behind the image
+    &::before {
+        content: "";
+        position: absolute;
+        inset: -14px;
+        border: 2px solid rgba(124, 214, 75, 0.35);
+        border-radius: 36px;
+        z-index: -1;
+    }
+}
+
+.hero-section__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-section__badge {
+    position: absolute;
+    left: -20px;
+    bottom: 32px;
+    background: $white;
+    border: 2px solid $primary-green;
+    border-radius: 18px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    max-width: 240px;
+}
+
+.hero-section__badge-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $primary-green;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px rgba(124, 214, 75, 0.2);
+}
+
+.hero-section__badge-text {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-dark;
+    line-height: 1.4;
+}
+
+// ===== RESPONSIVE: TABLET =====
+@media (max-width: 1024px) {
+    .hero-section__heading {
+        font-size: 44px;
+    }
+
+    .hero-section__container {
+        gap: 32px;
+    }
+}
+
+@media (max-width: 900px) {
+    .hero-section {
+        min-height: auto;
+    }
+
+    .hero-section__container {
+        grid-template-columns: 1fr;
+        padding: 50px 20px 40px;
+        gap: 40px;
+    }
+
+    .hero-section__content {
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-section__heading {
+        align-items: center;
+    }
+
+    .hero-section__subtitle {
+        max-width: 100%;
+    }
+
+    .hero-section__cta-group {
+        justify-content: center;
+    }
+
+    .hero-section__visual {
+        order: -1;
+    }
+
+    .hero-section__image-wrapper {
+        max-width: 460px;
+        aspect-ratio: 4 / 3;
+    }
+
+    .hero-section__badge {
+        left: 16px;
+        bottom: -22px;
+    }
+}
+
+// ===== RESPONSIVE: MOBILE =====
+@media (max-width: 600px) {
+    .hero-section__container {
+        padding: 40px 16px 56px;
+    }
+
+    .hero-section__heading {
+        font-size: 32px;
+    }
+
+    .hero-section__eyebrow {
+        font-size: 11px;
+        padding: 7px 14px;
+    }
+
+    .hero-section__subtitle {
+        font-size: 15px;
+    }
+
+    .hero-section__btn {
+        padding: 13px 24px;
+        font-size: 14px;
+    }
+
+    .hero-section__image-wrapper {
+        aspect-ratio: 4 / 3.2;
+        border-radius: 20px;
+
+        &::before {
+            inset: -10px;
+            border-radius: 26px;
+        }
+    }
+
+    .hero-section__badge {
+        max-width: 190px;
+        padding: 10px 14px;
+        bottom: -18px;
+    }
+
+    .hero-section__badge-text {
+        font-size: 11.5px;
+    }
+}
+
+@media (max-width: 400px) {
+    .hero-section__heading {
+        font-size: 27px;
+    }
+}
