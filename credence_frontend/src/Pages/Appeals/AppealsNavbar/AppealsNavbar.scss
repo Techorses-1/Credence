@@ -1,0 +1,334 @@
+// ===== FONT IMPORTS =====
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "LightHeading";
+    src: url("../../../assets/fonts/cy-grotesk-wide-light.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+// ===== THEME TOKENS (matches existing project) =====
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+
+// ===== NAVBAR WRAPPER - FIXED AT TOP =====
+.appeals-navbar-wrapper {
+    width: 100%;
+    background: $white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.appeals-navbar {
+    max-width: 1300px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    box-sizing: border-box;
+    position: relative;
+}
+
+// ===== LOGO =====
+.appeals-navbar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.appeals-navbar-logo-image {
+    height: 90px;
+    width: auto;
+    object-fit: contain;
+}
+
+// ===== DESKTOP LINKS =====
+.appeals-navbar-links-desktop {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.appeals-navbar-nav-link {
+    color: $text-dark;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    padding: 8px 24px;
+    border-radius: 50px;
+    background: $white;
+    border: 2px solid $primary-green;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    user-select: none;
+
+    &:hover {
+        background: $primary-green;
+        color: $white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+    }
+
+    &.active {
+        background: $primary-green;
+        color: $white;
+        box-shadow: 0 4px 12px rgba(124, 214, 75, 0.3);
+    }
+}
+
+.appeals-navbar-caret {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1;
+}
+
+// ===== DESKTOP SERVICES DROPDOWN =====
+.appeals-navbar-services-wrapper {
+    position: relative;
+}
+
+.appeals-navbar-services-dropdown {
+    position: absolute;
+    top: calc(100% + 25px);
+    left: -20%;
+    transform: translateX(-50%);
+    background: $white;
+    border: 2px solid $primary-green;
+    border-radius: 16px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 240px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+
+    // little pointer arrow
+    &::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 14px;
+        height: 14px;
+        background: $white;
+        border-left: 2px solid $primary-green;
+        border-top: 2px solid $primary-green;
+    }
+}
+
+.appeals-navbar-services-item {
+    color: $text-dark;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    &:hover {
+        background: rgba(124, 214, 75, 0.12);
+        color: $primary-green-hover;
+    }
+
+    &.active {
+        background: $primary-green;
+        color: $white;
+    }
+}
+
+// ===== HAMBURGER (hidden on desktop) =====
+.appeals-navbar-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    background: $white;
+    border: 2px solid $primary-green;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1002;
+    transition: background 0.3s ease;
+
+    &:hover {
+        background: rgba(124, 214, 75, 0.08);
+    }
+
+    .hamburger-line {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: $text-dark;
+        border-radius: 2px;
+        transition: transform 0.35s ease, opacity 0.25s ease, background 0.3s ease;
+    }
+
+    // ---- animate to X when open ----
+    &.open {
+        .line-1 {
+            transform: translateY(7px) rotate(45deg);
+            background: $primary-green-hover;
+        }
+
+        .line-2 {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .line-3 {
+            transform: translateY(-7px) rotate(-45deg);
+            background: $primary-green-hover;
+        }
+    }
+}
+
+// ===== MOBILE MENU PANEL =====
+.appeals-navbar-mobile-menu {
+    overflow: hidden;
+    background: $white;
+    border-top: 1px solid rgba(124, 214, 75, 0.25);
+}
+
+.appeals-navbar-mobile-menu-inner {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 20px 24px;
+    gap: 10px;
+}
+
+.appeals-navbar-mobile-link {
+    color: $text-dark;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    background: rgba(124, 214, 75, 0.06);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.25s ease;
+    user-select: none;
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &.active {
+        background: $primary-green;
+        color: $white;
+    }
+}
+
+.appeals-navbar-mobile-services {
+    display: flex;
+    flex-direction: column;
+}
+
+.appeals-navbar-mobile-services-list {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 0 0 14px;
+}
+
+.appeals-navbar-mobile-services-item {
+    color: $text-grey;
+    font-family: "Inter", sans-serif;
+    font-size: 14.5px;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: $white;
+    border: 1.5px solid rgba(124, 214, 75, 0.35);
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &.active {
+        background: $primary-green;
+        color: $white;
+        border-color: $primary-green;
+    }
+}
+
+// ===== RESPONSIVE BREAKPOINT: TABLET & MOBILE =====
+@media (max-width: 900px) {
+    .appeals-navbar {
+        padding: 8px 16px;
+    }
+
+    .appeals-navbar-logo-image {
+        height: 60px;
+    }
+
+    .appeals-navbar-links-desktop {
+        display: none;
+    }
+
+    .appeals-navbar-hamburger {
+        display: flex;
+    }
+}
+
+@media (max-width: 480px) {
+    .appeals-navbar {
+        padding: 6px 12px;
+    }
+
+    .appeals-navbar-logo-image {
+        height: 52px;
+    }
+
+    .appeals-navbar-mobile-menu-inner {
+        padding: 14px 16px 20px;
+    }
+
+    .appeals-navbar-mobile-link {
+        font-size: 14.5px;
+        padding: 12px 14px;
+    }
+
+    .appeals-navbar-mobile-services-item {
+        font-size: 13.5px;
+        padding: 10px 14px;
+    }
+}

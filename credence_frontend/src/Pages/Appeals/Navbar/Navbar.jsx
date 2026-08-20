@@ -208,8 +208,8 @@ const Navbar = () => {
           </div>
 
           <motion.span
-            className={`navbar-nav-link ${isActive("/cases") ? "active" : ""}`}
-            onClick={() => handleNavClick("/cases")}
+            className={`navbar-nav-link ${isActive("/appeals/cases") ? "active" : ""}`}
+            onClick={() => handleNavClick("/appeals/cases")}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

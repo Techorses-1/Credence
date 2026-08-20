@@ -1,0 +1,155 @@
+// ===== FONT IMPORTS =====
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+
+.who-we-help-cards-section {
+    width: 100%;
+    background: $white;
+    padding: 80px 0;
+}
+
+.who-we-help-cards__container {
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.who-we-help-cards__header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 50px;
+}
+
+.who-we-help-cards__eyebrow {
+    display: inline-flex;
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    background: rgba(124, 214, 75, 0.1);
+    border: 1.5px solid $primary-green;
+    padding: 8px 18px;
+    border-radius: 50px;
+    margin-bottom: 18px;
+}
+
+.who-we-help-cards__heading {
+    font-family: "Heading", sans-serif;
+    font-size: 36px;
+    color: $text-dark;
+    margin: 0 0 14px;
+    line-height: 1.25;
+}
+
+.who-we-help-cards__subtitle {
+    font-family: "Inter", sans-serif;
+    font-size: 15.5px;
+    color: $text-grey;
+    line-height: 1.7;
+    margin: 0;
+}
+
+.who-we-help-cards__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.who-we-help-cards__card {
+    background: $white;
+    border: 1.5px solid rgba(124, 214, 75, 0.25);
+    border-radius: 20px;
+    padding: 30px 26px;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+
+    &:hover {
+        border-color: $primary-green;
+        box-shadow: 0 14px 32px rgba(124, 214, 75, 0.16);
+    }
+}
+
+.who-we-help-cards__icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(124, 214, 75, 0.12);
+    color: $primary-green-hover;
+    font-size: 20px;
+    margin-bottom: 18px;
+}
+
+.who-we-help-cards__title {
+    font-family: "Arimo", sans-serif;
+    font-size: 16.5px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 10px;
+    line-height: 1.4;
+}
+
+.who-we-help-cards__desc {
+    font-family: "Inter", sans-serif;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: $text-grey;
+    margin: 0;
+}
+
+@media (max-width: 1024px) {
+    .who-we-help-cards__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .who-we-help-cards-section {
+        padding: 60px 0;
+    }
+
+    .who-we-help-cards__heading {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 560px) {
+    .who-we-help-cards-section {
+        padding: 48px 0;
+    }
+
+    .who-we-help-cards__grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .who-we-help-cards__heading {
+        font-size: 24px;
+    }
+
+    .who-we-help-cards__eyebrow {
+        font-size: 11px;
+        padding: 7px 14px;
+    }
+
+    .who-we-help-cards__card {
+        padding: 24px 20px;
+    }
+}

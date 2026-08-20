@@ -18,11 +18,11 @@ const Blogs = () => {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       <BlogsHero />
       <BlogIntro />
       <BlogList />
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

@@ -43,6 +43,9 @@ import AdminMonthLock from './Pages/Admin/AdminManage/AdminMonthLock';
 import EmployeeFinanceRequests from './Pages/Employee/FinanceReq/EmployeeFinanceRequests';
 import AppealsHome from './Pages/Appeals/Pages/AppealsHome/AppealsHome';
 
+// IMPORT LAYOUT COMPONENT
+import AppealsLayout from './Pages/Appeals/Layout/AppealsLayout';
+
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
   const isMaintenanceMode = false;  // CHANGE THIS TO false WHEN SITE IS READY
@@ -73,15 +76,24 @@ function App() {
           <Route path="/drive" element={<GoogleDrivePicker />} />
           <Route path="*" element={<NotFound />} />
 
-
-          {/* APPEALS ROUTES  */}
-
-          <Route path="/appeals" element={<AppealsHome />} />
-
-
-
-          <Route path="/cases" element={<Blogs />} />
-          <Route path="/cases/:id" element={<BlogSingle />} />
+          {/* APPEALS ROUTES - WITH FIXED NAVBAR LAYOUT */}
+          <Route path="/appeals" element={
+            <AppealsLayout>
+              <AppealsHome />
+            </AppealsLayout>
+          } />
+          
+          <Route path="/appeals/cases" element={
+            <AppealsLayout>
+              <Blogs />
+            </AppealsLayout>
+          } />
+          
+          <Route path="/appeals/cases/:id" element={
+            <AppealsLayout>
+              <BlogSingle />
+            </AppealsLayout>
+          } />
 
           {/* ADMIN ROUTES  */}
 

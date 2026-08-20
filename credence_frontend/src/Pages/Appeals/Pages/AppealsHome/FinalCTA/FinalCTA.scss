@@ -1,0 +1,219 @@
+// ===== FONT IMPORTS =====
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+  font-family: "Heading";
+  src: url("../../../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+  font-style: normal;
+  font-display: swap;
+}
+
+// ===== THEME TOKENS =====
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+
+// ===== SECTION =====
+.final-cta-section {
+  position: relative;
+  width: 100%;
+  background: $white;
+  padding: 90px 0px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.final-cta__container {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+// ===== EYEBROW =====
+.final-cta__eyebrow {
+  display: inline-flex;
+  font-family: "Arimo", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: $primary-green-hover;
+  background: rgba(124, 214, 75, 0.1);
+  border: 1.5px solid $primary-green;
+  padding: 8px 18px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+}
+
+// ===== HEADING =====
+.final-cta__heading {
+  font-family: "Heading", sans-serif;
+  font-size: 42px;
+  line-height: 1.25;
+  color: $text-dark;
+  margin: 0 0 18px;
+}
+
+.final-cta__heading-accent {
+  color: $primary-green-hover;
+}
+
+// ===== SUBTITLE =====
+.final-cta__subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: $text-grey;
+  max-width: 500px;
+  margin: 0 0 38px;
+}
+
+// ===== BUTTONS =====
+.final-cta__btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.final-cta__btn {
+  font-family: "Arimo", sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  padding: 16px 34px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.final-cta__btn--primary {
+  background: $primary-green;
+  color: $white;
+  border: 2px solid $primary-green;
+
+  &:hover {
+    background: $primary-green-hover;
+    border-color: $primary-green-hover;
+    box-shadow: 0 8px 22px rgba(124, 214, 75, 0.35);
+    transform: translateY(-2px);
+  }
+}
+
+.final-cta__btn--secondary {
+  background: $white;
+  color: $text-dark;
+  border: 2px solid $text-dark;
+
+  &:hover {
+    background: $text-dark;
+    color: $white;
+    transform: translateY(-2px);
+  }
+}
+
+// ===== DECORATIVE SHAPES =====
+.final-cta__shape {
+  position: absolute;
+  width: 260px;
+  height: 420px;
+  border-radius: 200px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.final-cta__shape--left {
+  left: -110px;
+  top: 50%;
+  transform: translateY(-50%) rotate(15deg);
+  background: radial-gradient(circle, $primary-green, transparent 70%);
+}
+
+.final-cta__shape--right {
+  right: -110px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-15deg);
+  background: radial-gradient(circle, $primary-green, transparent 70%);
+}
+
+// ===== RESPONSIVE: TABLET =====
+@media (max-width: 900px) {
+  .final-cta-section {
+    padding: 70px 20px;
+  }
+
+  .final-cta__heading {
+    font-size: 34px;
+  }
+
+  .final-cta__shape {
+    width: 180px;
+    height: 320px;
+  }
+
+  .final-cta__shape--left {
+    left: -90px;
+  }
+
+  .final-cta__shape--right {
+    right: -90px;
+  }
+}
+
+// ===== RESPONSIVE: MOBILE =====
+@media (max-width: 600px) {
+  .final-cta-section {
+    padding: 56px 16px;
+  }
+
+  .final-cta__eyebrow {
+    font-size: 11px;
+    padding: 7px 14px;
+    margin-bottom: 18px;
+  }
+
+  .final-cta__heading {
+    font-size: 26px;
+    margin-bottom: 14px;
+  }
+
+  .final-cta__subtitle {
+    font-size: 14.5px;
+    margin-bottom: 28px;
+  }
+
+  .final-cta__btn-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .final-cta__btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-size: 14px;
+  }
+
+  .final-cta__shape {
+    width: 120px;
+    height: 240px;
+    opacity: 0.06 !important;
+  }
+
+  .final-cta__shape--left {
+    left: -70px;
+  }
+
+  .final-cta__shape--right {
+    right: -70px;
+  }
+}

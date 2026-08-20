@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+
+.trust-hover-cards-section {
+    width: 100%;
+    background: #f7faf5;
+    padding: 80px 0;
+}
+
+.trust-hover-cards__container {
+    max-width: 1240px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.trust-hover-cards__header {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 50px;
+}
+
+.trust-hover-cards__eyebrow {
+    display: inline-flex;
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    background: rgba(124, 214, 75, 0.1);
+    border: 1.5px solid $primary-green;
+    padding: 8px 18px;
+    border-radius: 50px;
+    margin-bottom: 18px;
+}
+
+.trust-hover-cards__heading {
+    font-family: "Heading", sans-serif;
+    font-size: 34px;
+    color: $text-dark;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.trust-hover-cards__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+// ===== FLIP CARD =====
+.trust-hover-cards__card {
+    perspective: 1200px;
+    height: 220px;
+}
+
+.trust-hover-cards__card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+    transform-style: preserve-3d;
+}
+
+.trust-hover-cards__card:hover .trust-hover-cards__card-inner {
+    transform: rotateY(180deg);
+}
+
+.trust-hover-cards__face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    padding: 26px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.trust-hover-cards__face--front {
+    background: $white;
+    border: 1.5px solid rgba(124, 214, 75, 0.25);
+}
+
+.trust-hover-cards__face--back {
+    background: $primary-green;
+    transform: rotateY(180deg);
+}
+
+.trust-hover-cards__icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(124, 214, 75, 0.12);
+    color: $primary-green-hover;
+    font-size: 19px;
+    margin-bottom: 16px;
+}
+
+.trust-hover-cards__title {
+    font-family: "Arimo", sans-serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.trust-hover-cards__title--back {
+    color: $white;
+    margin-bottom: 10px;
+}
+
+.trust-hover-cards__desc {
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 1024px) {
+    .trust-hover-cards__grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .trust-hover-cards-section {
+        padding: 60px 0;
+    }
+
+    .trust-hover-cards__heading {
+        font-size: 28px;
+    }
+}
+
+// touch devices can't hover — tap to flip instead
+@media (hover: none) {
+    .trust-hover-cards__card-inner {
+        transition: transform 0.5s ease;
+    }
+
+    .trust-hover-cards__card:active .trust-hover-cards__card-inner {
+        transform: rotateY(180deg);
+    }
+}
+
+@media (max-width: 560px) {
+    .trust-hover-cards-section {
+        padding: 48px 0;
+    }
+
+    .trust-hover-cards__eyebrow {
+        font-size: 11px;
+        padding: 7px 14px;
+    }
+
+    .trust-hover-cards__heading {
+        font-size: 22px;
+    }
+
+    .trust-hover-cards__grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .trust-hover-cards__card {
+        height: 190px;
+    }
+
+    .trust-hover-cards__icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+
+    .trust-hover-cards__title {
+        font-size: 13px;
+    }
+
+    .trust-hover-cards__desc {
+        font-size: 11.5px;
+    }
+}

@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./BlogSingle.scss";
-import Navbar from "../../Home/Navbar/Navbar";
-import Footer from "../../Home/Footer/Footer";
 import img from "../../../assets/Images/cases/img4.png";
 
 // Static author (same for all blogs)
@@ -357,14 +355,12 @@ Read more: ${shareUrl}`;
   if (loading) {
     return (
       <>
-        <Navbar />
         <section className="blog-single">
           <div className="loading-container">
             <div className="loading-spinner"></div>
             <p>Loading blog...</p>
           </div>
         </section>
-        <Footer />
       </>
     );
   }
@@ -377,7 +373,7 @@ Read more: ${shareUrl}`;
 
   return (
     <>
-      <Navbar />
+      
       <ToastContainer
         position="top-center"
         autoClose={3500}
@@ -552,7 +548,6 @@ Read more: ${shareUrl}`;
           </>
         )}
       </AnimatePresence>
-      <Footer />
     </>
   );
 };
