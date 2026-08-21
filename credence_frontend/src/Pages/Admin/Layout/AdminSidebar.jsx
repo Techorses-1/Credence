@@ -373,7 +373,7 @@ const AdminSidebar = ({ children }) => {
         <div className="admin-sidebar-footer">
           <span>Designed & Developed By</span>
           <a rel="noopener noreferrer" className="admin-footer-link">
-            Vapautus Media Private Limited
+            J. lad Group OY
           </a>
         </div>
       </div>

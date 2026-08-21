@@ -13,6 +13,9 @@ const EmployeeViewedFile = require("../models/EmployeeViewedFile");
 const EmployeeAuditedFile = require("../models/EmployeeAuditedFile");
 const FinancialStatementRequest = require("../models/FinancialStatementRequestNew");
 
+const EmployeeGeneralTask = require("../models/EmployeeGeneralTask");
+
+
 const router = express.Router();
 
 // Console logging utility
@@ -3290,4 +3293,428 @@ router.put("/finance-done/:requestId", async (req, res) => {
   }
 });
 
+
+/* ===============================
+   EMPLOYEE: GET ALL GENERAL TASKS
+================================ */
+router.get("/general-tasks", async (req, res) => {
+  try {
+    const token = req.cookies?.employeeToken;
+    const { status, limit = 20, page = 1 } = req.query;
+
+    logToConsole("INFO", "EMPLOYEE_GENERAL_TASKS_REQUEST", {
+      ip: req.ip,
+      hasToken: !!token,
+      status: status || "all",
+      page,
+      limit
+    });
+
+    // ===== VALIDATE TOKEN =====
+    if (!token) {
+      logToConsole("WARN", "EMPLOYEE_GENERAL_TASKS_NO_TOKEN", { ip: req.ip });
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - No token"
+      });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (jwtError) {
+      logToConsole("ERROR", "EMPLOYEE_GENERAL_TASKS_INVALID_TOKEN", {
+        error: jwtError.message,
+        ip: req.ip
+      });
+      res.clearCookie("employeeToken");
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired token",
+        clearedCookie: true
+      });
+    }
+
+    const employeeId = decoded.employeeId;
+
+    // ===== FIND EMPLOYEE =====
+    const employee = await Employee.findOne({ employeeId });
+    if (!employee) {
+      logToConsole("ERROR", "EMPLOYEE_GENERAL_TASKS_EMPLOYEE_NOT_FOUND", {
+        employeeId,
+        ip: req.ip
+      });
+      res.clearCookie("employeeToken");
+      return res.status(404).json({
+        success: false,
+        message: "Employee not found",
+        clearedCookie: true
+      });
+    }
+
+    // ===== FIND GENERAL TASKS DOCUMENT =====
+    const employeeGeneralTask = await EmployeeGeneralTask.findOne({ employeeId });
+
+    // ===== IF NO TASKS FOUND =====
+    if (!employeeGeneralTask || employeeGeneralTask.tasks.length === 0) {
+      logToConsole("INFO", "EMPLOYEE_NO_GENERAL_TASKS", {
+        employeeId,
+        employeeName: employee.name
+      });
+
+      return res.json({
+        success: true,
+        data: {
+          employeeId: employee.employeeId,
+          employeeName: employee.name,
+          employeeEmail: employee.email,
+          totalTasks: 0,
+          pendingTasks: 0,
+          completedTasks: 0,
+          cancelledTasks: 0,
+          tasks: []
+        }
+      });
+    }
+
+    // ===== FILTER BY STATUS =====
+    let filteredTasks = [...employeeGeneralTask.tasks];
+
+    if (status && status !== "all" && status !== "undefined") {
+      const validStatuses = ["pending", "completed", "cancelled"];
+      if (validStatuses.includes(status)) {
+        filteredTasks = filteredTasks.filter(t => t.status === status);
+        logToConsole("DEBUG", "EMPLOYEE_FILTERED_TASKS_BY_STATUS", {
+          status,
+          count: filteredTasks.length
+        });
+      } else {
+        logToConsole("WARN", "EMPLOYEE_INVALID_STATUS_FILTER", {
+          status,
+          validStatuses
+        });
+        return res.status(400).json({
+          success: false,
+          message: `Invalid status filter. Must be one of: pending, completed, cancelled`
+        });
+      }
+    }
+
+    // ===== SORT BY CREATED AT (NEWEST FIRST) =====
+    filteredTasks.sort((a, b) => b.createdAt - a.createdAt);
+
+    // ===== PAGINATION =====
+    const totalTasks = filteredTasks.length;
+    const totalPages = Math.ceil(totalTasks / parseInt(limit));
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const paginatedTasks = filteredTasks.slice(skip, skip + parseInt(limit));
+
+    // ===== COUNT BY STATUS =====
+    const pendingTasks = employeeGeneralTask.tasks.filter(t => t.status === "pending").length;
+    const completedTasks = employeeGeneralTask.tasks.filter(t => t.status === "completed").length;
+    const cancelledTasks = employeeGeneralTask.tasks.filter(t => t.status === "cancelled").length;
+
+    // ===== ACTIVITY LOG =====
+    try {
+      await ActivityLog.create({
+        userName: employee.name,
+        role: "EMPLOYEE",
+        employeeId: employee.employeeId,
+        action: "EMPLOYEE_GENERAL_TASKS_VIEWED",
+        details: `Employee viewed their general tasks - Total: ${totalTasks}`,
+        dateTime: new Date(),
+        metadata: {
+          totalTasks,
+          pendingTasks,
+          completedTasks,
+          cancelledTasks,
+          statusFilter: status || "all"
+        }
+      });
+    } catch (logError) {
+      logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
+    }
+
+    logToConsole("SUCCESS", "EMPLOYEE_GENERAL_TASKS_FETCHED", {
+      employeeId,
+      employeeName: employee.name,
+      totalTasks,
+      pendingTasks,
+      completedTasks,
+      cancelledTasks,
+      returnedTasks: paginatedTasks.length
+    });
+
+    res.json({
+      success: true,
+      data: {
+        employeeId: employee.employeeId,
+        employeeName: employee.name,
+        employeeEmail: employee.email,
+        totalTasks,
+        pendingTasks,
+        completedTasks,
+        cancelledTasks,
+        tasks: paginatedTasks.map(task => ({
+          taskId: task.taskId,
+          task: task.task,
+          status: task.status,
+          createdAt: task.createdAt,
+          createdByName: task.createdByName,
+          completedAt: task.completedAt || null,
+          employeeNotes: task.employeeNotes || null,
+          cancelledAt: task.cancelledAt || null,
+          cancelledByName: task.cancelledByName || null,
+          cancellationReason: task.cancellationReason || null
+        })),
+        pagination: {
+          currentPage: parseInt(page),
+          totalPages,
+          totalItems: totalTasks,
+          itemsPerPage: parseInt(limit),
+          hasNext: parseInt(page) < totalPages,
+          hasPrev: parseInt(page) > 1
+        }
+      }
+    });
+
+  } catch (error) {
+    logToConsole("ERROR", "EMPLOYEE_GENERAL_TASKS_FAILED", {
+      error: error.message,
+      stack: error.stack,
+      ip: req.ip
+    });
+
+    res.status(500).json({
+      success: false,
+      message: "Error fetching general tasks",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
+    });
+  }
+});
+
+
+/* ===============================
+   EMPLOYEE: MARK GENERAL TASK AS COMPLETED
+================================ */
+router.post("/general-task/complete/:taskId", async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const { employeeNotes } = req.body;
+    const token = req.cookies?.employeeToken;
+
+    logToConsole("INFO", "EMPLOYEE_GENERAL_TASK_COMPLETE_REQUEST", {
+      ip: req.ip,
+      taskId,
+      hasNotes: !!employeeNotes,
+      hasToken: !!token
+    });
+
+    // ===== VALIDATE TOKEN =====
+    if (!token) {
+      logToConsole("WARN", "EMPLOYEE_TASK_COMPLETE_NO_TOKEN", { ip: req.ip });
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - No token"
+      });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (jwtError) {
+      logToConsole("ERROR", "EMPLOYEE_TASK_COMPLETE_INVALID_TOKEN", {
+        error: jwtError.message,
+        ip: req.ip
+      });
+      res.clearCookie("employeeToken");
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired token",
+        clearedCookie: true
+      });
+    }
+
+    const employeeId = decoded.employeeId;
+
+    // ===== FIND EMPLOYEE =====
+    const employee = await Employee.findOne({ employeeId });
+    if (!employee) {
+      logToConsole("ERROR", "EMPLOYEE_TASK_COMPLETE_EMPLOYEE_NOT_FOUND", {
+        employeeId,
+        ip: req.ip
+      });
+      res.clearCookie("employeeToken");
+      return res.status(404).json({
+        success: false,
+        message: "Employee not found",
+        clearedCookie: true
+      });
+    }
+
+    // ===== VALIDATE TASK ID =====
+    if (!taskId) {
+      logToConsole("WARN", "EMPLOYEE_TASK_COMPLETE_MISSING_TASK_ID", {
+        employeeId,
+        ip: req.ip
+      });
+      return res.status(400).json({
+        success: false,
+        message: "Task ID is required"
+      });
+    }
+
+    // ===== FIND THE TASK =====
+    const employeeGeneralTask = await EmployeeGeneralTask.findOne({
+      employeeId: employee.employeeId,
+      "tasks.taskId": taskId
+    });
+
+    if (!employeeGeneralTask) {
+      logToConsole("WARN", "EMPLOYEE_TASK_COMPLETE_TASK_NOT_FOUND", {
+        taskId,
+        employeeId,
+        ip: req.ip
+      });
+      return res.status(404).json({
+        success: false,
+        message: "General task not found"
+      });
+    }
+
+    // ===== FIND THE TASK IN THE ARRAY =====
+    const taskIndex = employeeGeneralTask.tasks.findIndex(
+      t => t.taskId === taskId
+    );
+
+    if (taskIndex === -1) {
+      logToConsole("WARN", "EMPLOYEE_TASK_COMPLETE_TASK_NOT_IN_ARRAY", {
+        taskId,
+        employeeId,
+        ip: req.ip
+      });
+      return res.status(404).json({
+        success: false,
+        message: "Task not found in employee's tasks"
+      });
+    }
+
+    const task = employeeGeneralTask.tasks[taskIndex];
+
+    // ===== VALIDATE TASK BELONGS TO EMPLOYEE =====
+    // Already validated by finding with employeeId
+
+    // ===== VALIDATE STATUS =====
+    if (task.status === "completed") {
+      logToConsole("WARN", "EMPLOYEE_TASK_ALREADY_COMPLETED", {
+        taskId,
+        status: task.status,
+        employeeId,
+        ip: req.ip
+      });
+      return res.status(400).json({
+        success: false,
+        message: "Task is already completed"
+      });
+    }
+
+    if (task.status === "cancelled") {
+      logToConsole("WARN", "EMPLOYEE_TASK_ALREADY_CANCELLED", {
+        taskId,
+        status: task.status,
+        employeeId,
+        ip: req.ip
+      });
+      return res.status(400).json({
+        success: false,
+        message: "Task has been cancelled by admin and cannot be completed"
+      });
+    }
+
+    // ===== VALIDATE STATUS IS PENDING =====
+    if (task.status !== "pending") {
+      logToConsole("WARN", "EMPLOYEE_TASK_INVALID_STATUS_FOR_COMPLETE", {
+        taskId,
+        status: task.status,
+        employeeId,
+        ip: req.ip
+      });
+      return res.status(400).json({
+        success: false,
+        message: `Cannot complete task with status "${task.status}". Only pending tasks can be completed.`
+      });
+    }
+
+    // ===== UPDATE TASK TO COMPLETED =====
+    const now = new Date();
+    employeeGeneralTask.tasks[taskIndex].status = "completed";
+    employeeGeneralTask.tasks[taskIndex].completedAt = now;
+    employeeGeneralTask.tasks[taskIndex].completedBy = employee.employeeId;
+
+    if (employeeNotes && employeeNotes.trim()) {
+      employeeGeneralTask.tasks[taskIndex].employeeNotes = employeeNotes.trim();
+    }
+
+    await employeeGeneralTask.save();
+
+    // ===== ACTIVITY LOG =====
+    try {
+      await ActivityLog.create({
+        userName: employee.name,
+        role: "EMPLOYEE",
+        employeeId: employee.employeeId,
+        action: "GENERAL_TASK_COMPLETED",
+        details: `Employee completed general task "${task.task}"`,
+        dateTime: new Date(),
+        metadata: {
+          taskId: task.taskId,
+          task: task.task,
+          status: "completed",
+          completedAt: now,
+          hasNotes: !!employeeNotes
+        }
+      });
+    } catch (logError) {
+      logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
+    }
+
+    logToConsole("SUCCESS", "EMPLOYEE_GENERAL_TASK_COMPLETED", {
+      taskId,
+      employeeId,
+      employeeName: employee.name,
+      task: task.task,
+      hasNotes: !!employeeNotes
+    });
+
+    res.json({
+      success: true,
+      message: "General task marked as completed successfully",
+      data: {
+        taskId: task.taskId,
+        task: task.task,
+        status: "completed",
+        completedAt: now,
+        completedBy: employee.employeeId,
+        employeeNotes: employeeNotes || null
+      }
+    });
+
+  } catch (error) {
+    logToConsole("ERROR", "EMPLOYEE_GENERAL_TASK_COMPLETE_FAILED", {
+      error: error.message,
+      stack: error.stack,
+      taskId: req.params.taskId,
+      ip: req.ip
+    });
+
+    res.status(500).json({
+      success: false,
+      message: "Error completing general task",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
+    });
+  }
+});
+
 module.exports = router;
+
+// employee.js

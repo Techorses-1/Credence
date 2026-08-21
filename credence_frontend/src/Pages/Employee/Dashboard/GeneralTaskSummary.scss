@@ -1,0 +1,336 @@
+// components/Employee/GeneralTaskSummary.scss
+
+.general-task-summary {
+    height: 100%;
+
+    &.loading {
+        .summary-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        .loading-spinner-small {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(124, 214, 75, 0.2);
+            border-radius: 50%;
+            border-top-color: #7cd64b;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        .loading-text {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+    }
+
+    .summary-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        height: 100%;
+        min-height: 250px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        border-top: 4px solid #7cd64b;
+
+        &:hover {
+            box-shadow: 0 8px 25px rgba(124, 214, 75, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+
+                .header-icon {
+                    color: #7cd64b;
+                }
+
+                h3 {
+                    margin: 0;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #000000;
+                    font-family: 'Poppins', sans-serif;
+                }
+            }
+
+            .refresh-btn-small {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                background: #f8f9fa;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                color: #666;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: #7cd64b;
+                    color: #000;
+                    border-color: #7cd64b;
+                    transform: rotate(45deg);
+                }
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex: 1;
+
+            .stat-item {
+                background: #f8f9fa;
+                border-radius: 10px;
+                padding: 14px 16px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                }
+
+                .stat-icon {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+
+                    svg {
+                        font-size: 18px;
+                    }
+                }
+
+                .stat-info {
+                    .stat-value {
+                        display: block;
+                        font-size: 22px;
+                        font-weight: 700;
+                        color: #000000;
+                        line-height: 1.2;
+                    }
+
+                    .stat-label {
+                        display: block;
+                        font-size: 12px;
+                        color: #000;
+                        font-weight: 500;
+                        opacity: 0.7;
+                    }
+                }
+
+                // Color variants
+                &.total {
+                    .stat-icon {
+                        background: rgba(124, 214, 75, 0.12);
+
+                        svg {
+                            color: #7cd64b;
+                        }
+                    }
+
+                    .stat-value {
+                        color: #000;
+                    }
+                }
+
+                &.pending {
+                    .stat-icon {
+                        background: rgba(255, 165, 0, 0.12);
+
+                        svg {
+                            color: #ffa500;
+                        }
+                    }
+
+                    .stat-value {
+                        color: #ffa500;
+                    }
+                }
+
+                &.completed {
+                    .stat-icon {
+                        background: rgba(16, 185, 129, 0.12);
+
+                        svg {
+                            color: #10b981;
+                        }
+                    }
+
+                    .stat-value {
+                        color: #10b981;
+                    }
+                }
+
+                &.cancelled {
+                    .stat-icon {
+                        background: rgba(255, 75, 75, 0.12);
+
+                        svg {
+                            color: #ff4b4b;
+                        }
+                    }
+
+                    .stat-value {
+                        color: #ff4b4b;
+                    }
+                }
+            }
+        }
+
+        .view-all-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(124, 214, 75, 0.08);
+            border: 1px solid rgba(124, 214, 75, 0.2);
+            border-radius: 8px;
+            color: #7cd64b;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+            margin-top: auto;
+
+            &:hover:not(:disabled) {
+                background: rgba(124, 214, 75, 0.15);
+                border-color: #7cd64b;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(124, 214, 75, 0.15);
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                transform: none !important;
+                box-shadow: none !important;
+            }
+
+            svg {
+                color: #7cd64b;
+                transition: transform 0.2s ease;
+            }
+
+            &:hover:not(:disabled) svg {
+                transform: translateX(4px);
+            }
+        }
+    }
+}
+
+// Animation
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .general-task-summary {
+        .summary-card {
+            min-height: 200px;
+            padding: 16px;
+
+            .card-header {
+                .header-left {
+                    h3 {
+                        font-size: 16px;
+                    }
+                }
+            }
+
+            .stats-grid {
+                gap: 10px;
+
+                .stat-item {
+                    padding: 12px 14px;
+
+                    .stat-icon {
+                        width: 36px;
+                        height: 36px;
+                    }
+
+                    .stat-info {
+                        .stat-value {
+                            font-size: 18px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .general-task-summary {
+        .summary-card {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+
+                .stat-item {
+                    padding: 10px 12px;
+
+                    .stat-icon {
+                        width: 32px;
+                        height: 32px;
+
+                        svg {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .stat-info {
+                        .stat-value {
+                            font-size: 16px;
+                        }
+
+                        .stat-label {
+                            font-size: 10px;
+                        }
+                    }
+                }
+            }
+
+            .view-all-btn {
+                font-size: 13px;
+                padding: 10px 14px;
+            }
+        }
+    }
+}

@@ -268,12 +268,29 @@
     }
   }
 
+  // ==================== 2-COLUMN LAYOUT FOR NOTES & GENERAL TASKS ====================
+  .dashboard-two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+
+    .dashboard-column-left {
+      min-width: 0;
+    }
+
+    .dashboard-column-right {
+      min-width: 0;
+    }
+  }
+
   // Filter Section (Same as Client Dashboard - green theme)
   .filter-section {
     background: #ffffff;
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 32px;
+    margin-top: 64px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     border: 1px solid #e5e7eb;
 
@@ -1417,6 +1434,11 @@
 // Responsive Design
 @media (max-width: 1024px) {
   .employee-dashboard {
+    .dashboard-two-column {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
     .months-container {
       .month-card {
         .month-content {
@@ -1446,6 +1468,10 @@
 @media (max-width: 768px) {
   .employee-dashboard {
     padding: 16px;
+
+    .dashboard-two-column {
+      gap: 16px;
+    }
 
     .header-section {
       flex-direction: column;
@@ -1571,8 +1597,6 @@
     }
   }
 }
-
-
 
 /* ==================== STANDALONE NOTES SECTION ==================== */
 .standalone-notes-section {

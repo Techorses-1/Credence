@@ -13,7 +13,7 @@ const Client = require("../models/Client");
 const RemovedAssignment = require("../models/RemovedAssignment");
 // Add this with other requires at the top of employeeRoutes.js
 const EmployeeAssignment = require("../models/EmployeeAssignment");
-
+const EmployeeGeneralTask = require("../models/EmployeeGeneralTask");
 const router = express.Router();
 
 // Console logging utility
@@ -1862,4 +1862,579 @@ router.post("/activate/:employeeId", auth, async (req, res) => {
     }
 });
 
+
+/* ===============================
+   GET ALL GENERAL TASKS FOR ALL EMPLOYEES (ADMIN ONLY)
+================================ */
+router.get("/general-tasks/all", auth, async (req, res) => {
+    try {
+        const { status } = req.query;
+
+        logToConsole("INFO", "GET_ALL_GENERAL_TASKS_REQUEST", {
+            adminId: req.user.adminId,
+            adminName: req.user.name,
+            status: status || "all"
+        });
+
+        // Fetch all EmployeeGeneralTask documents
+        const allEmployeeTasks = await EmployeeGeneralTask.find();
+
+        // Collect all tasks with employee info
+        let allTasks = [];
+
+        allEmployeeTasks.forEach(empDoc => {
+            const employeeName = empDoc.employeeName;
+            const employeeId = empDoc.employeeId;
+
+            empDoc.tasks.forEach(task => {
+                allTasks.push({
+                    ...task.toObject(),
+                    employeeName: employeeName,
+                    employeeId: employeeId
+                });
+            });
+        });
+
+        // Filter by status if provided
+        if (status && status !== "all") {
+            allTasks = allTasks.filter(task => task.status === status);
+        }
+
+        // Sort by createdAt (newest first)
+        allTasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        logToConsole("SUCCESS", "GET_ALL_GENERAL_TASKS_SUCCESS", {
+            adminId: req.user.adminId,
+            totalTasks: allTasks.length,
+            status: status || "all"
+        });
+
+        res.json({
+            success: true,
+            data: allTasks,
+            total: allTasks.length
+        });
+
+    } catch (error) {
+        logToConsole("ERROR", "GET_ALL_GENERAL_TASKS_FAILED", {
+            error: error.message,
+            stack: error.stack,
+            adminId: req.user?.adminId
+        });
+
+        res.status(500).json({
+            success: false,
+            message: "Error fetching general tasks",
+            error: process.env.NODE_ENV === "development" ? error.message : undefined
+        });
+    }
+});
+
+/* ===============================
+   CREATE GENERAL TASK (ADMIN ONLY)
+================================ */
+router.post("/general-task/create", auth, async (req, res) => {
+    try {
+        const { employeeId, task, notes } = req.body;
+
+        logToConsole("INFO", "GENERAL_TASK_CREATE_REQUEST", {
+            adminId: req.user.adminId,
+            adminName: req.user.name,
+            employeeId,
+            task: task?.substring(0, 50) + (task?.length > 50 ? "..." : ""),
+            hasNotes: !!notes
+        });
+
+        // ===== VALIDATION =====
+        if (!employeeId || !task || !task.trim()) {
+            logToConsole("WARN", "GENERAL_TASK_MISSING_FIELDS", {
+                employeeId: !!employeeId,
+                task: !!task,
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                success: false,
+                message: "Missing required fields: employeeId and task are required"
+            });
+        }
+
+        // ===== FIND EMPLOYEE =====
+        const employee = await Employee.findOne({ employeeId });
+        if (!employee) {
+            logToConsole("WARN", "EMPLOYEE_NOT_FOUND_FOR_GENERAL_TASK", {
+                employeeId,
+                adminId: req.user.adminId
+            });
+            return res.status(404).json({
+                success: false,
+                message: "Employee not found"
+            });
+        }
+
+        // ===== CHECK IF EMPLOYEE GENERAL TASK DOCUMENT EXISTS =====
+        let employeeGeneralTask = await EmployeeGeneralTask.findOne({ employeeId });
+
+        // ===== CREATE NEW TASK OBJECT =====
+        const newTask = {
+            task: task.trim(),
+            status: "pending",
+            createdBy: req.user.adminId,
+            createdByName: req.user.name,
+            createdAt: new Date()
+        };
+
+        // ===== IF DOCUMENT EXISTS, PUSH TASK =====
+        if (employeeGeneralTask) {
+            employeeGeneralTask.tasks.push(newTask);
+            await employeeGeneralTask.save();
+
+            logToConsole("SUCCESS", "GENERAL_TASK_ADDED_TO_EXISTING", {
+                employeeId,
+                employeeName: employee.name,
+                totalTasks: employeeGeneralTask.tasks.length,
+                adminId: req.user.adminId
+            });
+        } else {
+            // ===== CREATE NEW DOCUMENT =====
+            employeeGeneralTask = new EmployeeGeneralTask({
+                employeeId: employee.employeeId,
+                employeeName: employee.name,
+                employeeEmail: employee.email,
+                tasks: [newTask]
+            });
+            await employeeGeneralTask.save();
+
+            logToConsole("SUCCESS", "GENERAL_TASK_DOCUMENT_CREATED", {
+                employeeId,
+                employeeName: employee.name,
+                adminId: req.user.adminId
+            });
+        }
+
+        // ===== GET THE NEWLY CREATED TASK =====
+        const createdTask = employeeGeneralTask.tasks[employeeGeneralTask.tasks.length - 1];
+
+        // ===== ACTIVITY LOG =====
+        try {
+            await ActivityLog.create({
+                userName: req.user.name,
+                role: "ADMIN",
+                adminId: req.user.adminId,
+                employeeId: employee.employeeId,
+                employeeName: employee.name,
+                action: "GENERAL_TASK_CREATED",
+                details: `Admin created general task "${createdTask.task}" for employee "${employee.name}"`,
+                dateTime: new Date(),
+                metadata: {
+                    taskId: createdTask.taskId,
+                    task: createdTask.task,
+                    status: createdTask.status,
+                    notes: notes || null
+                }
+            });
+        } catch (logError) {
+            logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
+        }
+
+        logToConsole("SUCCESS", "GENERAL_TASK_CREATED_SUCCESSFULLY", {
+            employeeId,
+            employeeName: employee.name,
+            taskId: createdTask.taskId,
+            task: createdTask.task,
+            status: createdTask.status,
+            adminId: req.user.adminId
+        });
+
+        res.json({
+            success: true,
+            message: "General task created successfully",
+            data: {
+                taskId: createdTask.taskId,
+                task: createdTask.task,
+                status: createdTask.status,
+                createdAt: createdTask.createdAt,
+                createdBy: createdTask.createdBy,
+                createdByName: createdTask.createdByName
+            }
+        });
+
+    } catch (error) {
+        logToConsole("ERROR", "GENERAL_TASK_CREATE_FAILED", {
+            error: error.message,
+            stack: error.stack,
+            adminId: req.user?.adminId,
+            requestBody: req.body
+        });
+
+        res.status(500).json({
+            success: false,
+            message: "Error creating general task",
+            error: process.env.NODE_ENV === "development" ? error.message : undefined
+        });
+    }
+});
+
+/* ===============================
+   CANCEL GENERAL TASK (ADMIN ONLY)
+================================ */
+router.post("/general-task/cancel/:taskId", auth, async (req, res) => {
+    try {
+        const { taskId } = req.params;
+        const { cancellationReason } = req.body;
+
+        logToConsole("INFO", "GENERAL_TASK_CANCEL_REQUEST", {
+            adminId: req.user.adminId,
+            adminName: req.user.name,
+            taskId,
+            hasReason: !!cancellationReason
+        });
+
+        // ===== VALIDATION =====
+        if (!taskId) {
+            logToConsole("WARN", "GENERAL_TASK_CANCEL_MISSING_TASK_ID", {
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                success: false,
+                message: "Task ID is required"
+            });
+        }
+
+        // ===== FIND THE TASK =====
+        const employeeGeneralTask = await EmployeeGeneralTask.findOne({
+            "tasks.taskId": taskId
+        });
+
+        if (!employeeGeneralTask) {
+            logToConsole("WARN", "GENERAL_TASK_NOT_FOUND_FOR_CANCEL", {
+                taskId,
+                adminId: req.user.adminId
+            });
+            return res.status(404).json({
+                success: false,
+                message: "General task not found"
+            });
+        }
+
+        // ===== FIND THE TASK IN THE ARRAY =====
+        const taskIndex = employeeGeneralTask.tasks.findIndex(
+            t => t.taskId === taskId
+        );
+
+        if (taskIndex === -1) {
+            logToConsole("WARN", "GENERAL_TASK_NOT_FOUND_IN_ARRAY", {
+                taskId,
+                employeeId: employeeGeneralTask.employeeId,
+                adminId: req.user.adminId
+            });
+            return res.status(404).json({
+                success: false,
+                message: "General task not found in employee's tasks"
+            });
+        }
+
+        const task = employeeGeneralTask.tasks[taskIndex];
+
+        // ===== VALIDATE STATUS =====
+        if (task.status === "completed") {
+            logToConsole("WARN", "GENERAL_TASK_ALREADY_COMPLETED_CANNOT_CANCEL", {
+                taskId,
+                status: task.status,
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                success: false,
+                message: "Cannot cancel a task that is already completed"
+            });
+        }
+
+        if (task.status === "cancelled") {
+            logToConsole("WARN", "GENERAL_TASK_ALREADY_CANCELLED", {
+                taskId,
+                status: task.status,
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                success: false,
+                message: "Task is already cancelled"
+            });
+        }
+
+        // ===== VALIDATE STATUS IS PENDING =====
+        if (task.status !== "pending") {
+            logToConsole("WARN", "GENERAL_TASK_CANNOT_CANCEL_INVALID_STATUS", {
+                taskId,
+                status: task.status,
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                success: false,
+                message: `Cannot cancel task with status "${task.status}". Only pending tasks can be cancelled.`
+            });
+        }
+
+        // ===== UPDATE TASK TO CANCELLED =====
+        const now = new Date();
+        employeeGeneralTask.tasks[taskIndex].status = "cancelled";
+        employeeGeneralTask.tasks[taskIndex].cancelledAt = now;
+        employeeGeneralTask.tasks[taskIndex].cancelledBy = req.user.adminId;
+        employeeGeneralTask.tasks[taskIndex].cancelledByName = req.user.name;
+        if (cancellationReason && cancellationReason.trim()) {
+            employeeGeneralTask.tasks[taskIndex].cancellationReason = cancellationReason.trim();
+        }
+
+        await employeeGeneralTask.save();
+
+        // ===== ACTIVITY LOG =====
+        try {
+            await ActivityLog.create({
+                userName: req.user.name,
+                role: "ADMIN",
+                adminId: req.user.adminId,
+                employeeId: employeeGeneralTask.employeeId,
+                employeeName: employeeGeneralTask.employeeName,
+                action: "GENERAL_TASK_CANCELLED",
+                details: `Admin cancelled general task "${task.task}" for employee "${employeeGeneralTask.employeeName}"`,
+                dateTime: new Date(),
+                metadata: {
+                    taskId: task.taskId,
+                    task: task.task,
+                    status: "cancelled",
+                    cancellationReason: cancellationReason || null,
+                    cancelledBy: req.user.name
+                }
+            });
+        } catch (logError) {
+            logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
+        }
+
+        logToConsole("SUCCESS", "GENERAL_TASK_CANCELLED_SUCCESSFULLY", {
+            taskId,
+            employeeId: employeeGeneralTask.employeeId,
+            employeeName: employeeGeneralTask.employeeName,
+            task: task.task,
+            cancelledBy: req.user.name,
+            adminId: req.user.adminId
+        });
+
+        res.json({
+            success: true,
+            message: "General task cancelled successfully",
+            data: {
+                taskId: task.taskId,
+                task: task.task,
+                status: "cancelled",
+                cancelledAt: now,
+                cancelledBy: req.user.adminId,
+                cancelledByName: req.user.name,
+                cancellationReason: cancellationReason || null
+            }
+        });
+
+    } catch (error) {
+        logToConsole("ERROR", "GENERAL_TASK_CANCEL_FAILED", {
+            error: error.message,
+            stack: error.stack,
+            taskId: req.params.taskId,
+            adminId: req.user?.adminId
+        });
+
+        res.status(500).json({
+            success: false,
+            message: "Error cancelling general task",
+            error: process.env.NODE_ENV === "development" ? error.message : undefined
+        });
+    }
+});
+
+
+
+/* ===============================
+   GET ALL GENERAL TASKS FOR EMPLOYEE (ADMIN ONLY)
+================================ */
+router.get("/general-tasks/:employeeId", auth, async (req, res) => {
+    try {
+        const { employeeId } = req.params;
+        const { status, limit = 20, page = 1 } = req.query;
+
+        logToConsole("INFO", "GET_GENERAL_TASKS_REQUEST", {
+            adminId: req.user.adminId,
+            adminName: req.user.name,
+            employeeId,
+            status: status || "all",
+            page,
+            limit
+        });
+
+        // ===== VALIDATION =====
+        if (!employeeId) {
+            logToConsole("WARN", "GET_GENERAL_TASKS_MISSING_EMPLOYEE_ID", {
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                success: false,
+                message: "Employee ID is required"
+            });
+        }
+
+        // ===== FIND EMPLOYEE =====
+        const employee = await Employee.findOne({ employeeId });
+        if (!employee) {
+            logToConsole("WARN", "EMPLOYEE_NOT_FOUND_FOR_GENERAL_TASKS", {
+                employeeId,
+                adminId: req.user.adminId
+            });
+            return res.status(404).json({
+                success: false,
+                message: "Employee not found"
+            });
+        }
+
+        // ===== FIND GENERAL TASKS DOCUMENT =====
+        const employeeGeneralTask = await EmployeeGeneralTask.findOne({ employeeId });
+
+        // ===== IF NO TASKS FOUND =====
+        if (!employeeGeneralTask || employeeGeneralTask.tasks.length === 0) {
+            logToConsole("INFO", "NO_GENERAL_TASKS_FOUND", {
+                employeeId,
+                employeeName: employee.name,
+                adminId: req.user.adminId
+            });
+
+            return res.json({
+                success: true,
+                data: {
+                    employeeId: employee.employeeId,
+                    employeeName: employee.name,
+                    employeeEmail: employee.email,
+                    totalTasks: 0,
+                    pendingTasks: 0,
+                    completedTasks: 0,
+                    cancelledTasks: 0,
+                    tasks: []
+                }
+            });
+        }
+
+        // ===== FILTER BY STATUS =====
+        let filteredTasks = [...employeeGeneralTask.tasks];
+
+        if (status && status !== "all" && status !== "undefined") {
+            const validStatuses = ["pending", "completed", "cancelled"];
+            if (validStatuses.includes(status)) {
+                filteredTasks = filteredTasks.filter(t => t.status === status);
+                logToConsole("DEBUG", "FILTERED_TASKS_BY_STATUS", {
+                    status,
+                    count: filteredTasks.length,
+                    adminId: req.user.adminId
+                });
+            } else {
+                logToConsole("WARN", "INVALID_STATUS_FILTER", {
+                    status,
+                    validStatuses,
+                    adminId: req.user.adminId
+                });
+                return res.status(400).json({
+                    success: false,
+                    message: `Invalid status filter. Must be one of: pending, completed, cancelled`
+                });
+            }
+        }
+
+        // ===== SORT BY CREATED AT (NEWEST FIRST) =====
+        filteredTasks.sort((a, b) => b.createdAt - a.createdAt);
+
+        // ===== PAGINATION =====
+        const totalTasks = filteredTasks.length;
+        const totalPages = Math.ceil(totalTasks / parseInt(limit));
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+        const paginatedTasks = filteredTasks.slice(skip, skip + parseInt(limit));
+
+        // ===== COUNT BY STATUS =====
+        const pendingTasks = employeeGeneralTask.tasks.filter(t => t.status === "pending").length;
+        const completedTasks = employeeGeneralTask.tasks.filter(t => t.status === "completed").length;
+        const cancelledTasks = employeeGeneralTask.tasks.filter(t => t.status === "cancelled").length;
+
+        // ===== ACTIVITY LOG =====
+        try {
+            await ActivityLog.create({
+                userName: req.user.name,
+                role: "ADMIN",
+                adminId: req.user.adminId,
+                employeeId: employee.employeeId,
+                employeeName: employee.name,
+                action: "GENERAL_TASKS_VIEWED",
+                details: `Admin viewed general tasks for employee "${employee.name}"`,
+                dateTime: new Date(),
+                metadata: {
+                    totalTasks: totalTasks,
+                    pendingTasks,
+                    completedTasks,
+                    cancelledTasks,
+                    statusFilter: status || "all",
+                    page: parseInt(page),
+                    limit: parseInt(limit)
+                }
+            });
+        } catch (logError) {
+            logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
+        }
+
+        logToConsole("SUCCESS", "GENERAL_TASKS_FETCHED_SUCCESSFULLY", {
+            employeeId,
+            employeeName: employee.name,
+            totalTasks,
+            pendingTasks,
+            completedTasks,
+            cancelledTasks,
+            returnedTasks: paginatedTasks.length,
+            adminId: req.user.adminId
+        });
+
+        res.json({
+            success: true,
+            data: {
+                employeeId: employee.employeeId,
+                employeeName: employee.name,
+                employeeEmail: employee.email,
+                totalTasks,
+                pendingTasks,
+                completedTasks,
+                cancelledTasks,
+                tasks: paginatedTasks,
+                pagination: {
+                    currentPage: parseInt(page),
+                    totalPages,
+                    totalItems: totalTasks,
+                    itemsPerPage: parseInt(limit),
+                    hasNext: parseInt(page) < totalPages,
+                    hasPrev: parseInt(page) > 1
+                }
+            }
+        });
+
+    } catch (error) {
+        logToConsole("ERROR", "GET_GENERAL_TASKS_FAILED", {
+            error: error.message,
+            stack: error.stack,
+            employeeId: req.params.employeeId,
+            adminId: req.user?.adminId
+        });
+
+        res.status(500).json({
+            success: false,
+            message: "Error fetching general tasks",
+            error: process.env.NODE_ENV === "development" ? error.message : undefined
+        });
+    }
+});
+
+
+
+
+
+
+
 module.exports = router;
+
+//adminEmployee.js

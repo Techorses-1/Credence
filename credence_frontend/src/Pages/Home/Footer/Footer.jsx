@@ -102,7 +102,7 @@ const Footer = () => {
                 <a
                   rel="noopener noreferrer"
                 >
-                  J.lad Group OY
+                  J. lad Group OY
                 </a>
               </span>
             </p>

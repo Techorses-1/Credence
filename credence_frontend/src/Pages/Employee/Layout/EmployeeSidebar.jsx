@@ -10,8 +10,9 @@ import {
   FiHome,
   FiUsers,
   FiCheckSquare,
-  FiShield ,
-  FiDollarSign  
+  FiShield,
+  FiDollarSign,
+  FiFileText,
 } from "react-icons/fi";
 import { MdOutlineDashboard } from "react-icons/md";
 
@@ -63,9 +64,10 @@ const EmployeeSidebar = ({ children }) => {
   // Menu Data for Employee - ONLY EXISTING PAGES
   const menuData = [
     { icon: <MdOutlineDashboard />, title: "Dashboard", path: "/employee/dashboard" },
+    { icon: <FiFileText />, title: "Genral Tasks", path: "/employee/genraltasks" },
     { icon: <FiUsers />, title: "Clients", path: "/employee/assigned" },
-    { icon: <FiDollarSign   />, title: "Clients Payment", path: "/employee/clientpayment" },
-    { icon: <FiCheckSquare />, title: "Finance Requests", path: "/employee/finance" },  
+    { icon: <FiDollarSign />, title: "Clients Payment", path: "/employee/clientpayment" },
+    { icon: <FiCheckSquare />, title: "Finance Requests", path: "/employee/finance" },
   ];
 
   return (
@@ -127,7 +129,7 @@ const EmployeeSidebar = ({ children }) => {
             rel="noopener noreferrer"
             className="employee-footer-link"
           >
-            Vapautus Media Private Limited
+            J. lad Group OY
           </a>
         </div>
 

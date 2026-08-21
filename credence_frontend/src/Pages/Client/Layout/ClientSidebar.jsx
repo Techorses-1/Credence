@@ -369,7 +369,7 @@ const ClientSidebar = ({ children }) => {
               rel="noopener noreferrer"
               className="client-footer-link"
             >
-              Vapautus Media Private Limited
+              J. lad Group OY
             </a>
           </div>
         </div>

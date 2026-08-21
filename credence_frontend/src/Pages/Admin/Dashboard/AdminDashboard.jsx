@@ -31,6 +31,8 @@ import AdminLayout from "../Layout/AdminLayout";
 import "./AdminDashboard.scss";
 import AdminNotesPanel from "./Notes/AdminNotesPanel";
 import Select from 'react-select'; // Add this import
+import AdminGeneralTasksWidget from "./GeneralTasks/AdminGeneralTasksWidget";
+
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -1519,6 +1521,8 @@ const AdminDashboard = () => {
         </div>
 
         <AdminNotesPanel />
+
+        <AdminGeneralTasksWidget />
 
         {/* Time Filter */}
         <div className="filter-section">

@@ -52,6 +52,7 @@ import Service3 from './Pages/Appeals/Pages/Services/Service3/Service3';
 import Service4 from './Pages/Appeals/Pages/Services/Service4/Service4';
 import Service5 from './Pages/Appeals/Pages/Services/Service5/Service5';
 import Service6 from './Pages/Appeals/Pages/Services/Service6/Service6';
+import EmployeeGeneralTask from './Pages/Employee/GenralTasks/EmployeeGeneralTask';
 
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
@@ -167,6 +168,7 @@ function App() {
           <Route path="/employee/tasks" element={<EmployeeTaskLogs />} />
           <Route path="/employee/notes" element={<EmployeeNotesPanel />} />
           <Route path="/employee/finance" element={<EmployeeFinanceRequests />} />
+          <Route path="/employee/genraltasks" element={<EmployeeGeneralTask />} />
 
           <Route path="/login" element={<ClientEmpLogin />} />
 

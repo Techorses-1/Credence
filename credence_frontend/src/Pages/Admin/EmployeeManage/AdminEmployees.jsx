@@ -32,6 +32,10 @@ import {
   FiChevronDown
 } from "react-icons/fi";
 import "./AdminEmployees.scss";
+// Import General Task Modal Components
+import AssignGeneralTaskModal from "./GeneralTaskModal/AssignGeneralTaskModal";
+import ViewGeneralTasksModal from "./GeneralTaskModal/ViewGeneralTasksModal";
+
 // Validation schemas
 const employeeSchema = Yup.object().shape({
   name: Yup.string()
@@ -74,6 +78,9 @@ const AdminEmployees = () => {
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showRemoveConfirmModal, setShowRemoveConfirmModal] = useState(false);
+  // General Task Modal states
+  const [showGeneralTaskModal, setShowGeneralTaskModal] = useState(false);
+  const [showViewGeneralTasksModal, setShowViewGeneralTasksModal] = useState(false);
   // Selected items
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [assigningEmployee, setAssigningEmployee] = useState(null);
@@ -351,6 +358,24 @@ const AdminEmployees = () => {
     setShowClientDropdown(false);
     setShowAssignModal(true);
   };
+  // Open General Task Modal
+  const openGeneralTaskModal = (employee) => {
+    setAssigningEmployee(employee);
+    setShowGeneralTaskModal(true);
+  };
+  // Open View General Tasks Modal
+  const openViewGeneralTasksModal = (employee) => {
+    setAssigningEmployee(employee);
+    setShowViewGeneralTasksModal(true);
+  };
+  // Handle General Task Created
+  const handleGeneralTaskCreated = async () => {
+    await loadEmployees();
+  };
+  // Handle View General Tasks Updated
+  const handleViewGeneralTasksUpdated = async () => {
+    await loadEmployees();
+  };
   // Open Confirm Modal for Deactivate
   const openDeactivateConfirm = (employee) => {
     setEmployeeToConfirm(employee);
@@ -527,6 +552,15 @@ const AdminEmployees = () => {
     setClientSearchTerm("");
     setShowClientDropdown(false);
     setShowAssignModal(false);
+  };
+  // Reset General Task Modals
+  const resetGeneralTaskModal = () => {
+    setShowGeneralTaskModal(false);
+    setAssigningEmployee(null);
+  };
+  const resetViewGeneralTasksModal = () => {
+    setShowViewGeneralTasksModal(false);
+    setAssigningEmployee(null);
   };
   // Format month name
   const getMonthName = (month) => {
@@ -1003,6 +1037,39 @@ const AdminEmployees = () => {
                     </small>
                   </div>
                 </div>
+
+                {/* ========== NEW: General Task Action Buttons ========== */}
+                {/* Position: AFTER Employee Info Card, BEFORE Select Client */}
+                <div className="general-task-actions">
+                  <button
+                    type="button"
+                    className="action-btn add-task-btn"
+                    onClick={() => {
+                      const currentEmployee = assigningEmployee;
+                      resetAssignForm();
+                      openGeneralTaskModal(currentEmployee);
+                    }}
+                    disabled={loading}
+                  >
+                    <FiFileText size={16} />
+                    Add General Task
+                  </button>
+                  <button
+                    type="button"
+                    className="action-btn view-task-btn"
+                    onClick={() => {
+                      const currentEmployee = assigningEmployee;
+                      resetAssignForm();
+                      openViewGeneralTasksModal(currentEmployee);
+                    }}
+                    disabled={loading}
+                  >
+                    <FiFileText size={16} />
+                    View General Tasks
+                  </button>
+                </div>
+                {/* ========== END General Task Action Buttons ========== */}
+
                 <form onSubmit={assignFormik.handleSubmit} className="modal-form">
                   {/* Client Selection with Mobile Search */}
                   <div className="form-group">
@@ -1257,6 +1324,7 @@ const AdminEmployees = () => {
                     </div>
                   </div>
                   {/* Document Status Check Section - REMOVED */}
+
                   {/* Buttons */}
                   <div className="modal-actions">
                     <button
@@ -1503,6 +1571,24 @@ const AdminEmployees = () => {
               </div>
             </div>
           </div>
+        )}
+        {/* General Task Modal */}
+        {showGeneralTaskModal && assigningEmployee && (
+          <AssignGeneralTaskModal
+            isOpen={showGeneralTaskModal}
+            onClose={resetGeneralTaskModal}
+            employee={assigningEmployee}
+            onTaskCreated={handleGeneralTaskCreated}
+          />
+        )}
+        {/* View General Tasks Modal */}
+        {showViewGeneralTasksModal && assigningEmployee && (
+          <ViewGeneralTasksModal
+            isOpen={showViewGeneralTasksModal}
+            onClose={resetViewGeneralTasksModal}
+            employee={assigningEmployee}
+            onTaskUpdated={handleViewGeneralTasksUpdated}
+          />
         )}
       </div>
     </AdminLayout>
