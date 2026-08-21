@@ -5,7 +5,7 @@ import AppealsNavbar from '../AppealsNavbar/AppealsNavbar';
 const AppealsLayout = ({ children }) => {
     return (
         <>
-            <AppealsNavbar /> {/* Navbar will be fixed position */}
+            <AppealsNavbar /> 
             <main style={{ paddingTop: '108px' }}> {/* Adjust this value based on your navbar height */}
                 {children}
             </main>

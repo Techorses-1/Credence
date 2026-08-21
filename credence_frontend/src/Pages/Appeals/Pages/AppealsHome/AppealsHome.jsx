@@ -10,6 +10,9 @@ import TrustStatSplit from './WhyTrustUs/TrustStatSplit/TrustStatSplit'
 import TrustAccordion from './WhyTrustUs/TrustAccordion/TrustAccordion'
 import TrustNumberedList from './WhyTrustUs/TrustNumberedList/TrustNumberedList'
 import TrustHoverCards from './WhyTrustUs/TrustHoverCards/TrustHoverCards'
+import ProcessFlowDiagram from './OurProcess/ProcessFlowDiagram/ProcessFlowDiagram'
+import ProcessProgressBar from './OurProcess/ProcessProgressBar/ProcessProgressBar'
+import ProcessTimelineVertical from './OurProcess/ProcessTimelineVertical/ProcessTimelineVertical'
 
 const AppealsHome = () => {
   return (
@@ -24,13 +27,17 @@ const AppealsHome = () => {
       <WhoWeHelpTabs />
 
 
-     
+
       <TrustNumberedList />
       <TrustStatSplit />
       <TrustAccordion />
       <TrustHoverCards />
 
-      <FinalCTA />
+      <ProcessTimelineVertical />
+      <ProcessFlowDiagram />
+      <ProcessProgressBar />
+
+      {/* <FinalCTA /> */}
 
       {/* <AppealsFooter /> */}
     </>

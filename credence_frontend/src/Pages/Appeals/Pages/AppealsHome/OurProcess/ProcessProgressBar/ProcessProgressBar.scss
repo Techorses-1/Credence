@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+
+.process-progress-section {
+    width: 100%;
+    background: $white;
+    padding: 80px 0;
+}
+
+.process-progress__container {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.process-progress__header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.process-progress__eyebrow {
+    display: inline-flex;
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    background: rgba(124, 214, 75, 0.1);
+    border: 1.5px solid $primary-green;
+    padding: 8px 18px;
+    border-radius: 50px;
+    margin-bottom: 18px;
+}
+
+.process-progress__heading {
+    font-family: "Heading", sans-serif;
+    font-size: 34px;
+    color: $text-dark;
+    margin: 0;
+}
+
+// ===== PROGRESS BAR =====
+.process-progress__bar-track {
+    position: relative;
+    height: 4px;
+    background: rgba(124, 214, 75, 0.2);
+    border-radius: 4px;
+    margin: 0 24px 60px;
+}
+
+.process-progress__bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: $primary-green;
+    border-radius: 4px;
+}
+
+.process-progress__checkpoints {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+}
+
+.process-progress__checkpoint {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: $white;
+    border: 2.5px solid rgba(124, 214, 75, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.35s ease;
+
+    &.active {
+        background: $primary-green;
+        border-color: $primary-green;
+        box-shadow: 0 4px 14px rgba(124, 214, 75, 0.35);
+    }
+}
+
+.process-progress__checkpoint-num {
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-grey;
+
+    .process-progress__checkpoint.active & {
+        color: $white;
+    }
+}
+
+// ===== DETAIL LIST =====
+.process-progress__detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.process-progress__detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    background: $white;
+    border: 1.5px solid rgba(124, 214, 75, 0.2);
+    border-radius: 18px;
+    padding: 22px 24px;
+    opacity: 0.55;
+    transform: scale(0.98);
+    transition: all 0.4s ease;
+
+    &.active {
+        opacity: 1;
+        transform: scale(1);
+        border-color: $primary-green;
+        box-shadow: 0 12px 28px rgba(124, 214, 75, 0.15);
+    }
+}
+
+.process-progress__detail-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(124, 214, 75, 0.12);
+    color: $primary-green-hover;
+    font-size: 19px;
+}
+
+.process-progress__detail-step-num {
+    display: block;
+    font-family: "Arimo", sans-serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    margin-bottom: 4px;
+}
+
+.process-progress__detail-title {
+    font-family: "Arimo", sans-serif;
+    font-size: 16.5px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 6px;
+}
+
+.process-progress__detail-desc {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: $text-grey;
+    margin: 0;
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 700px) {
+    .process-progress-section {
+        padding: 60px 0;
+    }
+
+    .process-progress__heading {
+        font-size: 26px;
+    }
+
+    .process-progress__bar-track {
+        margin: 0 10px 44px;
+    }
+
+    .process-progress__checkpoint {
+        width: 28px;
+        height: 28px;
+    }
+
+    .process-progress__checkpoint-num {
+        font-size: 11.5px;
+    }
+
+    .process-progress__detail-item {
+        padding: 18px 18px;
+        gap: 14px;
+    }
+
+    .process-progress__detail-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .process-progress__detail-title {
+        font-size: 15px;
+    }
+
+    .process-progress__detail-desc {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .process-progress-section {
+        padding: 48px 0;
+    }
+
+    .process-progress__eyebrow {
+        font-size: 11px;
+        padding: 7px 14px;
+    }
+
+    .process-progress__heading {
+        font-size: 22px;
+    }
+
+    .process-progress__checkpoint {
+        width: 24px;
+        height: 24px;
+    }
+
+    .process-progress__checkpoint-num {
+        font-size: 10.5px;
+    }
+}

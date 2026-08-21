@@ -45,6 +45,13 @@ import AppealsHome from './Pages/Appeals/Pages/AppealsHome/AppealsHome';
 
 // IMPORT LAYOUT COMPONENT
 import AppealsLayout from './Pages/Appeals/Layout/AppealsLayout';
+import Services from './Pages/Appeals/Pages/Services/Services';
+import Service1 from './Pages/Appeals/Pages/Services/Service1/Service1';
+import Service2 from './Pages/Appeals/Pages/Services/Service2/Service2';
+import Service3 from './Pages/Appeals/Pages/Services/Service3/Service3';
+import Service4 from './Pages/Appeals/Pages/Services/Service4/Service4';
+import Service5 from './Pages/Appeals/Pages/Services/Service5/Service5';
+import Service6 from './Pages/Appeals/Pages/Services/Service6/Service6';
 
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
@@ -82,13 +89,46 @@ function App() {
               <AppealsHome />
             </AppealsLayout>
           } />
-          
+
+          {/* APPEALS ROUTES - WITH FIXED NAVBAR LAYOUT */}
+          <Route path="/appeals/services/service1" element={
+            <AppealsLayout>
+              <Service1 />
+            </AppealsLayout>
+          } />
+
+          <Route path="/appeals/services/service2" element={
+            <AppealsLayout>
+              <Service2 />
+            </AppealsLayout>
+          } />
+          <Route path="/appeals/services/service3" element={
+            <AppealsLayout>
+              <Service3 />
+            </AppealsLayout>
+          } />
+          <Route path="/appeals/services/service4" element={
+            <AppealsLayout>
+              <Service4 />
+            </AppealsLayout>
+          } />
+          <Route path="/appeals/services/service5" element={
+            <AppealsLayout>
+              <Service5 />
+            </AppealsLayout>
+          } />
+          <Route path="/appeals/services/service6" element={
+            <AppealsLayout>
+              <Service6 />
+            </AppealsLayout>
+          } />
+
           <Route path="/appeals/cases" element={
             <AppealsLayout>
               <Blogs />
             </AppealsLayout>
           } />
-          
+
           <Route path="/appeals/cases/:id" element={
             <AppealsLayout>
               <BlogSingle />

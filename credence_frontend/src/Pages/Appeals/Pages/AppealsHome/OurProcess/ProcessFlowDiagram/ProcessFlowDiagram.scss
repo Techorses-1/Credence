@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+
+.process-flow-section {
+    width: 100%;
+    background: $white;
+    padding: 80px 0;
+    overflow-x: hidden; // Prevent horizontal scroll
+}
+
+.process-flow__container {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px 10px;
+    box-sizing: border-box;
+}
+
+.process-flow__header {
+    text-align: center;
+    margin-bottom: 56px;
+}
+
+.process-flow__eyebrow {
+    display: inline-flex;
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    background: rgba(124, 214, 75, 0.1);
+    border: 1.5px solid $primary-green;
+    padding: 8px 18px;
+    border-radius: 50px;
+    margin-bottom: 18px;
+}
+
+.process-flow__heading {
+    font-family: "Heading", sans-serif;
+    font-size: 34px;
+    color: $text-dark;
+    margin: 0;
+}
+
+// ===== DIAGRAM =====
+.process-flow__diagram {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 16px 4px 16px;
+    -webkit-overflow-scrolling: touch;
+
+    // Fix: Prevent extra horizontal space in mobile
+    @media (max-width: 900px) {
+        overflow-x: visible;
+        flex-direction: column;
+        padding: 16px 0;
+        gap: 0;
+        width: 100%;
+    }
+}
+
+.process-flow__node {
+    flex: 1 1 0;
+    min-width: 190px;
+    background: $white;
+    border: 1.5px solid rgba(124, 214, 75, 0.28);
+    border-radius: 18px;
+    padding: 26px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+
+    &:hover {
+        border-color: $primary-green;
+        box-shadow: 0 14px 30px rgba(124, 214, 75, 0.15);
+    }
+
+    // Fix: Ensure node doesn't overflow in mobile
+    @media (max-width: 900px) {
+        min-width: unset;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+    }
+}
+
+.process-flow__node-badge {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $primary-green;
+    color: $white;
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 50%;
+    border: 2px solid $white;
+}
+
+.process-flow__node-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(124, 214, 75, 0.12);
+    color: $primary-green-hover;
+    font-size: 21px;
+    margin: 10px 0 16px;
+}
+
+.process-flow__node-title {
+    font-family: "Arimo", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 8px;
+    line-height: 1.35;
+}
+
+.process-flow__node-desc {
+    font-family: "Inter", sans-serif;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: $text-grey;
+    margin: 0;
+}
+
+.process-flow__arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary-green;
+    font-size: 22px;
+    min-width: 24px;
+
+    // Fix: Arrow rotates to point down in mobile
+    @media (max-width: 900px) {
+        transform: rotate(90deg);
+        padding: 20px 0;
+        min-width: unset;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        svg {
+            transform: rotate(90deg); // SVG inside is already rotated by parent
+        }
+    }
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 1024px) {
+    .process-flow__node {
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 900px) {
+    .process-flow-section {
+        padding: 60px 0;
+    }
+
+    .process-flow__heading {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .process-flow-section {
+        padding: 48px 0;
+    }
+
+    .process-flow__eyebrow {
+        font-size: 11px;
+        padding: 7px 14px;
+    }
+
+    .process-flow__heading {
+        font-size: 22px;
+    }
+
+    .process-flow__node {
+        padding: 22px 16px;
+    }
+
+    .process-flow__node-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 17px;
+    }
+
+    .process-flow__node-title {
+        font-size: 14px;
+    }
+
+    .process-flow__node-desc {
+        font-size: 12px;
+    }
+}

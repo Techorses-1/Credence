@@ -27,6 +27,11 @@ const Footer = () => {
           {/* LEFT - BRAND */}
           <div className="fgf-col fgf-brand-col">
             <h2>CREDENCE</h2>
+            <p className="fgf-owner-line">
+              Own By Jlad Group OY
+              <br />
+              (1234567890)
+            </p>
             <p className="fgf-hover-text">
               Bridging solutions,<br />
               Building trust.
@@ -77,7 +82,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="mobileaddress"
               >
-                Uomarinne 5 A 014, 01600 VANTAA <span><br className="mobilebreak" /></span>Uusimaa Finland.
+                VANTAA Finland.
               </a>
             </p>
           </div>
@@ -97,7 +102,7 @@ const Footer = () => {
                 <a
                   rel="noopener noreferrer"
                 >
-                  Vapautus Media Private Limited
+                  J.lad Group OY
                 </a>
               </span>
             </p>
@@ -109,7 +114,7 @@ const Footer = () => {
                 <a
                   rel="noopener noreferrer"
                 >
-                  Vapautus Media Private Limited
+                  J.lad Group OY
                 </a>
               </span>
             </p>
@@ -124,9 +129,9 @@ const Footer = () => {
               <FaYoutube />
             </div>
           </div>
-        </div>
-      </div>
-    </footer>
+        </div >
+      </div >
+    </footer >
   );
 };
 

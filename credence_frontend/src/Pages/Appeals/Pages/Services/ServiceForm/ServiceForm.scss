@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+$bg-soft: #f7faf5;
+$error-red: #e34d4d;
+
+.service-form-section {
+    width: 100%;
+    background: $bg-soft;
+    padding: 80px 0;
+}
+
+.service-form__container {
+    max-width: 780px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+// ===== HEADER =====
+.service-form__header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.service-form__eyebrow {
+    display: inline-flex;
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    background: rgba(124, 214, 75, 0.1);
+    border: 1.5px solid $primary-green;
+    padding: 8px 18px;
+    border-radius: 50px;
+    margin-bottom: 18px;
+}
+
+.service-form__heading {
+    font-family: "Heading", sans-serif;
+    font-size: 32px;
+    color: $text-dark;
+    margin: 0 0 12px;
+    line-height: 1.3;
+}
+
+.service-form__subtitle {
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: $text-grey;
+    margin: 0;
+}
+
+// ===== FORM CARD =====
+.service-form__card {
+    background: $white;
+    border: 1.5px solid rgba(124, 214, 75, 0.3);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+}
+
+.service-form__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 20px;
+    margin-bottom: 26px;
+}
+
+.service-form__field {
+    display: flex;
+    flex-direction: column;
+
+    &--full {
+        grid-column: 1 / -1;
+    }
+}
+
+.service-form__label {
+    font-family: "Arimo", sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.service-form__lock-icon {
+    color: $primary-green-hover;
+    font-size: 11px;
+}
+
+.service-form__optional {
+    font-weight: 400;
+    color: $text-grey;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+// ===== SHARED FIELD STYLES =====
+.service-form__input,
+.service-form__select,
+.service-form__textarea {
+    width: 100%;
+    background: $bg-soft;
+    border: 1.5px solid rgba(124, 214, 75, 0.3);
+    border-radius: 10px;
+    padding: 13px 16px;
+    color: $text-dark;
+    font-family: "Inter", sans-serif;
+    font-size: 14.5px;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+
+    &::placeholder {
+        color: #a3a3a3;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: $primary-green;
+        box-shadow: 0 0 0 3px rgba(124, 214, 75, 0.18);
+        background: $white;
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    &.error {
+        border-color: $error-red;
+
+        &:focus {
+            box-shadow: 0 0 0 3px rgba(227, 77, 77, 0.15);
+        }
+    }
+}
+
+.service-form__select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath fill='%236ac94c' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+
+    option {
+        background: $white;
+        color: $text-dark;
+    }
+}
+
+// Locked service dropdown: pre-selected + read-only for now.
+// Kept as a real <select disabled> (not swapped for plain text) so it can be
+// turned back into an editable dropdown later with zero markup changes.
+.service-form__select--locked,
+.service-form__select--locked:disabled {
+    cursor: not-allowed;
+    background-color: rgba(124, 214, 75, 0.08);
+    border-color: rgba(124, 214, 75, 0.45);
+    color: $text-dark;
+    font-weight: 600;
+    opacity: 1;
+
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.service-form__textarea {
+    resize: vertical;
+    min-height: 110px;
+    font-family: "Inter", sans-serif;
+}
+
+.service-form__error {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    color: $error-red;
+    margin-top: 6px;
+}
+
+// ===== SUBMIT BUTTON =====
+.service-form__submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: $primary-green;
+    color: $white;
+    border: none;
+    border-radius: 10px;
+    font-family: "Arimo", sans-serif;
+    font-size: 15.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+        background: $primary-green-hover;
+        box-shadow: 0 8px 20px rgba(124, 214, 75, 0.35);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+}
+
+// ===== RESPONSIVE: TABLET =====
+@media (max-width: 700px) {
+    .service-form-section {
+        padding: 60px 0;
+    }
+
+    .service-form__heading {
+        font-size: 26px;
+    }
+
+    .service-form__card {
+        padding: 30px 26px;
+    }
+
+    .service-form__grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .service-form__field--full {
+        grid-column: 1;
+    }
+}
+
+// ===== RESPONSIVE: MOBILE =====
+@media (max-width: 480px) {
+    .service-form-section {
+        padding: 48px 0;
+    }
+
+    .service-form__eyebrow {
+        font-size: 11px;
+        padding: 7px 14px;
+    }
+
+    .service-form__heading {
+        font-size: 22px;
+    }
+
+    .service-form__subtitle {
+        font-size: 13.5px;
+    }
+
+    .service-form__card {
+        padding: 24px 18px;
+        border-radius: 18px;
+    }
+
+    .service-form__input,
+    .service-form__select,
+    .service-form__textarea {
+        padding: 12px 14px;
+        font-size: 13.5px;
+    }
+
+    .service-form__submit-btn {
+        padding: 14px;
+        font-size: 14px;
+    }
+}

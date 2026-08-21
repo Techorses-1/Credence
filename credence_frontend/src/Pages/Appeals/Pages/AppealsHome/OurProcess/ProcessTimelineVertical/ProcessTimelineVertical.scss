@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@font-face {
+    font-family: "Heading";
+    src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    font-style: normal;
+    font-display: swap;
+}
+
+$primary-green: #7cd64b;
+$primary-green-hover: #6ac94c;
+$text-dark: #1a1a1a;
+$text-grey: #666666;
+$white: #ffffff;
+
+.process-timeline-v-section {
+    width: 100%;
+    background: $white;
+    padding: 80px 0;
+}
+
+.process-timeline-v__container {
+    max-width: 780px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.process-timeline-v__header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.process-timeline-v__eyebrow {
+    display: inline-flex;
+    font-family: "Arimo", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    background: rgba(124, 214, 75, 0.1);
+    border: 1.5px solid $primary-green;
+    padding: 8px 18px;
+    border-radius: 50px;
+    margin-bottom: 18px;
+}
+
+.process-timeline-v__heading {
+    font-family: "Heading", sans-serif;
+    font-size: 34px;
+    color: $text-dark;
+    margin: 0;
+}
+
+// ===== TIMELINE =====
+.process-timeline-v__timeline {
+    position: relative;
+    padding-left: 40px;
+}
+
+.process-timeline-v__track {
+    position: absolute;
+    left: 27px;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: rgba(124, 214, 75, 0.2);
+    border-radius: 4px;
+}
+
+.process-timeline-v__track-fill {
+    position: absolute;
+    left: 27px;
+    top: 6px;
+    width: 3px;
+    background: $primary-green;
+    border-radius: 4px;
+}
+
+.process-timeline-v__row {
+    position: relative;
+    display: flex;
+    gap: 24px;
+    padding-bottom: 48px;
+
+    &:last-child {
+        padding-bottom: 0;
+    }
+}
+
+.process-timeline-v__node {
+    position: relative;
+    z-index: 2;
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    margin-left: -43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $white;
+    border: 2.5px solid $primary-green;
+    border-radius: 50%;
+    box-shadow: 0 6px 16px rgba(124, 214, 75, 0.15);
+}
+
+.process-timeline-v__node-icon {
+    color: $primary-green-hover;
+    font-size: 20px;
+}
+
+.process-timeline-v__content {
+    flex: 1;
+    padding-top: 6px;
+}
+
+.process-timeline-v__step-num {
+    display: inline-block;
+    font-family: "Arimo", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: $primary-green-hover;
+    margin-bottom: 6px;
+}
+
+.process-timeline-v__title {
+    font-family: "Arimo", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0 0 8px;
+}
+
+.process-timeline-v__desc {
+    font-family: "Inter", sans-serif;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: $text-grey;
+    margin: 0;
+    max-width: 460px;
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 700px) {
+    .process-timeline-v-section {
+        padding: 60px 0;
+    }
+
+    .process-timeline-v__heading {
+        font-size: 26px;
+    }
+
+    .process-timeline-v__timeline {
+        padding-left: 24px;
+    }
+
+    .process-timeline-v__track,
+    .process-timeline-v__track-fill {
+        left: 15px;
+    }
+
+    .process-timeline-v__node {
+        width: 42px;
+        height: 42px;
+        margin-left: -31px;
+    }
+
+    .process-timeline-v__node-icon {
+        font-size: 15px;
+    }
+
+    .process-timeline-v__row {
+        gap: 16px;
+        padding-bottom: 36px;
+    }
+
+    .process-timeline-v__title {
+        font-size: 16px;
+    }
+
+    .process-timeline-v__desc {
+        font-size: 13.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .process-timeline-v-section {
+        padding: 48px 0;
+    }
+
+    .process-timeline-v__eyebrow {
+        font-size: 11px;
+        padding: 7px 14px;
+    }
+
+    .process-timeline-v__heading {
+        font-size: 22px;
+    }
+}

@@ -8,12 +8,12 @@ import logoImage from "../../../assets/Images/home/logo.png";
 
 // ===== SERVICES DATA (replace name + path with your real 6 services) =====
 const servicesData = [
-    { name: "Service One", path: "/appeals/services/service-one" },
-    { name: "Service Two", path: "/appeals/services/service-two" },
-    { name: "Service Three", path: "/appeals/services/service-three" },
-    { name: "Service Four", path: "/appeals/services/service-four" },
-    { name: "Service Five", path: "/appeals/services/service-five" },
-    { name: "Service Six", path: "/appeals/services/service-six" },
+    { name: "Service One", path: "/appeals/services/service1" },
+    { name: "Service Two", path: "/appeals/services/service2" },
+    { name: "Service Three", path: "/appeals/services/service3" },
+    { name: "Service Four", path: "/appeals/services/service4" },
+    { name: "Service Five", path: "/appeals/services/service5" },
+    { name: "Service Six", path: "/appeals/services/service6" },
 ];
 
 const AppealsNavbar = () => {
