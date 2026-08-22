@@ -105,6 +105,7 @@ const blogRoutes = require("./routes/blogRoutes");
 const blogContactRoutes = require("./routes/blogContactRoutes");
 const ogRoutes = require("./routes/ogRoutes");
 const adminMonthLockRoutes = require("./routes/adminMonthLock");
+const serviceRequestRoutes = require("./routes/serviceRequestRoutes");
 
 
 app.use("/client-enrollment", ClientEnrollment);
@@ -135,6 +136,8 @@ app.use("/blog-contact", blogContactRoutes);
 app.use("/og", ogRoutes);
 app.use("/admin-manage", adminMonthLockRoutes);
 
+
+app.use("/service-request", serviceRequestRoutes)
 
 
 const paymentReminderDebug = require("./routes/paymentReminderDebug");

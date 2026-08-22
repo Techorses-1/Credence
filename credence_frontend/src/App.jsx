@@ -20,6 +20,7 @@ import ClientFilesUpload from './Pages/Client/Upload/ClientFilesUpload';
 import ClientEmpLogin from './Pages/Authentication/Client&EmployeeLogin/ClientEmpLogin';
 import AdminAuth from './Pages/Admin/Authentication/AdminAuth';
 import Home from './Pages/Home/Home';
+import HomeGate from './Pages/HomeGate/HomeGate';
 import TermsAndCondition from './Pages/TermsAndCondition/TermsConditions';
 import ClientProfile from './Pages/Client/Profile/ClientProfile';
 import ActivityLogs from './Pages/Admin/ActivityLogs/ActivityLogs';
@@ -54,9 +55,24 @@ import Service5 from './Pages/Appeals/Pages/Services/Service5/Service5';
 import Service6 from './Pages/Appeals/Pages/Services/Service6/Service6';
 import EmployeeGeneralTask from './Pages/Employee/GenralTasks/EmployeeGeneralTask';
 
+// IMPORT COOKIE CONSENT COMPONENT
+import CookieConsent from './Pages/Cookies/CookieConsent'; // adjust path to match your actual folder
+import { initMetaPixel } from './Components/services/metaPixel';
+import { initGoogleAds } from './Components/services/googleAds';
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
   const isMaintenanceMode = false;  // CHANGE THIS TO false WHEN SITE IS READY
+
+  // 👇 COOKIE CONSENT STATUS - tracks accepted/rejected/null(not decided yet)
+  const [consentStatus, setConsentStatus] = useState(null);
+
+  const handleConsentChange = (status) => {
+    setConsentStatus(status);
+    if (status === "accepted") {
+      initMetaPixel();
+      initGoogleAds();
+    }
+  };
 
   // If maintenance mode is ON, show only the maintenance component
   if (isMaintenanceMode) {
@@ -75,10 +91,15 @@ function App() {
   // Normal site rendering (when maintenance is OFF)
   return (
     <ModalProvider>
+      {/* Cookie consent banner - shows on every route, sits outside Routes */}
+      <CookieConsent onConsentChange={handleConsentChange} />
+
       <BrowserRouter>
         <Routes>
 
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<HomeGate />} />
+
           <Route path="/terms" element={<TermsAndCondition />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/drive" element={<GoogleDrivePicker />} />

@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaLock } from "react-icons/fa";
 import "./ServiceForm.scss";
@@ -51,37 +51,68 @@ const ServiceForm = ({ defaultService = "" }) => {
         onSubmit: async (values, { resetForm, setSubmitting }) => {
             toast.dismiss();
             try {
-                // ===== TODO: replace with real API call =====
-                // const response = await fetch(`${import.meta.env.VITE_API_URL}/services/enquiry`, {
-                //   method: "POST",
-                //   headers: { "Content-Type": "application/json" },
-                //   body: JSON.stringify(values),
-                // });
-                // const data = await response.json();
+                // ===== REAL API CALL =====
+                // NOTE: adjust the path below ("/service-request/submit") to match
+                // however you mount serviceRequestRoutes.js in your server.js/app.js
+                const response = await fetch(
+                    `${import.meta.env.VITE_API_URL}/service-request/submit`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            name: values.name.trim(),
+                            email: values.email.trim(),
+                            phone: values.phone.trim(),
+                            service: values.service.trim(),
+                            message: values.message.trim(),
+                        }),
+                    }
+                );
 
-                await new Promise((resolve) => setTimeout(resolve, 900)); // temp fake delay
+                const data = await response.json();
 
-                toast.success("🎉 Your request has been submitted! We'll be in touch soon.", {
-                    position: "top-center",
-                    autoClose: 5000,
-                    closeButton: true,
-                    draggable: false,
-                    pauseOnHover: false,
-                    style: { zIndex: 10001, background: "#7cd64b", color: "#000" },
-                });
+                if (data.success) {
+                    toast.success(
+                        "🎉 Your request has been submitted! We'll be in touch soon.",
+                        {
+                            position: "top-center",
+                            autoClose: 5000,
+                            closeButton: true,
+                            draggable: false,
+                            pauseOnHover: false,
+                            style: { zIndex: 10001, background: "#7cd64b", color: "#000" },
+                        }
+                    );
 
-                // keep the locked service selected after reset, only clear other fields
-                resetForm({
-                    values: {
-                        name: "",
-                        email: "",
-                        phone: "",
-                        service: defaultService,
-                        message: "",
-                    },
-                });
+                    // keep the locked service selected after reset, only clear other fields
+                    resetForm({
+                        values: {
+                            name: "",
+                            email: "",
+                            phone: "",
+                            service: defaultService,
+                            message: "",
+                        },
+                    });
+                } else {
+                    // e.g. 409 duplicate-request message from backend
+                    toast.error(
+                        data.message || "Failed to submit request. Please try again.",
+                        {
+                            position: "top-center",
+                            autoClose: 4000,
+                            closeButton: true,
+                            draggable: false,
+                            pauseOnHover: false,
+                            style: { zIndex: 10001 },
+                        }
+                    );
+                }
             } catch (error) {
-                toast.error("Something went wrong. Please try again.", {
+                console.error("Submission error:", error);
+                toast.error("Network error. Please check your connection and try again.", {
                     position: "top-center",
                     autoClose: 4000,
                     closeButton: true,
@@ -107,6 +138,7 @@ const ServiceForm = ({ defaultService = "" }) => {
 
     return (
         <section className="service-form-section">
+            <ToastContainer />
             <div className="service-form__container">
                 <motion.div
                     className="service-form__header"
