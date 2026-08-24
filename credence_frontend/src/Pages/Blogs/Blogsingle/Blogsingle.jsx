@@ -5,6 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./BlogSingle.scss";
 import img from "../../../assets/Images/cases/img4.png";
+import { trackCustomEvent } from "../../../Components/services/metaPixel"; // adjust path to match your actual folder structure
 
 // Static author (same for all blogs)
 const staticAuthor = {
@@ -111,6 +112,28 @@ const BlogSingle = () => {
       behavior: "smooth"
     });
   }, []);
+
+  // ============================================
+  // ENGAGEMENT TRACKING - Read3Minutes (NEW)
+  // Starts a 3-minute timer only once real blog data
+  // is loaded. Cancels cleanly if user leaves early.
+  // ============================================
+  useEffect(() => {
+    if (!blog) return; // don't start timer until real content is loaded
+
+    const THREE_MINUTES = 3 * 60 * 1000; // 180000 ms
+
+    const timerId = setTimeout(() => {
+      trackCustomEvent("Read3Minutes", {
+        blog_id: blog.blogId,
+        blog_title: blog.title,
+      });
+    }, THREE_MINUTES);
+
+    // cleanup - cancels the timer if user navigates away
+    // (or blog changes) before 3 minutes are up
+    return () => clearTimeout(timerId);
+  }, [blog]);
 
   // ============================================
   // SHARE FUNCTION - NEW
@@ -373,7 +396,7 @@ Read more: ${shareUrl}`;
 
   return (
     <>
-      
+
       <ToastContainer
         position="top-center"
         autoClose={3500}
