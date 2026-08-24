@@ -127,7 +127,7 @@ const WhoWeAre = () => {
                     </motion.span>
 
                     <motion.h2 className="who-we-are__heading" variants={fadeUpVariants}>
-                        People-First Legal Guidance,{" "}
+                        People First Legal Guidance,{" "}
                         <span className="who-we-are__heading-accent">Every Case</span>
                     </motion.h2>
 
