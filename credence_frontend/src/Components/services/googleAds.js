@@ -1,7 +1,7 @@
 // services/googleAds.js
 // No npm package needed - Google's gtag.js is loaded dynamically via script injection
 
-const GOOGLE_ADS_ID = process.env.REACT_APP_GOOGLE_ADS_ID;
+const GOOGLE_ADS_ID = import.meta.env.VITE_GOOGLE_ADS_ID;
 
 let isInitialized = false;
 

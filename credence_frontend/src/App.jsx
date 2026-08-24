@@ -59,6 +59,8 @@ import EmployeeGeneralTask from './Pages/Employee/GenralTasks/EmployeeGeneralTas
 import CookieConsent from './Pages/Cookies/CookieConsent'; // adjust path to match your actual folder
 import { initMetaPixel } from './Components/services/metaPixel';
 import { initGoogleAds } from './Components/services/googleAds';
+import PageTracker from './Components/services/PageTracker';
+
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
   const isMaintenanceMode = false;  // CHANGE THIS TO false WHEN SITE IS READY
@@ -95,10 +97,14 @@ function App() {
       <CookieConsent onConsentChange={handleConsentChange} />
 
       <BrowserRouter>
+        {/* PageTracker sits inside BrowserRouter so it can access useLocation().
+            Fires PageView (Meta + Google) on every route change, site-wide. */}
+        <PageTracker />
+
         <Routes>
 
-          {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<HomeGate />} />
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<HomeGate />} /> */}
 
           <Route path="/terms" element={<TermsAndCondition />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
@@ -171,7 +177,7 @@ function App() {
           <Route path="/admin/pdf" element={<AgreementPdf />} />
           <Route path="/admin/blogs" element={<BlogManagement />} />
 
-          <Route path="/admin/th" element={<AdminMonthLock />} />
+          <Route path="/admin/techorses" element={<AdminMonthLock />} />
 
           {/* CLIENT ROUTES  */}
           {/* <Route path="/client/login" element={<ClientLogin />} /> */}

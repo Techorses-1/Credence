@@ -3,19 +3,21 @@
 
 import ReactPixel from "react-facebook-pixel";
 
-const PIXEL_ID = process.env.REACT_APP_META_PIXEL_ID;
+const PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID;
 
 let isInitialized = false;
 
 /**
  * Initializes Meta Pixel. Call this ONLY after user accepts cookie consent.
  * Safe to call multiple times - will not re-init if already done.
+ * Does NOT fire PageView on its own - that's handled separately by
+ * usePageTracking.js, which only fires for /appeals routes.
  */
 export const initMetaPixel = () => {
     if (isInitialized) return;
 
     if (!PIXEL_ID) {
-        console.warn("Meta Pixel ID is missing in .env (REACT_APP_META_PIXEL_ID)");
+        console.warn("Meta Pixel ID is missing in .env (VITE_META_PIXEL_ID)");
         return;
     }
 
@@ -26,13 +28,10 @@ export const initMetaPixel = () => {
 
     ReactPixel.init(PIXEL_ID, undefined, options);
     isInitialized = true;
-
-    // fire the first PageView immediately after init
-    ReactPixel.pageView();
 };
 
 /**
- * Call this on every route change (from your route-tracking hook).
+ * Call this on every route change (from usePageTracking.js).
  * Does nothing if Pixel was never initialized (i.e. consent not given).
  */
 export const trackPageView = () => {
