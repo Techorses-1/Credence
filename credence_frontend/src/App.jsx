@@ -147,11 +147,22 @@ function App() {
           } />
           <Route path="/appeals/services/service6" element={
             <AppealsLayout>
-              <Service6 />
+              <Service6 />   
             </AppealsLayout>
           } />
 
-          <Route path="/appeals/cases" element={
+          <Route path="/cases" element={
+            <AppealsLayout>
+              <Blogs />
+            </AppealsLayout>
+          } />
+
+          <Route path="/cases/:id" element={
+            <AppealsLayout>
+              <BlogSingle />
+            </AppealsLayout>
+          } />
+          {/* <Route path="/appeals/cases" element={
             <AppealsLayout>
               <Blogs />
             </AppealsLayout>
@@ -161,7 +172,7 @@ function App() {
             <AppealsLayout>
               <BlogSingle />
             </AppealsLayout>
-          } />
+          } /> */}
 
           {/* ADMIN ROUTES  */}
 
