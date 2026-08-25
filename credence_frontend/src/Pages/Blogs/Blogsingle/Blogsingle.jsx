@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./BlogSingle.scss";
 import img from "../../../assets/Images/cases/img4.png";
 import { trackCustomEvent } from "../../../Components/services/metaPixel"; // adjust path to match your actual folder structure
+import Navbar from "../../Home/Navbar/Navbar";
+import Footer from "../../Home/Footer/Footer";
 
 // Static author (same for all blogs)
 const staticAuthor = {
@@ -396,7 +398,7 @@ Read more: ${shareUrl}`;
 
   return (
     <>
-
+<Navbar/>
       <ToastContainer
         position="top-center"
         autoClose={3500}
@@ -571,6 +573,7 @@ Read more: ${shareUrl}`;
           </>
         )}
       </AnimatePresence>
+      <Footer/>
     </>
   );
 };

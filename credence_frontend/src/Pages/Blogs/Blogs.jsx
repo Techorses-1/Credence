@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import BlogList from './Blogslist/BlogList'
 import BlogsHero from './BlogsHero/BlogsHero'
 import BlogIntro from './BlogIntro/BlogIntro'
+import Navbar from "../Home/Navbar/Navbar";
+import Footer from "../Home/Footer/Footer";
 
 const Blogs = () => {
 
@@ -16,9 +18,11 @@ const Blogs = () => {
 
   return (
     <>
+    <Navbar/>
       <BlogsHero />
       <BlogIntro />
       <BlogList />
+      <Footer/>
    
     </>
   )

@@ -152,15 +152,15 @@ function App() {
           } />
 
           <Route path="/cases" element={
-            <AppealsLayout>
+            // <AppealsLayout>
               <Blogs />
-            </AppealsLayout>
+            // </AppealsLayout>
           } />
 
           <Route path="/cases/:id" element={
-            <AppealsLayout>
+            // <AppealsLayout>
               <BlogSingle />
-            </AppealsLayout>
+            // </AppealsLayout>
           } />
           {/* <Route path="/appeals/cases" element={
             <AppealsLayout>
