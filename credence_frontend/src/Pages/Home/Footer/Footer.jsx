@@ -28,9 +28,9 @@ const Footer = () => {
           <div className="fgf-col fgf-brand-col">
             <h2>CREDENCE</h2>
             <p className="fgf-owner-line">
-              Own By Jlad Group OY
+              Owned by J. Lad GROUP Oy
               <br />
-              (1234567890)
+              Y-tunnus: 3494298-7
             </p>
             <p className="fgf-hover-text">
               Bridging solutions,<br />
