@@ -60,6 +60,8 @@ import CookieConsent from './Pages/Cookies/CookieConsent'; // adjust path to mat
 import { initMetaPixel } from './Components/services/metaPixel';
 import { initGoogleAds } from './Components/services/googleAds';
 import PageTracker from './Components/services/PageTracker';
+import ResidenceApplications from './Pages/Appeals/Pages/Services/ResidenceApplications/ResidenceApplications';
+import ResidenExtensionsAndRenewals from './Pages/Appeals/Pages/Services/ResidenExtensionsAndRenewals/ResidenExtensionsAndRenewals';
 
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
@@ -124,12 +126,24 @@ function App() {
               <Service1 />
             </AppealsLayout>
           } />
+          <Route path="/appeals/services/residence-permit-applications" element={
+            <AppealsLayout>
+              <ResidenceApplications />
+            </AppealsLayout>
+          } />
 
           <Route path="/appeals/services/service2" element={
             <AppealsLayout>
               <Service2 />
             </AppealsLayout>
           } />
+
+          <Route path="/appeals/services/residence-permit-extensions-renewals" element={
+            <AppealsLayout>
+              <ResidenExtensionsAndRenewals />
+            </AppealsLayout>
+          } />
+
           <Route path="/appeals/services/service3" element={
             <AppealsLayout>
               <Service3 />
