@@ -12,16 +12,21 @@ import { trackPageView as trackGooglePageView } from "./googleAds";
  * they're internal/tool pages, not public marketing pages.
  */
 const usePageTracking = () => {
-    const location = useLocation();
+  const location = useLocation();
 
-    useEffect(() => {
-        const isAppealsRoute = location.pathname.startsWith("/appeals");
+  useEffect(() => {
+    const isAppealsRoute = location.pathname.startsWith("/appeals");
 
-        if (!isAppealsRoute) return;
+    if (!isAppealsRoute) {
+      console.log("[Tracking] Skipped (not /appeals):", location.pathname);
+      return;
+    }
 
-        trackMetaPageView();
-        trackGooglePageView(location.pathname);
-    }, [location.pathname]);
+    console.log("[Tracking] Firing PageView for:", location.pathname);
+
+    trackMetaPageView();
+    trackGooglePageView(location.pathname);
+  }, [location.pathname]);
 };
 
 export default usePageTracking;

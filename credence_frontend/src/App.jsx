@@ -59,6 +59,16 @@ import ResidenceAdministrativeCourt from './Pages/Appeals/Pages/Services/Residen
 import ResidenceSupremeCourt from './Pages/Appeals/Pages/Services/ResidenceSupremeCourt/ResidenceSupremeCourt';
 import SupportRejectedApplications from './Pages/Appeals/Pages/Services/SupportRejectedApplications/SupportRejectedApplications';
 import ImmigrationDocumentation from './Pages/Appeals/Pages/Services/ImmigrationDocumentation/ImmigrationDocumentation';
+import { useLocation } from "react-router-dom";
+
+
+function CookieConsentWrapper({ onConsentChange }) {
+  const location = useLocation();
+  const showOnAppeals = location.pathname.startsWith("/appeals");
+  if (!showOnAppeals) return null;
+  return <CookieConsent onConsentChange={onConsentChange} />;
+}
+
 
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
@@ -89,21 +99,33 @@ function App() {
     );
   }
 
+
+  function CookieConsentWrapper({ onConsentChange }) {
+    const location = useLocation();
+
+    // Only show on appeals pages
+    const showOnAppeals = location.pathname.startsWith("/appeals");
+
+    if (!showOnAppeals) return null;
+
+    return <CookieConsent onConsentChange={onConsentChange} />;
+  }
+
   // Normal site rendering (when maintenance is OFF)
   return (
     <ModalProvider>
       {/* Cookie consent banner - shows on every route, sits outside Routes */}
-      <CookieConsent onConsentChange={handleConsentChange} />
+      {/* <CookieConsent onConsentChange={handleConsentChange} /> */}
 
       <BrowserRouter>
         {/* PageTracker sits inside BrowserRouter so it can access useLocation().
             Fires PageView (Meta + Google) on every route change, site-wide. */}
         <PageTracker />
-
+        <CookieConsentWrapper onConsentChange={handleConsentChange} />
         <Routes>
 
-          {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<HomeGate />} />
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<HomeGate />} /> */}
 
           <Route path="/terms" element={<TermsAndCondition />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
@@ -167,16 +189,16 @@ function App() {
             </AppealsLayout>
           } /> */}
 
-          <Route path="/appeals/cases" element={
-            <AppealsLayout>
-              <Blogs />
-            </AppealsLayout>
+          <Route path="/cases" element={
+            // <AppealsLayout>
+            <Blogs />
+            // </AppealsLayout>
           } />
 
-          <Route path="/appeals/cases/:id" element={
-            <AppealsLayout>
-              <BlogSingle />
-            </AppealsLayout>
+          <Route path="/cases/:id" element={
+            // <AppealsLayout>
+            <BlogSingle />
+            // </AppealsLayout>
           } />
 
           {/* ADMIN ROUTES  */}

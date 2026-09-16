@@ -398,7 +398,7 @@ Read more: ${shareUrl}`;
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       <ToastContainer
         position="top-center"
         autoClose={3500}
@@ -573,7 +573,7 @@ Read more: ${shareUrl}`;
           </>
         )}
       </AnimatePresence>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
