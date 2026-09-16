@@ -141,7 +141,7 @@ const BlogList = () => {
                 transition={{ duration: 0.2 }}
               >
                 {/* <Link to={`/appeals/cases/${blog.blogId}`} className="blog-card-link"> */}
-                <Link to={`/cases/${blog.blogId}`} className="blog-card-link">
+                <Link to={`appeals/cases/${blog.blogId}`} className="blog-card-link">
                   <div className="blog-card-image-wrapper">
                     <div className="blog-card-image">
                       <img src={blog.mainImage} alt={blog.title} />

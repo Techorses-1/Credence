@@ -1,54 +1,41 @@
 // utils/consentManager.js
 
 const CONSENT_KEY = "cookie_consent";
-const CONSENT_EXPIRY_DAYS = 180; // 6 months - same duration for accept AND reject
 
 /**
- * Saves the user's consent choice with a timestamp.
+ * Saves the user's consent choice for THIS browser session only.
+ * sessionStorage is automatically wiped when the tab/browser closes -
+ * no expiry logic needed, the browser handles that for us.
  * status: "accepted" | "rejected"
  */
 export const saveConsent = (status) => {
-    const data = {
-        status,
-        timestamp: Date.now(),
-    };
-    localStorage.setItem(CONSENT_KEY, JSON.stringify(data));
+    const data = { status };
+    sessionStorage.setItem(CONSENT_KEY, JSON.stringify(data));
 };
 
 /**
- * Reads the saved consent from localStorage.
- * Returns null if nothing saved, or if the saved consent has expired.
- * Returns { status, timestamp } if still valid.
+ * Reads the saved consent from sessionStorage.
+ * Returns null if nothing saved yet in THIS session (i.e. fresh visit,
+ * or tab/browser was closed and reopened).
+ * Returns { status } if already chosen this session.
  */
 export const getConsent = () => {
-    const raw = localStorage.getItem(CONSENT_KEY);
+    const raw = sessionStorage.getItem(CONSENT_KEY);
 
     if (!raw) return null;
 
-    let data;
     try {
-        data = JSON.parse(raw);
+        return JSON.parse(raw);
     } catch (err) {
         // corrupted data, treat as no consent
-        localStorage.removeItem(CONSENT_KEY);
+        sessionStorage.removeItem(CONSENT_KEY);
         return null;
     }
-
-    const ageInMs = Date.now() - data.timestamp;
-    const expiryInMs = CONSENT_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
-
-    if (ageInMs > expiryInMs) {
-        // expired - remove it so a fresh choice is asked
-        localStorage.removeItem(CONSENT_KEY);
-        return null;
-    }
-
-    return data;
 };
 
 /**
- * Simple boolean check - has the user accepted marketing cookies right now?
- * Use this before initializing Meta Pixel / Google Ads tag.
+ * Simple boolean check - has the user accepted marketing cookies
+ * in THIS session? Use this before initializing Meta Pixel / Google Ads tag.
  */
 export const hasAcceptedConsent = () => {
     const consent = getConsent();
@@ -56,9 +43,10 @@ export const hasAcceptedConsent = () => {
 };
 
 /**
- * Clears the saved consent - useful for a "Cookie Settings" link
- * in the footer that lets users change their mind anytime.
+ * Clears the saved consent for this session - useful for a
+ * "Cookie Settings" link if you want users to be able to change
+ * their mind mid-session.
  */
 export const clearConsent = () => {
-    localStorage.removeItem(CONSENT_KEY);
+    sessionStorage.removeItem(CONSENT_KEY);
 };

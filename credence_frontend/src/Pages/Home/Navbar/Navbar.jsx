@@ -69,7 +69,7 @@ const Navbar = () => {
               className="navbar-logo-image"
             />
           </motion.div>
-          <motion.span
+          {/* <motion.span
             className={`navbar-cases-link ${isCasesActive ? "active" : ""}`}
             onClick={handleCasesClick}
             whileHover={{ scale: 1.05 }}
@@ -79,7 +79,7 @@ const Navbar = () => {
             <span className="mobile-text">
               Residence Permits<br />& Appeals
             </span>
-          </motion.span>
+          </motion.span> */}
         </div>
 
         <div className="navbar-buttons">

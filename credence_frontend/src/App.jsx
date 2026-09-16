@@ -124,15 +124,11 @@ function App() {
             </AppealsLayout>
           } />
 
-
-
           <Route path="/appeals/services/residence-permit-extensions-renewals" element={
             <AppealsLayout>
               <ResidenExtensionsAndRenewals />
             </AppealsLayout>
           } />
-
-
 
           <Route path="/appeals/services/residence-administrative-court" element={
             <AppealsLayout>
@@ -141,23 +137,17 @@ function App() {
           } />
 
 
-
-
           <Route path="/appeals/services/residence-supreme-court" element={
             <AppealsLayout>
               <ResidenceSupremeCourt />
             </AppealsLayout>
           } />
 
-
-
-
           <Route path="/appeals/services/support-rejected-applications" element={
             <AppealsLayout>
               <SupportRejectedApplications />
             </AppealsLayout>
           } />
-
 
           <Route path="/appeals/services/immigration-documentation-consultation" element={
             <AppealsLayout>
@@ -166,16 +156,17 @@ function App() {
           } />
 
           <Route path="/cases" element={
-            // <AppealsLayout>
+            //  <AppealsLayout>
             <Blogs />
-            // </AppealsLayout>
+            //  </AppealsLayout>
           } />
 
-          <Route path="/cases/:id" element={
-            // <AppealsLayout>
-            <BlogSingle />
-            // </AppealsLayout>
-          } />
+          {/* <Route path="appeals/cases/:id" element={
+            <AppealsLayout>
+              <BlogSingle />
+            </AppealsLayout>
+          } /> */}
+
           <Route path="/appeals/cases" element={
             <AppealsLayout>
               <Blogs />
