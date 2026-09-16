@@ -46,13 +46,6 @@ import AppealsHome from './Pages/Appeals/Pages/AppealsHome/AppealsHome';
 
 // IMPORT LAYOUT COMPONENT
 import AppealsLayout from './Pages/Appeals/Layout/AppealsLayout';
-import Services from './Pages/Appeals/Pages/Services/Services';
-import Service1 from './Pages/Appeals/Pages/Services/Service1/Service1';
-import Service2 from './Pages/Appeals/Pages/Services/Service2/Service2';
-import Service3 from './Pages/Appeals/Pages/Services/Service3/Service3';
-import Service4 from './Pages/Appeals/Pages/Services/Service4/Service4';
-import Service5 from './Pages/Appeals/Pages/Services/Service5/Service5';
-import Service6 from './Pages/Appeals/Pages/Services/Service6/Service6';
 import EmployeeGeneralTask from './Pages/Employee/GenralTasks/EmployeeGeneralTask';
 
 // IMPORT COOKIE CONSENT COMPONENT
@@ -62,6 +55,10 @@ import { initGoogleAds } from './Components/services/googleAds';
 import PageTracker from './Components/services/PageTracker';
 import ResidenceApplications from './Pages/Appeals/Pages/Services/ResidenceApplications/ResidenceApplications';
 import ResidenExtensionsAndRenewals from './Pages/Appeals/Pages/Services/ResidenExtensionsAndRenewals/ResidenExtensionsAndRenewals';
+import ResidenceAdministrativeCourt from './Pages/Appeals/Pages/Services/ResidenceAdministrativeCourt/ResidenceAdministrativeCourt';
+import ResidenceSupremeCourt from './Pages/Appeals/Pages/Services/ResidenceSupremeCourt/ResidenceSupremeCourt';
+import SupportRejectedApplications from './Pages/Appeals/Pages/Services/SupportRejectedApplications/SupportRejectedApplications';
+import ImmigrationDocumentation from './Pages/Appeals/Pages/Services/ImmigrationDocumentation/ImmigrationDocumentation';
 
 function App() {
   // 👇 MAINTENANCE MODE FLAG - SET TO true TO SHOW MAINTENANCE, false FOR NORMAL SITE
@@ -105,8 +102,8 @@ function App() {
 
         <Routes>
 
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/" element={<HomeGate />} /> */}
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<HomeGate />} />
 
           <Route path="/terms" element={<TermsAndCondition />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
@@ -120,23 +117,14 @@ function App() {
             </AppealsLayout>
           } />
 
-          {/* APPEALS ROUTES - WITH FIXED NAVBAR LAYOUT */}
-          <Route path="/appeals/services/service1" element={
-            <AppealsLayout>
-              <Service1 />
-            </AppealsLayout>
-          } />
+
           <Route path="/appeals/services/residence-permit-applications" element={
             <AppealsLayout>
               <ResidenceApplications />
             </AppealsLayout>
           } />
 
-          <Route path="/appeals/services/service2" element={
-            <AppealsLayout>
-              <Service2 />
-            </AppealsLayout>
-          } />
+
 
           <Route path="/appeals/services/residence-permit-extensions-renewals" element={
             <AppealsLayout>
@@ -144,39 +132,51 @@ function App() {
             </AppealsLayout>
           } />
 
-          <Route path="/appeals/services/service3" element={
+
+
+          <Route path="/appeals/services/residence-administrative-court" element={
             <AppealsLayout>
-              <Service3 />
+              <ResidenceAdministrativeCourt />
             </AppealsLayout>
           } />
-          <Route path="/appeals/services/service4" element={
+
+
+
+
+          <Route path="/appeals/services/residence-supreme-court" element={
             <AppealsLayout>
-              <Service4 />
+              <ResidenceSupremeCourt />
             </AppealsLayout>
           } />
-          <Route path="/appeals/services/service5" element={
+
+
+
+
+          <Route path="/appeals/services/support-rejected-applications" element={
             <AppealsLayout>
-              <Service5 />
+              <SupportRejectedApplications />
             </AppealsLayout>
           } />
-          <Route path="/appeals/services/service6" element={
+
+
+          <Route path="/appeals/services/immigration-documentation-consultation" element={
             <AppealsLayout>
-              <Service6 />   
+              <ImmigrationDocumentation />
             </AppealsLayout>
           } />
 
           <Route path="/cases" element={
             // <AppealsLayout>
-              <Blogs />
+            <Blogs />
             // </AppealsLayout>
           } />
 
           <Route path="/cases/:id" element={
             // <AppealsLayout>
-              <BlogSingle />
+            <BlogSingle />
             // </AppealsLayout>
           } />
-          {/* <Route path="/appeals/cases" element={
+          <Route path="/appeals/cases" element={
             <AppealsLayout>
               <Blogs />
             </AppealsLayout>
@@ -186,7 +186,7 @@ function App() {
             <AppealsLayout>
               <BlogSingle />
             </AppealsLayout>
-          } /> */}
+          } />
 
           {/* ADMIN ROUTES  */}
 

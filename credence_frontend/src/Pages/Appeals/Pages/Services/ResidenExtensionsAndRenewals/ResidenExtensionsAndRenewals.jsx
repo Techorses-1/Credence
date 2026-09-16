@@ -3,20 +3,20 @@ import ResidenceRenewalsSection from './ResidenceRenewalsSection/ResidenceRenewa
 import ServiceHero from '../ServiceHero/ServiceHero';
 import ServiceForm from '../ServiceForm/ServiceFrom';
 
-const service1HeroImage = "https://images.unsplash.com/photo-1767972159871-b9f5d320be2b?auto=format&fit=crop&w=1920&q=80";
+const service1HeroImage =
+    "https://plus.unsplash.com/premium_photo-1723759283157-54d22e11a870?auto=format&fit=crop&w=1920&q=80";
 
 const ResidenExtensionsAndRenewals = () => {
- return (
+    return (
         <div>
             <ServiceHero
                 title="Residence Permit Extensions & Renewals"
-                subtitle="A short one-line description of this service goes here."
+                subtitle="Keep your right to stay and work in Finland without interruption."
                 bgImage={service1HeroImage}
             />
-            <ResidenceRenewalsSection/>
-            
-            <ServiceForm defaultService="Service Two" />
-        </div>
+            <ResidenceRenewalsSection />
+
+            <ServiceForm defaultService="Residence Permit Extensions & Renewals" />        </div>
     );
 }
 

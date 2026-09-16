@@ -123,7 +123,7 @@ const HeroSection = () => {
           <motion.p className="hero-section__subtitle" variants={subtitleVariants}>
             From residence permit applications to complex appeal cases, our
             team guides you through every step with clear advice and
-            dedicated representation — so you always know where your case
+            dedicated representation - so you always know where your case
             stands.
           </motion.p>
 
@@ -136,14 +136,14 @@ const HeroSection = () => {
             >
               Start Your Case
             </motion.button>
-            <motion.button
+            {/* <motion.button
               className="hero-section__btn hero-section__btn--secondary"
               onClick={() => navigate("/services")}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Explore Services
-            </motion.button>
+            </motion.button> */}
           </motion.div>
         </motion.div>
 

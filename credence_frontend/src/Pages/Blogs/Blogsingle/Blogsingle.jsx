@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./BlogSingle.scss";
 import img from "../../../assets/Images/cases/img4.png";
-import { trackCustomEvent } from "../../../Components/services/metaPixel"; // adjust path to match your actual folder structure
+import { trackCustomEvent } from "../../../Components/services/metaPixel";
 import Navbar from "../../Home/Navbar/Navbar";
 import Footer from "../../Home/Footer/Footer";
 
@@ -398,7 +398,7 @@ Read more: ${shareUrl}`;
 
   return (
     <>
-<Navbar/>
+      <Navbar />
       <ToastContainer
         position="top-center"
         autoClose={3500}
@@ -573,7 +573,7 @@ Read more: ${shareUrl}`;
           </>
         )}
       </AnimatePresence>
-      <Footer/>
+      <Footer />
     </>
   );
 };

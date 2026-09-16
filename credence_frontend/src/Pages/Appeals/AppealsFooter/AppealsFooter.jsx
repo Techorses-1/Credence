@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./AppealsFooter.scss";
 import {
     FaPhoneAlt,
@@ -11,22 +11,29 @@ import {
     FaYoutube,
 } from "react-icons/fa";
 
-// ===== SERVICES LIST (replace with your real 6 services + routes) =====
+// ===== SERVICES LIST =====
 const servicesData = [
-    { name: "Service One", path: "/services/service-one" },
-    { name: "Service Two", path: "/services/service-two" },
-    { name: "Service Three", path: "/services/service-three" },
-    { name: "Service Four", path: "/services/service-four" },
-    { name: "Service Five", path: "/services/service-five" },
-    { name: "Service Six", path: "/services/service-six" },
+    { name: "Residence Permit Applications", path: "/appeals/services/residence-permit-applications" },
+    { name: "Residence Permit Extensions & Renewals", path: "/appeals/services/residence-permit-extensions-renewals" },
+    { name: "Residence Permit Appeals (Administrative Court)", path: "/appeals/services/residence-administrative-court" },
+    { name: "Residence Permit Appeals (Supreme Court)", path: "/appeals/services/residence-supreme-court" },
+    { name: "Support For Rejected Applications", path: "/appeals/services/support-rejected-applications" },
+    { name: "Immigration Documentation & Consultation", path: "/appeals/services/immigration-documentation-consultation" },
 ];
 
 const AppealsFooter = () => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleNavClick = (e, path) => {
         e.preventDefault();
         navigate(path);
+    };
+
+    // ---- same matching logic as the navbar ----
+    const isActive = (path) => {
+        if (path === "/appeals") return location.pathname === "/appeals";
+        return location.pathname === path || location.pathname.startsWith(path + "/");
     };
 
     return (
@@ -36,8 +43,12 @@ const AppealsFooter = () => {
                 <div className="apf-top-row">
                     {/* COL 1 - BRAND */}
                     <div className="apf-col apf-brand-col">
-                        {/* Replace with your real brand name */}
                         <h2>CREDENCE</h2>
+                        <p className="apf-owner-line">
+                            Owned by J. Lad GROUP Oy
+                            <br />
+                            Y-tunnus: 3494298-7
+                        </p>
                         <p className="apf-hover-text">
                             Clarity in every case,<br />
                             Support at every step.
@@ -46,10 +57,18 @@ const AppealsFooter = () => {
 
                     {/* COL 2 - HOME / CASES */}
                     <div className="apf-col apf-links-col">
-                        <a href="/appeals" onClick={(e) => handleNavClick(e, "/appeals")}>
+                        <a
+                            href="/appeals"
+                            className={isActive("/appeals") ? "active" : ""}
+                            onClick={(e) => handleNavClick(e, "/appeals")}
+                        >
                             Home
                         </a>
-                        <a href="/cases" onClick={(e) => handleNavClick(e, "/cases")}>
+                        <a
+                            href="/cases"
+                            className={isActive("/cases") ? "active" : ""}
+                            onClick={(e) => handleNavClick(e, "/cases")}
+                        >
                             Appeals & Cases
                         </a>
                     </div>
@@ -60,6 +79,7 @@ const AppealsFooter = () => {
                             <a
                                 key={index}
                                 href={service.path}
+                                className={isActive(service.path) ? "active" : ""}
                                 onClick={(e) => handleNavClick(e, service.path)}
                             >
                                 {service.name}
@@ -87,16 +107,12 @@ const AppealsFooter = () => {
                         <p className="apf-address apf-hover-item">
                             <FaMapMarkerAlt />
                             <a
-                                href="https://www.google.com/maps/search/?api=1&query=Your+Address+Here"
+                                href="https://www.google.com/maps/search/?api=1&query=Uomarinne+5+A+014+01600+VANTAA+Finland"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="apf-mobileaddress"
                             >
-                                Uomarinne 5 A 014, 01600,{" "}
-                                <span>
-                                    <br className="apf-mobilebreak" />
-                                </span>
-                                VANTAA Uusimaa Finland.
+                                VANTAA Finland.
                             </a>
                         </p>
                     </div>
@@ -110,7 +126,7 @@ const AppealsFooter = () => {
                         <p className="apf-desktop-view">
                             Copyright © 2026 - Credence Developed by
                             <span>
-                                <a rel="noopener noreferrer">Vapautus Media Private Limited</a>
+                                <a rel="noopener noreferrer">J. lad Group OY</a>
                             </span>
                         </p>
 
@@ -118,7 +134,7 @@ const AppealsFooter = () => {
                             Copyrights © 2026 - Credence <br />
                             Developed by{" "}
                             <span>
-                                <a rel="noopener noreferrer">Vapautus Media Private Limited</a>
+                                <a rel="noopener noreferrer">J. lad Group OY</a>
                             </span>
                         </p>
                     </div>

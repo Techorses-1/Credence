@@ -1,7 +1,7 @@
 // services/googleAds.js
 // No npm package needed - Google's gtag.js is loaded dynamically via script injection
 
-const GOOGLE_ADS_ID = import.meta.env.VITE_GOOGLE_ADS_ID;
+const GOOGLE_ADS_ID = import.meta.env.REACT_APP_GOOGLE_ADS_ID;
 
 let isInitialized = false;
 
@@ -76,6 +76,19 @@ export const trackConversion = (conversionLabel, data = {}) => {
         send_to: `${GOOGLE_ADS_ID}/${conversionLabel}`,
         ...data,
     });
+};
+
+/**
+ * Track a plain custom event - no conversion label needed.
+ * Useful for building remarketing audiences (e.g. "people who submitted
+ * a form") without needing the client to pre-create a Conversion Action
+ * in Google Ads first. Won't count toward Google's automatic bid
+ * optimization, but is enough for audience-building/targeting.
+ */
+export const trackCustomEvent = (eventName, data = {}) => {
+    if (!isInitialized || !window.gtag) return;
+
+    window.gtag("event", eventName, data);
 };
 
 /**

@@ -6,7 +6,7 @@
     // e.g. url('../../../assets/Images/services/service-hero.png')
     background-image: url('https://images.unsplash.com/photo-1767972159871-b9f5d320be2b?auto=format&fit=crop&w=1920&q=80');
     background-size: cover;
-    background-position: top;
+    background-position: center;
     background-attachment: fixed;
     display: flex;
     align-items: center;
@@ -37,6 +37,7 @@
         color: #ffffff;
         margin-bottom: 16px;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        max-width: 900px;
 
         @media (max-width: 768px) {
             font-size: 40px;

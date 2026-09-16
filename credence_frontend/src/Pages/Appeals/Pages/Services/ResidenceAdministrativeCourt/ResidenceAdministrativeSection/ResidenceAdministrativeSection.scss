@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: "Heading";
-    src: url("../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
+    src: url("../../../../../../assets/fonts/cy-grotesk-wide.ttf") format("truetype");
     font-style: normal;
     font-display: swap;
 }
@@ -71,7 +71,15 @@ $bg-soft: #f7faf5;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
-    margin-bottom: 56px;
+    margin-bottom: 12px;
+}
+
+.service-content__facts-note {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    color: $text-grey;
+    font-style: italic;
+    margin: 0 0 56px;
 }
 
 .service-content__fact {
@@ -115,6 +123,70 @@ $bg-soft: #f7faf5;
     font-size: 17px;
     font-weight: 700;
     color: $text-dark;
+}
+
+// ===== PROCESS FLOW (NEW SECTION) =====
+.service-content__flow {
+    margin-bottom: 56px;
+}
+
+.service-content__flow-track {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    position: relative;
+}
+
+.service-content__flow-step {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: $bg-soft;
+    border: 1.5px solid rgba(124, 214, 75, 0.25);
+    border-radius: 18px;
+    padding: 24px 22px;
+    position: relative;
+}
+
+.service-content__flow-step-marker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.service-content__flow-step-icon {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: rgba(124, 214, 75, 0.15);
+    color: $primary-green-hover;
+    font-size: 17px;
+}
+
+.service-content__flow-step-number {
+    font-family: "Heading", sans-serif;
+    font-size: 26px;
+    color: rgba(124, 214, 75, 0.5);
+}
+
+.service-content__flow-step-title {
+    font-family: "Arimo", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0;
+}
+
+.service-content__flow-step-desc {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: $text-grey;
+    margin: 0;
 }
 
 // ===== TWO-COLUMN BODY =====
@@ -242,6 +314,10 @@ $bg-soft: #f7faf5;
         grid-template-columns: repeat(3, 1fr);
     }
 
+    .service-content__flow-track {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .service-content__body {
         gap: 36px;
     }
@@ -258,6 +334,14 @@ $bg-soft: #f7faf5;
 
     .service-content__facts-row {
         grid-template-columns: 1fr;
+        margin-bottom: 8px;
+    }
+
+    .service-content__flow-track {
+        grid-template-columns: 1fr;
+    }
+
+    .service-content__flow {
         margin-bottom: 44px;
     }
 
@@ -299,6 +383,21 @@ $bg-soft: #f7faf5;
 
     .service-content__fact-value {
         font-size: 15px;
+    }
+
+    .service-content__flow-step {
+        padding: 20px 18px;
+        border-radius: 14px;
+    }
+
+    .service-content__flow-step-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .service-content__flow-step-number {
+        font-size: 22px;
     }
 
     .service-content__block-title {

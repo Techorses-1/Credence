@@ -6,14 +6,14 @@ import "./AppealsNavbar.scss";
 
 import logoImage from "../../../assets/Images/home/logo.png";
 
-// ===== SERVICES DATA (replace name + path with your real 6 services) =====
+// ===== SERVICES DATA =====
 const servicesData = [
-    { name: "Service One", path: "/appeals/services/service1" },
-    { name: "Service Two", path: "/appeals/services/service2" },
-    { name: "Service Three", path: "/appeals/services/service3" },
-    { name: "Service Four", path: "/appeals/services/service4" },
-    { name: "Service Five", path: "/appeals/services/service5" },
-    { name: "Service Six", path: "/appeals/services/service6" },
+    { name: "Residence Permit Applications", path: "/appeals/services/residence-permit-applications" },
+    { name: "Residence Permit Extensions & Renewals", path: "/appeals/services/residence-permit-extensions-renewals" },
+    { name: "Residence Permit Appeals (Administrative Court)", path: "/appeals/services/residence-administrative-court" },
+    { name: "Residence Permit Appeals (Supreme Court)", path: "/appeals/services/residence-supreme-court" },
+    { name: "Support For Rejected Applications", path: "/appeals/services/support-rejected-applications" },
+    { name: "Immigration Documentation & Consultation", path: "/appeals/services/immigration-documentation-consultation" },
 ];
 
 const AppealsNavbar = () => {

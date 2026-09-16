@@ -6,15 +6,17 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaLock } from "react-icons/fa";
 import "./ServiceForm.scss";
+import { trackStandardEvent } from "../../../../../Components/services/metaPixel";
+import { trackCustomEvent as trackGoogleEvent } from "../../../../../Components/services/googleAds"; // adjust path to match your actual folder structure
 
-// ===== SERVICES LIST (dummy — replace with your real 6 services) =====
+// ===== SERVICES LIST =====
 const servicesData = [
-    "Service One",
-    "Service Two",
-    "Service Three",
-    "Service Four",
-    "Service Five",
-    "Service Six",
+    "Residence Permit Applications",
+    "Residence Permit Extensions & Renewals",
+    "Residence Permit Appeals (Administrative Court)",
+    "Residence Permit Appeals (Supreme Court)",
+    "Support For Rejected Applications",
+    "Immigration Documentation & Consultation",
 ];
 
 // ===== VALIDATION SCHEMA =====
@@ -85,6 +87,20 @@ const ServiceForm = ({ defaultService = "" }) => {
                             style: { zIndex: 10001, background: "#7cd64b", color: "#000" },
                         }
                     );
+
+                    // ===== TRACKING - only fires after confirmed backend success =====
+                    // Same "Lead" event name for all 6 services - the specific
+                    // service is attached as data, so it stays filterable later.
+                    trackStandardEvent("Lead", {
+                        content_name: values.service,
+                        content_category: "Service Request",
+                    });
+
+                    // Google - plain custom event, no conversion label needed.
+                    // Enough for building a remarketing audience of "people who submitted".
+                    trackGoogleEvent("service_form_submitted", {
+                        service: values.service,
+                    });
 
                     // keep the locked service selected after reset, only clear other fields
                     resetForm({

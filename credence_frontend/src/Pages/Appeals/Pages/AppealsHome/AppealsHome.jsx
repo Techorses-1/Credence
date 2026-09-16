@@ -35,7 +35,7 @@ const AppealsHome = () => {
 
       <ProcessTimelineVertical />
       <ProcessFlowDiagram />
-      <ProcessProgressBar />
+      {/* <ProcessProgressBar /> */}
 
       {/* <FinalCTA /> */}
 

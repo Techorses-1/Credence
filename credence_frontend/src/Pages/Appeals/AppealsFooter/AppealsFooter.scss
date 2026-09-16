@@ -61,6 +61,14 @@
         margin-top: 0px;
     }
 
+    .apf-owner-line {
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #ccc;
+        margin: 6px 0 0;
+    }
+
     p {
         font-family: "Inter", sans-serif;
         margin-top: 14px;
@@ -112,6 +120,16 @@
 
         /* MOBILE VIEW – ALWAYS SHOW UNDERLINE */
         @media (max-width: 768px) {
+            &::after {
+                width: 100%;
+            }
+        }
+
+        /* ===== ACTIVE STATE — matches the current route ===== */
+        &.active {
+            color: #7cd64b;
+            font-weight: 600;
+
             &::after {
                 width: 100%;
             }
@@ -174,7 +192,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-   
+
 
     @media (max-width: 768px) {
         flex-direction: column;
