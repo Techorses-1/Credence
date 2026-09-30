@@ -294,7 +294,7 @@ const NotFound = () => {
                             whileTap="tap"
                             variants={buttonVariants}
                         >
-                            Go to Homepage
+                            Go Homepage
                         </motion.button>
 
                         <motion.button

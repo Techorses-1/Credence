@@ -1303,21 +1303,25 @@ const ClientFilesUpload = () => {
             return;
         }
 
+        // Scroll to top so picker opens in the right place
         window.scrollTo(0, 0);
 
+        // Create the view - this shows files in a grid with checkboxes
         const view = new window.google.picker.DocsView()
             .setIncludeFolders(true)
-            .setMode(window.google.picker.DocsViewMode.GRID);
+            .setMode(window.google.picker.DocsViewMode.LIST); // GRID mode shows thumbnails with checkboxes
 
         const picker = new window.google.picker.PickerBuilder()
             .addView(view)
             .setOAuthToken(accessToken)
             .setDeveloperKey(import.meta.env.VITE_GOOGLE_API_KEY)
             .setAppId(import.meta.env.VITE_GOOGLE_APP_ID)
+            // This is the KEY feature for multi-select
             .enableFeature(window.google.picker.Feature.MULTISELECT_ENABLED)
             .setCallback((data) => pickerCallback(data, accessToken, categoryInfo))
             .build();
 
+        // Show the picker
         picker.setVisible(true);
     };
 

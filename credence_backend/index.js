@@ -158,7 +158,7 @@ app.use("/uploads", express.static(UPLOAD_DIR));
 // BASIC ROUTE
 // ===============================
 app.get("/", (req, res) => {
-    res.send("NEW jlad GROUP WITH SERVER ");
+    res.send(" jlad GROUP WITH SERVER ");
 });
 
 // ===============================
