@@ -409,7 +409,7 @@ const ClientEmpLogin = () => {
             <p className="welcome-text">
               {loginType === "employee"
                 ? "Employee access to company resources"
-                : "Client access to your account dashboard"
+                : "Client access to your account dashboard."
               }
             </p>
           </div>
