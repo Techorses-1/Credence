@@ -1188,16 +1188,27 @@ const ClientFilesUpload = () => {
 
             console.error("Upload error:", error);
 
-            if (error.response?.status === 413) {
-                showError("❌ File too large! Maximum total size is 10MB for all files combined.");
-            } else if (error.code === 'ERR_NETWORK' || error.message.includes('Network Error')) {
-                showError("❌ Upload failed - file too large or network issue. Maximum total size is 10MB.");
-            } else if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
-                showError("❌ Upload timeout - file too large. Maximum total size is 10MB.");
-            } else if (error.response?.data?.message) {
-                showError(error.response.data.message);
+            // 1. SERVER RESPONDED — check status first
+            if (error.response) {
+                if (error.response.status === 413) {
+                    showError("❌ File too large! Maximum total size is 10MB for all files combined.");
+                } else if (error.response.status === 400) {
+                    showError(error.response.data?.message || "❌ Invalid request. Please check your files.");
+                } else if (error.response.status === 403) {
+                    showError(error.response.data?.message || "❌ Upload not allowed.");
+                } else if (error.response.data?.message) {
+                    showError(error.response.data.message);
+                } else {
+                    showError("❌ Upload failed. Please try again.");
+                }
+            }
+            // 2. NO RESPONSE — real network / timeout issue
+            else if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+                showError("❌ Upload timeout - please check your internet connection and try again.");
+            } else if (error.code === 'ERR_NETWORK' || error.message?.includes('Network Error')) {
+                showError("❌ Network error - please check your internet connection.");
             } else {
-                showError("❌ Upload failed. Please check that total file size is under 10MB and try again.");
+                showError("❌ Upload failed. Please try again.");
             }
         } finally {
             setLoading(false);
