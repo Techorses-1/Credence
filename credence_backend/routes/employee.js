@@ -112,7 +112,9 @@ router.post("/login", async (req, res) => {
     // Console log: Employee found
     logToConsole("DEBUG", "EMPLOYEE_FOUND", {
       employeeId: employee.employeeId,
-      name: employee.name
+      name: employee.name,
+      mode: employee.mode,
+      isActive: employee.isActive
     });
 
     const isMatch = await bcrypt.compare(password, employee.password);
@@ -130,6 +132,15 @@ router.post("/login", async (req, res) => {
       employeeId: employee.employeeId,
       name: employee.name
     });
+
+    // ===== BLOCK DELETED EMPLOYEES (return as "not found") =====
+    if (employee.mode === "deleted") {
+      logToConsole("WARN", "DELETED_EMPLOYEE_LOGIN_BLOCKED", {
+        email,
+        employeeId: employee.employeeId
+      });
+      return res.status(404).json({ message: "Employee not found" });
+    }
 
     const token = jwt.sign(
       {
@@ -184,6 +195,7 @@ router.post("/login", async (req, res) => {
         details: "Employee logged in successfully",
         metadata: {
           email: employee.email,
+          mode: employee.mode,
           loginTime: new Date().toISOString(),
           ip: req.ip
         }
@@ -206,7 +218,8 @@ router.post("/login", async (req, res) => {
     logToConsole("SUCCESS", "EMPLOYEE_LOGIN_SUCCESS", {
       employeeId: employee.employeeId,
       name: employee.name,
-      email: employee.email
+      email: employee.email,
+      mode: employee.mode
     });
 
     res.json({
@@ -214,7 +227,8 @@ router.post("/login", async (req, res) => {
       employee: {
         name: employee.name,
         email: employee.email,
-        employeeId: employee.employeeId
+        employeeId: employee.employeeId,
+        mode: employee.mode
       }
     });
 
@@ -232,7 +246,6 @@ router.post("/login", async (req, res) => {
     });
   }
 });
-
 
 /* ===============================
    EMPLOYEE LOGOUT
@@ -407,6 +420,26 @@ router.get("/me", async (req, res) => {
       });
     }
 
+    // ===== BLOCK DELETED EMPLOYEES (clear session) =====
+    if (employee.mode === "deleted") {
+      logToConsole("WARN", "DELETED_EMPLOYEE_SESSION_BLOCKED", {
+        employeeId: employee.employeeId,
+        email: employee.email
+      });
+
+      res.clearCookie("employeeToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/"
+      });
+
+      return res.status(404).json({
+        message: "Employee not found",
+        clearedCookie: true
+      });
+    }
+
     // Create activity log for checking login status
     try {
       await ActivityLog.create({
@@ -435,7 +468,8 @@ router.get("/me", async (req, res) => {
     // Console log: Employee data fetched
     logToConsole("SUCCESS", "EMPLOYEE_DATA_FETCHED", {
       employeeId: employee.employeeId,
-      name: employee.name
+      name: employee.name,
+      mode: employee.mode
     });
 
     res.json(employee);
@@ -453,7 +487,6 @@ router.get("/me", async (req, res) => {
     });
   }
 });
-
 
 
 router.get("/assigned-clients", async (req, res) => {

@@ -31,6 +31,46 @@ const logToConsole = (type, operation, data) => {
     return logEntry;
 };
 
+/**
+ * HELPER: Count pending tasks across BOTH schemas for an employee.
+ * Pending = !isRemoved && !accountingDone (ALL months, ALL years).
+ * Used by /deactivate, /deactivate-check, /delete.
+ */
+const countPendingTasks = async (employee) => {
+    let oldPending = 0;
+    let newPending = 0;
+
+    // Old schema: Employee.assignedClients
+    if (Array.isArray(employee.assignedClients)) {
+        oldPending = employee.assignedClients.filter(
+            (a) => !a.isRemoved && !a.accountingDone
+        ).length;
+    }
+
+    // New schema: EmployeeAssignment.assignedClients
+    try {
+        const newDoc = await EmployeeAssignment.findOne({
+            employeeId: employee.employeeId
+        });
+        if (newDoc && Array.isArray(newDoc.assignedClients)) {
+            newPending = newDoc.assignedClients.filter(
+                (a) => !a.isRemoved && !a.accountingDone
+            ).length;
+        }
+    } catch (err) {
+        logToConsole("WARN", "COUNT_PENDING_NEW_SCHEMA_FAILED", {
+            employeeId: employee.employeeId,
+            error: err.message
+        });
+    }
+
+    return {
+        oldPending,
+        newPending,
+        total: oldPending + newPending
+    };
+};
+
 /* ===============================
    CREATE EMPLOYEE (ADMIN ONLY)
 ================================ */
@@ -39,7 +79,6 @@ router.post("/create", auth, async (req, res) => {
         const { name, email, phone, password } = req.body;
         const employeeId = uuidv4();
 
-        // Console log: Request received
         logToConsole("INFO", "CREATE_EMPLOYEE_REQUEST", {
             adminId: req.user.adminId,
             adminName: req.user.name,
@@ -47,9 +86,34 @@ router.post("/create", auth, async (req, res) => {
             phone
         });
 
+        // ===== NEW: CHECK IF EMAIL ALREADY EXISTS (ANY MODE) =====
+        const existingEmployee = await Employee.findOne({ email });
+
+        if (existingEmployee) {
+            if (existingEmployee.mode === "deleted") {
+                logToConsole("WARN", "CREATE_EMPLOYEE_EMAIL_IN_DELETED", {
+                    email,
+                    existingEmployeeId: existingEmployee.employeeId,
+                    adminId: req.user.adminId
+                });
+                return res.status(409).json({
+                    message: "An employee with this email already exists in deleted records. Please use a different email."
+                });
+            }
+
+            logToConsole("WARN", "CREATE_EMPLOYEE_EMAIL_TAKEN", {
+                email,
+                existingEmployeeId: existingEmployee.employeeId,
+                existingMode: existingEmployee.mode,
+                adminId: req.user.adminId
+            });
+            return res.status(409).json({
+                message: "An employee with this email already exists"
+            });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Console log: Before creating employee
         logToConsole("DEBUG", "CREATING_EMPLOYEE", {
             employeeId,
             name,
@@ -64,10 +128,10 @@ router.post("/create", auth, async (req, res) => {
             email,
             phone,
             password: hashedPassword,
+            mode: "normal",
             createdBy: req.user.adminId
         });
 
-        // Console log: Employee created successfully
         logToConsole("SUCCESS", "EMPLOYEE_CREATED", {
             employeeId,
             email,
@@ -86,19 +150,16 @@ router.post("/create", auth, async (req, res) => {
         `
             );
 
-            // Console log: Email sent
             logToConsole("INFO", "CREDENTIALS_EMAIL_SENT", {
                 email,
                 adminId: req.user.adminId
             });
         } catch (emailError) {
-            // Console log: Email error (non-critical)
             logToConsole("WARN", "EMAIL_SEND_FAILED", {
                 email,
                 error: emailError.message,
                 adminId: req.user.adminId
             });
-            // Don't fail the whole request if email fails
         }
 
         await ActivityLog.create({
@@ -108,10 +169,9 @@ router.post("/create", auth, async (req, res) => {
             employeeId,
             action: "EMPLOYEE_CREATED",
             details: "Employee created by admin",
-            dateTime: new Date()  // FIXED: Use Date object instead of String
+            dateTime: new Date()
         });
 
-        // Console log: Activity log created
         logToConsole("INFO", "ACTIVITY_LOG_CREATED", {
             action: "EMPLOYEE_CREATED",
             employeeId,
@@ -120,14 +180,12 @@ router.post("/create", auth, async (req, res) => {
 
         res.json({ message: "Employee created successfully" });
 
-        // Console log: Request completed successfully
         logToConsole("SUCCESS", "CREATE_EMPLOYEE_COMPLETE", {
             employeeId,
             status: "success",
             adminId: req.user.adminId
         });
     } catch (error) {
-        // Console log: Error occurred
         logToConsole("ERROR", "CREATE_EMPLOYEE_FAILED", {
             error: error.message,
             stack: error.stack,
@@ -142,10 +200,15 @@ router.post("/create", auth, async (req, res) => {
     }
 });
 
+/* ===============================
+   GET ALL EMPLOYEES (excludes deleted)
+================================ */
 router.get("/all", auth, async (req, res) => {
     try {
-        // Get employees from old schema
-        const employees = await Employee.find().select("-password");
+        // Get employees from old schema, EXCLUDING deleted ones
+        const employees = await Employee.find({
+            mode: { $ne: "deleted" }
+        }).select("-password");
 
         // Get new assignments from EmployeeAssignment schema
         const newAssignments = await EmployeeAssignment.find();
@@ -175,6 +238,61 @@ router.get("/all", auth, async (req, res) => {
         res.status(500).json({ message: "Error fetching employees" });
     }
 });
+
+
+/* ===============================
+   GET ALL DELETED EMPLOYEES (ADMIN ONLY)
+   Returns only employees with mode === "deleted".
+   Read-only view — used by the "Deleted" filter in the admin panel.
+================================ */
+router.get("/all-deleted", auth, async (req, res) => {
+    try {
+        logToConsole("INFO", "LIST_DELETED_EMPLOYEES_REQUEST", {
+            adminId: req.user.adminId,
+            adminName: req.user.name
+        });
+
+        // Fetch ONLY deleted employees
+        const deletedEmployees = await Employee.find({
+            mode: "deleted"
+        }).select("-password");
+
+        // Combine assignments from both schemas (same shape as /all)
+        const newAssignments = await EmployeeAssignment.find();
+        const newMap = new Map();
+        newAssignments.forEach(ass => {
+            newMap.set(ass.employeeId, ass.assignedClients || []);
+        });
+
+        const finalEmployees = deletedEmployees.map(emp => {
+            const empObj = emp.toObject();
+            const oldList = empObj.assignedClients || [];
+            const newList = newMap.get(emp.employeeId) || [];
+            empObj.assignedClients = [...oldList, ...newList];
+            return empObj;
+        });
+
+        logToConsole("SUCCESS", "DELETED_EMPLOYEES_FETCHED", {
+            count: finalEmployees.length,
+            adminId: req.user.adminId
+        });
+
+        res.json(finalEmployees);
+
+    } catch (error) {
+        logToConsole("ERROR", "LIST_DELETED_EMPLOYEES_FAILED", {
+            error: error.message,
+            stack: error.stack,
+            adminId: req.user?.adminId
+        });
+
+        res.status(500).json({
+            message: "Error fetching deleted employees",
+            error: process.env.NODE_ENV === "development" ? error.message : undefined
+        });
+    }
+});
+
 /* ===============================
    UPDATE EMPLOYEE (ADMIN ONLY)
 ================================ */
@@ -443,6 +561,17 @@ router.post("/assign-client", auth, async (req, res) => {
             return res.status(404).json({ message: "Employee not found" });
         }
 
+        // ===== BLOCK ASSIGNMENT FOR DELETED EMPLOYEES =====
+        if (employee.mode === "deleted") {
+            logToConsole("WARN", "ASSIGN_BLOCKED_DELETED_EMPLOYEE", {
+                employeeId,
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                message: "Cannot assign tasks to a deleted employee"
+            });
+        }
+
         // ===== VALIDATE YEAR-MONTH =====
         const numericMonth = parseInt(month);
         const numericYear = parseInt(year);
@@ -479,7 +608,6 @@ router.post("/assign-client", auth, async (req, res) => {
             );
 
             // Check in NEW COLLECTION (EmployeeAssignment)
-            const EmployeeAssignment = require("../models/EmployeeAssignment");
             const newDoc = await EmployeeAssignment.findOne({ employeeId: employee.employeeId });
             const employeeAlreadyHasTask = newDoc?.assignedClients?.some(
                 (ac) => ac.clientId === clientId &&
@@ -553,7 +681,6 @@ router.post("/assign-client", auth, async (req, res) => {
 
         // ===== [ONLY] SAVE TO NEW COLLECTION (NOT to Employee.assignedClients) =====
         try {
-            const EmployeeAssignment = require("../models/EmployeeAssignment");
             let newDoc = await EmployeeAssignment.findOne({ employeeId: employee.employeeId });
 
             if (!newDoc) {
@@ -931,117 +1058,6 @@ router.get("/check-client-documents/:clientId", auth, async (req, res) => {
     }
 });
 
-
-router.delete("/remove-assignment", auth, async (req, res) => {
-    const { clientId, employeeId, year, month, task } = req.body;
-
-    if (!clientId || !employeeId || !year || !month || !task) {
-        return res.status(400).json({
-            message: "Missing required fields: clientId, employeeId, year, month, task"
-        });
-    }
-
-    try {
-        const numericYear = parseInt(year);
-        const numericMonth = parseInt(month);
-
-        // Fetch client
-        const client = await Client.findOne({ clientId });
-        if (!client) {
-            return res.status(404).json({ message: "Client not found" });
-        }
-
-        // Fetch employee (old schema)
-        const employee = await Employee.findOne({ employeeId });
-
-        // Fetch new schema
-        const newDoc = await EmployeeAssignment.findOne({ employeeId });
-
-        let removed = false;
-
-        // === CHECK AND REMOVE FROM OLD SCHEMA (Employee.assignedClients) ===
-        if (employee) {
-            const oldIndex = employee.assignedClients.findIndex(
-                a => a.clientId === clientId &&
-                    a.year === numericYear &&
-                    a.month === numericMonth &&
-                    a.task === task &&
-                    !a.isRemoved
-            );
-
-            if (oldIndex !== -1) {
-                if (employee.assignedClients[oldIndex].accountingDone) {
-                    return res.status(400).json({
-                        message: `Cannot remove "${task}" assignment because it's already marked as DONE`
-                    });
-                }
-                employee.assignedClients[oldIndex].isRemoved = true;
-                employee.assignedClients[oldIndex].removedAt = new Date();
-                employee.assignedClients[oldIndex].removedBy = req.user.adminId;
-                await employee.save();
-                removed = true;
-            }
-        }
-
-        // === CHECK AND REMOVE FROM NEW SCHEMA (EmployeeAssignment) ===
-        if (newDoc) {
-            const newIndex = newDoc.assignedClients.findIndex(
-                a => a.clientId === clientId &&
-                    a.year === numericYear &&
-                    a.month === numericMonth &&
-                    a.task === task &&
-                    !a.isRemoved
-            );
-
-            if (newIndex !== -1) {
-                if (newDoc.assignedClients[newIndex].accountingDone) {
-                    return res.status(400).json({
-                        message: `Cannot remove "${task}" assignment because it's already marked as DONE`
-                    });
-                }
-                newDoc.assignedClients[newIndex].isRemoved = true;
-                newDoc.assignedClients[newIndex].removedAt = new Date();
-                newDoc.assignedClients[newIndex].removedBy = req.user.adminId;
-                await newDoc.save();
-                removed = true;
-            }
-        }
-
-        // === REMOVE FROM CLIENT (always required) ===
-        const clientIndex = client.employeeAssignments.findIndex(
-            a => a.year === numericYear &&
-                a.month === numericMonth &&
-                a.employeeId === employeeId &&
-                a.task === task &&
-                !a.isRemoved
-        );
-
-        if (clientIndex !== -1) {
-            client.employeeAssignments[clientIndex].isRemoved = true;
-            client.employeeAssignments[clientIndex].removedAt = new Date();
-            client.employeeAssignments[clientIndex].removedBy = req.user.adminId;
-            await client.save();
-            removed = true;
-        }
-
-        if (!removed) {
-            return res.status(404).json({
-                message: `Task "${task}" assignment not found`
-            });
-        }
-
-        res.json({
-            message: `Task "${task}" assignment removed successfully`
-        });
-
-    } catch (error) {
-        console.error("Error removing assignment:", error);
-        res.status(500).json({
-            message: "Error removing task assignment"
-        });
-    }
-});
-
 /* ===============================
    GET CLIENT TASK STATUS PER MONTH (UPDATED & FIXED)
 ================================ */
@@ -1115,8 +1131,6 @@ router.get("/client-tasks-status/:clientId", auth, async (req, res) => {
             });
             return res.status(404).json({ message: "Client not found" });
         }
-
-
 
         // SAFELY GET ASSIGNMENTS (FIXED NULL CHECK)
         const assignments = (client.employeeAssignments || []).filter(a => {
@@ -1282,18 +1296,92 @@ router.get("/client-tasks-status/:clientId", auth, async (req, res) => {
 });
 
 /* ===============================
-   DEACTIVATE EMPLOYEE (UPDATED - REMOVE ONLY THEIR TASKS)
+   CHECK DEACTIVATE ELIGIBILITY (READ-ONLY)
+   Returns pending task count so the frontend can show
+   the correct modal (password/admin mode OR delete).
+================================ */
+router.get("/deactivate-check/:employeeId", auth, async (req, res) => {
+    try {
+        const { employeeId } = req.params;
+
+        logToConsole("INFO", "DEACTIVATE_CHECK_REQUEST", {
+            adminId: req.user.adminId,
+            adminName: req.user.name,
+            employeeId
+        });
+
+        const employee = await Employee.findOne({ employeeId });
+        if (!employee) {
+            logToConsole("WARN", "DEACTIVATE_CHECK_EMPLOYEE_NOT_FOUND", {
+                employeeId,
+                adminId: req.user.adminId
+            });
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+        if (employee.mode === "deleted") {
+            return res.status(400).json({ message: "Employee is already deleted" });
+        }
+
+        if (employee.mode === "admin") {
+            return res.status(400).json({
+                message: "Employee is already in Admin Mode"
+            });
+        }
+
+        const counts = await countPendingTasks(employee);
+
+        logToConsole("INFO", "DEACTIVATE_CHECK_COMPLETE", {
+            employeeId,
+            pendingCount: counts.total,
+            willDelete: counts.total === 0,
+            adminId: req.user.adminId
+        });
+
+        res.json({
+            employeeId: employee.employeeId,
+            employeeName: employee.name,
+            employeeEmail: employee.email,
+            pendingCount: counts.total,
+            breakdown: {
+                oldSchemaPending: counts.oldPending,
+                newSchemaPending: counts.newPending
+            },
+            willDelete: counts.total === 0,
+            mode: counts.total === 0 ? "delete" : "admin"
+        });
+
+    } catch (error) {
+        logToConsole("ERROR", "DEACTIVATE_CHECK_FAILED", {
+            error: error.message,
+            stack: error.stack,
+            adminId: req.user?.adminId,
+            employeeId: req.params.employeeId
+        });
+
+        res.status(500).json({
+            message: "Error checking deactivate eligibility",
+            error: process.env.NODE_ENV === "development" ? error.message : undefined
+        });
+    }
+});
+
+/* ===============================
+   DEACTIVATE EMPLOYEE (UPDATED - SMART FLOW)
+   - Pending tasks > 0 → change password + mode="admin" (isActive=false)
+   - Pending tasks = 0 → skip password + mode="deleted" (isActive=false)
+   - NO assignment removal in either branch
 ================================ */
 router.post("/deactivate/:employeeId", auth, async (req, res) => {
     try {
         const { employeeId } = req.params;
-        const currentYear = new Date().getFullYear();
-        const currentMonth = new Date().getMonth() + 1;
+        const { password } = req.body || {};
 
         logToConsole("INFO", "DEACTIVATE_EMPLOYEE_REQUEST", {
             adminId: req.user.adminId,
             adminName: req.user.name,
-            employeeId
+            employeeId,
+            passwordProvided: !!password
         });
 
         // ===== 1. FIND EMPLOYEE =====
@@ -1306,116 +1394,137 @@ router.post("/deactivate/:employeeId", auth, async (req, res) => {
             return res.status(404).json({ message: "Employee not found" });
         }
 
-        // ===== 2. FIND CURRENT MONTH TASK ASSIGNMENTS =====
-        const currentTaskAssignments = employee.assignedClients?.filter(
-            assignment => assignment.year === currentYear &&
-                assignment.month === currentMonth &&
-                !assignment.isRemoved
-        ) || [];
+        if (employee.mode === "deleted") {
+            return res.status(400).json({
+                message: "Employee is already deleted"
+            });
+        }
 
-        logToConsole("INFO", "CURRENT_TASK_ASSIGNMENTS_FOUND", {
+        if (employee.mode === "admin") {
+            return res.status(400).json({
+                message: "Employee is already in Admin Mode. Use Activate or Delete instead."
+            });
+        }
+
+        // ===== 2. COUNT PENDING TASKS (BOTH SCHEMAS, ALL MONTHS) =====
+        const counts = await countPendingTasks(employee);
+
+        logToConsole("INFO", "DEACTIVATE_PENDING_COUNT", {
             employeeId,
-            currentTasksCount: currentTaskAssignments.length,
-            tasks: currentTaskAssignments.map(a => a.task),
-            currentYear,
-            currentMonth,
+            pendingCount: counts.total,
+            oldPending: counts.oldPending,
+            newPending: counts.newPending,
             adminId: req.user.adminId
         });
 
-        // ===== 3. REMOVE TASK ASSIGNMENTS FROM CLIENTS =====
-        let removedFromClients = 0;
-        const removedTasks = [];
+        // ===== 3A. NO PENDING TASKS → DELETE (skip password) =====
+        if (counts.total === 0) {
+            employee.isActive = false;
+            employee.mode = "deleted";
+            employee.updatedAt = new Date();
+            await employee.save();
 
-        if (currentTaskAssignments.length > 0) {
-            for (const assignment of currentTaskAssignments) {
-                try {
-                    const client = await Client.findOne({ clientId: assignment.clientId });
-                    if (client) {
-                        // Find and mark THIS SPECIFIC TASK as removed
-                        const taskAssignment = client.employeeAssignments.find(
-                            empAssignment =>
-                                empAssignment.year === currentYear &&
-                                empAssignment.month === currentMonth &&
-                                empAssignment.employeeId === employeeId &&
-                                empAssignment.task === assignment.task &&
-                                !empAssignment.isRemoved
-                        );
-
-                        if (taskAssignment) {
-                            taskAssignment.isRemoved = true;
-                            taskAssignment.removedAt = new Date();
-                            taskAssignment.removedBy = req.user.adminId;
-                            taskAssignment.removalReason = "Employee deactivated";
-
-                            await client.save();
-                            removedFromClients++;
-                            removedTasks.push(assignment.task);
-
-                            logToConsole("INFO", "CLIENT_TASK_REMOVED", {
-                                clientId: assignment.clientId,
-                                clientName: client.name,
-                                task: assignment.task,
-                                employeeId,
-                                adminId: req.user.adminId
-                            });
-                        }
+            try {
+                await ActivityLog.create({
+                    userName: req.user.name,
+                    role: "ADMIN",
+                    adminId: req.user.adminId,
+                    employeeId,
+                    employeeName: employee.name,
+                    action: "EMPLOYEE_DELETED",
+                    details: `Employee "${employee.name}" deleted automatically on Deactivate (no pending tasks). Password NOT changed.`,
+                    dateTime: new Date(),
+                    metadata: {
+                        pendingCount: 0,
+                        passwordChanged: false,
+                        action: "auto_delete_on_deactivate"
                     }
-                } catch (clientError) {
-                    logToConsole("ERROR", "CLIENT_TASK_UPDATE_FAILED", {
-                        clientId: assignment.clientId,
-                        task: assignment.task,
-                        error: clientError.message,
-                        employeeId,
-                        adminId: req.user.adminId
-                    });
-                }
+                });
+            } catch (logError) {
+                logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
             }
+
+            logToConsole("SUCCESS", "EMPLOYEE_AUTO_DELETED", {
+                employeeId,
+                employeeName: employee.name,
+                adminId: req.user.adminId
+            });
+
+            return res.json({
+                action: "deleted",
+                message: `Employee "${employee.name}" had no pending tasks and has been deleted.`,
+                data: {
+                    employeeId,
+                    employeeName: employee.name,
+                    mode: "deleted",
+                    isActive: false,
+                    pendingCount: 0,
+                    passwordChanged: false,
+                    deletedAt: new Date()
+                }
+            });
         }
 
-        // ===== 4. UPDATE EMPLOYEE STATUS =====
+        // ===== 3B. HAS PENDING TASKS → ADMIN MODE (require password) =====
+        if (!password || password.trim() === "") {
+            return res.status(400).json({
+                message: "Password is required to deactivate an employee with pending tasks"
+            });
+        }
+
+        if (password.length < 6) {
+            return res.status(400).json({
+                message: "Password must be at least 6 characters"
+            });
+        }
+
+        employee.password = await bcrypt.hash(password, 10);
         employee.isActive = false;
+        employee.mode = "admin";
         employee.updatedAt = new Date();
         await employee.save();
 
-        logToConsole("SUCCESS", "EMPLOYEE_DEACTIVATED", {
+        try {
+            await ActivityLog.create({
+                userName: req.user.name,
+                role: "ADMIN",
+                adminId: req.user.adminId,
+                employeeId,
+                employeeName: employee.name,
+                action: "EMPLOYEE_DEACTIVATED",
+                details: `Employee "${employee.name}" deactivated → Admin Mode. Password changed. Pending tasks: ${counts.total}. No email sent.`,
+                dateTime: new Date(),
+                metadata: {
+                    pendingCount: counts.total,
+                    oldPending: counts.oldPending,
+                    newPending: counts.newPending,
+                    passwordChanged: true,
+                    mode: "admin",
+                    emailSent: false
+                }
+            });
+        } catch (logError) {
+            logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
+        }
+
+        logToConsole("SUCCESS", "EMPLOYEE_DEACTIVATED_ADMIN_MODE", {
             employeeId,
             employeeName: employee.name,
-            currentTasksRemoved: currentTaskAssignments.length,
-            removedTasks,
-            removedFromClients,
+            pendingCount: counts.total,
             adminId: req.user.adminId
         });
 
-        // ===== 5. ACTIVITY LOG =====
-        await ActivityLog.create({
-            userName: req.user.name,
-            role: "ADMIN",
-            adminId: req.user.adminId,
-            employeeId,
-            employeeName: employee.name,
-            action: "EMPLOYEE_DEACTIVATED",
-            details: `Employee "${employee.name}" deactivated. Removed ${removedTasks.length} task assignments: ${removedTasks.join(', ')}`,
-            dateTime: new Date(),  // FIXED: Use Date object instead of String
-            metadata: {
-                tasksRemoved: removedTasks,
-                count: removedTasks.length
-            }
-        });
-
-        logToConsole("INFO", "ACTIVITY_LOG_CREATED", {
-            action: "EMPLOYEE_DEACTIVATED",
-            employeeId,
-            adminId: req.user.adminId
-        });
-
-        res.json({
-            message: `Employee deactivated successfully. Removed ${removedTasks.length} task assignments.`,
+        return res.json({
+            action: "admin_mode",
+            message: `Employee "${employee.name}" moved to Admin Mode. Password changed. ${counts.total} pending task${counts.total === 1 ? '' : 's'} remain. No email sent.`,
             data: {
                 employeeId,
                 employeeName: employee.name,
-                tasksRemoved: removedTasks,
-                tasksRemovedCount: removedTasks.length,
-                clientsAffected: removedFromClients,
+                mode: "admin",
+                isActive: false,
+                pendingCount: counts.total,
+                passwordChanged: true,
+                emailSent: false,
                 deactivatedAt: new Date()
             }
         });
@@ -1430,6 +1539,103 @@ router.post("/deactivate/:employeeId", auth, async (req, res) => {
 
         res.status(500).json({
             message: "Error deactivating employee",
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
+
+/* ===============================
+   DELETE EMPLOYEE (MANUAL, FROM ADMIN MODE)
+   - Sets mode="deleted", isActive=false
+   - Does NOT touch assignments in either schema
+   - Requires confirmation (frontend handles modal)
+================================ */
+router.post("/delete/:employeeId", auth, async (req, res) => {
+    try {
+        const { employeeId } = req.params;
+
+        logToConsole("INFO", "DELETE_EMPLOYEE_REQUEST", {
+            adminId: req.user.adminId,
+            adminName: req.user.name,
+            employeeId
+        });
+
+        const employee = await Employee.findOne({ employeeId });
+        if (!employee) {
+            logToConsole("WARN", "DELETE_EMPLOYEE_NOT_FOUND", {
+                employeeId,
+                adminId: req.user.adminId
+            });
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+        if (employee.mode === "deleted") {
+            return res.status(400).json({
+                message: "Employee is already deleted"
+            });
+        }
+
+        // Count pending tasks (informational, still allowed to delete)
+        const counts = await countPendingTasks(employee);
+
+        employee.isActive = false;
+        employee.mode = "deleted";
+        employee.updatedAt = new Date();
+        await employee.save();
+
+        try {
+            await ActivityLog.create({
+                userName: req.user.name,
+                role: "ADMIN",
+                adminId: req.user.adminId,
+                employeeId,
+                employeeName: employee.name,
+                action: "EMPLOYEE_DELETED",
+                details: `Employee "${employee.name}" deleted manually by admin. Pending tasks at deletion: ${counts.total}. Assignments preserved (not removed).`,
+                dateTime: new Date(),
+                metadata: {
+                    pendingCount: counts.total,
+                    oldPending: counts.oldPending,
+                    newPending: counts.newPending,
+                    passwordChanged: false,
+                    previousMode: "admin",
+                    assignmentsPreserved: true
+                }
+            });
+        } catch (logError) {
+            logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
+        }
+
+        logToConsole("SUCCESS", "EMPLOYEE_DELETED", {
+            employeeId,
+            employeeName: employee.name,
+            pendingCount: counts.total,
+            adminId: req.user.adminId
+        });
+
+        res.json({
+            action: "deleted",
+            message: `Employee "${employee.name}" has been deleted. This cannot be undone.`,
+            data: {
+                employeeId,
+                employeeName: employee.name,
+                mode: "deleted",
+                isActive: false,
+                pendingCount: counts.total,
+                deletedAt: new Date()
+            }
+        });
+
+    } catch (error) {
+        logToConsole("ERROR", "DELETE_EMPLOYEE_FAILED", {
+            error: error.message,
+            stack: error.stack,
+            adminId: req.user?.adminId,
+            employeeId: req.params.employeeId
+        });
+
+        res.status(500).json({
+            message: "Error deleting employee",
             error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
@@ -1609,7 +1815,6 @@ router.delete("/remove-assignment", auth, async (req, res) => {
             return res.status(404).json({ message: "Employee not found" });
         }
 
-        const EmployeeAssignment = require("../models/EmployeeAssignment");
         let newDoc = await EmployeeAssignment.findOne({ employeeId: employee.employeeId });
 
         let assignmentFound = false;
@@ -1772,13 +1977,15 @@ router.delete("/remove-assignment", auth, async (req, res) => {
 });
 
 /* ===============================
-   ACTIVATE EMPLOYEE
+   ACTIVATE EMPLOYEE (BACK TO NORMAL)
+   - Sets isActive=true, mode="normal"
+   - Password stays as admin set it
+   - No email
 ================================ */
 router.post("/activate/:employeeId", auth, async (req, res) => {
     try {
         const { employeeId } = req.params;
 
-        // Console log: Request received
         logToConsole("INFO", "ACTIVATE_EMPLOYEE_REQUEST", {
             adminId: req.user.adminId,
             adminName: req.user.name,
@@ -1795,20 +2002,26 @@ router.post("/activate/:employeeId", auth, async (req, res) => {
             return res.status(404).json({ message: "Employee not found" });
         }
 
-        // Console log: Employee found
+        if (employee.mode === "deleted") {
+            return res.status(400).json({
+                message: "Cannot activate a deleted employee"
+            });
+        }
+
         logToConsole("DEBUG", "EMPLOYEE_FOUND", {
             employeeId,
             employeeName: employee.name,
             isActive: employee.isActive,
+            mode: employee.mode,
             adminId: req.user.adminId
         });
 
         // ===== 2. ACTIVATE EMPLOYEE =====
         employee.isActive = true;
+        employee.mode = "normal";
         employee.updatedAt = new Date();
         await employee.save();
 
-        // Console log: Employee activated
         logToConsole("SUCCESS", "EMPLOYEE_ACTIVATED", {
             employeeId,
             employeeName: employee.name,
@@ -1816,16 +2029,26 @@ router.post("/activate/:employeeId", auth, async (req, res) => {
         });
 
         // ===== 3. ACTIVITY LOG =====
-        await ActivityLog.create({
-            userName: req.user.name,
-            role: "ADMIN",
-            adminId: req.user.adminId,
-            employeeId,
-            employeeName: employee.name,
-            action: "EMPLOYEE_ACTIVATED",
-            details: `Employee "${employee.name}" activated`,
-            dateTime: new Date()  // FIXED: Use Date object instead of String
-        });
+        try {
+            await ActivityLog.create({
+                userName: req.user.name,
+                role: "ADMIN",
+                adminId: req.user.adminId,
+                employeeId,
+                employeeName: employee.name,
+                action: "EMPLOYEE_ACTIVATED",
+                details: `Employee "${employee.name}" reactivated (mode → normal). Password unchanged. No email sent.`,
+                dateTime: new Date(),
+                metadata: {
+                    previousMode: "admin",
+                    newMode: "normal",
+                    passwordChanged: false,
+                    emailSent: false
+                }
+            });
+        } catch (logError) {
+            logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
+        }
 
         logToConsole("INFO", "ACTIVITY_LOG_CREATED", {
             action: "EMPLOYEE_ACTIVATED",
@@ -1838,6 +2061,8 @@ router.post("/activate/:employeeId", auth, async (req, res) => {
             data: {
                 employeeId,
                 employeeName: employee.name,
+                mode: "normal",
+                isActive: true,
                 activatedAt: new Date()
             }
         });
@@ -2248,7 +2473,6 @@ router.post("/general-task/cancel/:taskId", auth, async (req, res) => {
 });
 
 
-
 /* ===============================
    GET ALL GENERAL TASKS FOR EMPLOYEE (ADMIN ONLY)
 ================================ */
@@ -2428,8 +2652,6 @@ router.get("/general-tasks/:employeeId", auth, async (req, res) => {
         });
     }
 });
-
-
 
 
 

@@ -636,7 +636,6 @@ const markNotesInBothCollections = async (clientId, employeeId, notesToMarkArray
   return markedCount;
 };
 
-// Middleware to get employee from token
 const getEmployeeFromToken = async (req) => {
   try {
     const token = req.cookies?.employeeToken;
@@ -646,9 +645,13 @@ const getEmployeeFromToken = async (req) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const employee = await Employee.findOne({
-      employeeId: decoded.employeeId,
-      isActive: true
+      employeeId: decoded.employeeId
     });
+
+    if (!employee) return null;
+
+    // Block ONLY deleted employees — admin-mode (isActive=false, mode="admin") is allowed
+    if (employee.mode === "deleted") return null;
 
     return employee;
   } catch (error) {
@@ -1022,7 +1025,7 @@ router.get("/client/:clientId/notes", async (req, res) => {
         const year = parseInt(yearKey);
         const yearData = documentsObj[yearKey];
         if (!yearData || typeof yearData !== 'object') continue;
-        
+
         for (const monthKey in yearData) {
           const month = parseInt(monthKey);
           const key = `${year}-${month}`;
@@ -1152,7 +1155,7 @@ router.get("/client/:clientId/notes", async (req, res) => {
     };
 
     let notes = extractNotesFromMap(client, employee.employeeId, monthDataMap, assignedMonthKeys);
-    
+
     // Apply filters (same logic as original)
     notes = notes.filter(note => {
       const noteKey = `${note.year}-${note.month}`;
@@ -1325,7 +1328,7 @@ router.post("/mark-as-viewed", async (req, res) => {
         const year = parseInt(yearKey);
         const yearData = documentsObj[yearKey];
         if (!yearData || typeof yearData !== 'object') continue;
-        
+
         for (const monthKey in yearData) {
           const month = parseInt(monthKey);
           const key = `${year}-${month}`;
@@ -1483,7 +1486,7 @@ router.post("/mark-as-viewed", async (req, res) => {
     // Helper to create update paths for nested notes
     const buildUpdateOperations = (monthData, year, month, unreadNotesToMark, employeeId) => {
       const updates = [];
-      
+
       const findMatchingNote = (note, context) => {
         return unreadNotesToMark.find(unreadNote =>
           unreadNote.note === note.note &&
@@ -1601,18 +1604,18 @@ router.post("/mark-as-viewed", async (req, res) => {
     // ===== OPTIMIZATION: Update NEW collection using $set with array filters =====
     if (monthlyDataDoc && monthlyDataDoc.months) {
       const bulkUpdates = [];
-      
+
       for (let i = 0; i < monthlyDataDoc.months.length; i++) {
         const monthData = monthlyDataDoc.months[i];
         const monthKey = `${monthData.year}-${monthData.month}`;
-        
+
         if (assignedMonthKeys.has(monthKey)) {
           const updates = buildUpdateOperations(monthData, monthData.year, monthData.month, unreadNotesToMark, employee.employeeId);
-          
+
           for (const update of updates) {
             const updateObj = { $set: { [update.path]: update.value } };
             const arrayFilters = [{ "monthElem.year": monthData.year, "monthElem.month": monthData.month }];
-            
+
             bulkUpdates.push({
               updateOne: {
                 filter: { clientId: clientId },
@@ -1623,7 +1626,7 @@ router.post("/mark-as-viewed", async (req, res) => {
           }
         }
       }
-      
+
       if (bulkUpdates.length > 0) {
         const result = await ClientMonthlyData.bulkWrite(bulkUpdates);
         markedCount += bulkUpdates.length;
@@ -1634,19 +1637,19 @@ router.post("/mark-as-viewed", async (req, res) => {
     // ===== OPTIMIZATION: Update OLD collection using direct update =====
     if (client.documents) {
       const oldDocUpdates = [];
-      
+
       for (const monthKey of assignedMonthKeys) {
         const [year, month] = monthKey.split('-');
         const monthData = monthDataMap.get(monthKey);
-        
+
         if (monthData) {
           const updates = buildUpdateOperations(monthData, parseInt(year), parseInt(month), unreadNotesToMark, employee.employeeId);
-          
+
           for (const update of updates) {
             // Convert path for OLD document structure
             let oldPath = update.path.replace('months.$[monthElem].', `documents.${year}.${month}.`);
             oldPath = oldPath.replace(/\./g, '.');
-            
+
             oldDocUpdates.push({
               updateOne: {
                 filter: { clientId: clientId },
@@ -1656,7 +1659,7 @@ router.post("/mark-as-viewed", async (req, res) => {
           }
         }
       }
-      
+
       if (oldDocUpdates.length > 0) {
         const result = await Client.bulkWrite(oldDocUpdates);
         markedCount += oldDocUpdates.length;

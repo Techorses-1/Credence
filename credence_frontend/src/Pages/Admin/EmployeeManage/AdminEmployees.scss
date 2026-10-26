@@ -3736,3 +3736,588 @@
     transform: rotate(360deg);
   }
 }
+
+
+// ===============================
+// ADMIN MODE — NEW ADDITIONS
+// ===============================
+
+// 1. Admin Mode Badge (used in employee table Status column)
+.status-badge.admin-mode {
+  background: rgba(255, 165, 0, 0.15);
+  color: #ffa500;
+  border-color: rgba(255, 165, 0, 0.35);
+
+  svg {
+    color: #ffa500;
+  }
+}
+
+// 2. Delete + Activate buttons in admin-mode rows
+//    (delete-btn already styled above — reusing existing one)
+//    Activate button reuses .activate-btn — style it explicitly below
+.action-buttons {
+
+  .activate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid rgba(124, 214, 75, 0.3);
+    background: rgba(124, 214, 75, 0.1);
+    color: #7cd64b;
+    white-space: nowrap;
+    font-family: 'Poppins', sans-serif;
+
+    &:hover:not(:disabled) {
+      background: rgba(124, 214, 75, 0.2);
+      border-color: #7cd64b;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// 3. Deactivate modal — password input wrapper (input + eye toggle)
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  input {
+    width: 100% !important;
+    padding-right: 44px !important; // room for toggle
+    box-sizing: border-box;
+  }
+
+  .toggle-password-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #7cd64b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:hover:not(:disabled) {
+      background: rgba(124, 214, 75, 0.1);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    svg {
+      color: #7cd64b;
+    }
+  }
+}
+
+// 4. Deactivate / Delete modal — small loading / empty state
+//    (reuses .empty-state inside .modal-body — already styled,
+//     but let's ensure no ugly spacing)
+.modal.confirm-modal {
+
+  .modal-body {
+
+    .empty-state {
+      padding: 40px 16px;
+      text-align: center;
+
+      .loading-spinner {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        border: 3px solid rgba(124, 214, 75, 0.2);
+        border-radius: 50%;
+        border-top-color: #7cd64b;
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 16px;
+      }
+
+      p {
+        color: #555555;
+        font-size: 14px;
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+      }
+    }
+
+    // Warning note inside deactivate/delete modals
+    .warning-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 12px 16px;
+      background: rgba(255, 75, 75, 0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(255, 75, 75, 0.2);
+      margin-top: 16px;
+      text-align: left;
+
+      svg {
+        color: #ff4b4b;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      span {
+        font-size: 13px;
+        color: #000;
+        line-height: 1.5;
+        font-family: 'Poppins', sans-serif;
+
+        strong {
+          color: #ff4b4b;
+          font-weight: 700;
+        }
+      }
+    }
+
+    // Deactivate password form group spacing
+    .form-group {
+      margin-top: 20px;
+
+      .hint {
+        display: block;
+        font-size: 12px;
+        color: #666666;
+        margin-top: 6px;
+        font-style: italic;
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.4;
+      }
+    }
+  }
+}
+
+// 5. Ensure danger button used in Delete modal still aligns correctly
+.modal.confirm-modal {
+
+  .modal-actions {
+
+    button.danger-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+  }
+}
+
+// 6. Small responsive tweaks for new pieces
+@media (max-width: 768px) {
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+
+    .activate-btn {
+      width: 100%;
+      justify-content: center;
+
+      span {
+        display: inline !important;
+      }
+    }
+  }
+
+  .status-badge.admin-mode {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  .modal.confirm-modal {
+    .modal-body {
+      .form-group {
+        margin-top: 16px;
+      }
+
+      .warning-note {
+        padding: 10px 12px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .password-input-wrapper {
+    input {
+      padding-right: 40px !important;
+      font-size: 13px;
+    }
+
+    .toggle-password-btn {
+      right: 8px;
+      padding: 3px;
+    }
+  }
+
+  .modal.confirm-modal {
+    .modal-body {
+      .warning-note {
+        padding: 8px 10px;
+
+        span {
+          font-size: 11px;
+        }
+      }
+
+      .empty-state p {
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+// ===============================
+// NEW: SEARCH + FILTER ROW
+// ===============================
+.search-filter-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  align-items: stretch;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.filter-dropdown {
+  position: relative;
+  min-width: 180px;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .filter-selected {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.2s;
+    height: 100%;
+    box-sizing: border-box;
+
+    &:hover {
+      border-color: #7cd64b;
+    }
+
+    svg {
+      color: #7cd64b;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+  }
+
+  .filter-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeIn 0.15s ease;
+
+    .filter-item {
+      padding: 10px 16px;
+      font-size: 14px;
+      color: #000;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.15s;
+
+      &:hover {
+        background: rgba(124, 214, 75, 0.1);
+      }
+
+      &.selected {
+        background: rgba(124, 214, 75, 0.15);
+        color: #7cd64b;
+        font-weight: 600;
+        border-left: 3px solid #7cd64b;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #f0f0f0;
+      }
+    }
+  }
+}
+
+// Make search box flexible within the new row
+.search-filter-row {
+  .search-box {
+    flex: 1;
+    position: relative;
+    width: 100%;
+
+    svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #000;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 16px 10px 44px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.2s;
+      background: #ffffff;
+      color: #000;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+      height: 100%;
+
+      &:focus {
+        outline: none;
+        border-color: #7cd64b;
+        box-shadow: 0 0 0 3px rgba(124, 214, 75, 0.15);
+      }
+
+      &::placeholder {
+        color: #999999;
+      }
+    }
+  }
+}
+
+// ===============================
+// NEW: Deleted row (read-only)
+// ===============================
+.employee-row.deleted-row {
+  background: #fafafa !important;
+  opacity: 0.85;
+
+  &:hover {
+    background: #f5f5f5 !important;
+  }
+
+  .employee-info .avatar {
+    background: linear-gradient(135deg, #b0b0b0 0%, #808080 100%) !important;
+    color: #ffffff !important;
+  }
+}
+
+.readonly-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(150, 150, 150, 0.12);
+  color: #888888;
+  border: 1px solid rgba(150, 150, 150, 0.3);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  font-style: italic;
+}
+
+// ===============================
+// FIX: Deactivate password input
+// ===============================
+.deactivate-password-group {
+  margin-top: 20px;
+  width: 100%;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+
+    svg {
+      color: #7cd64b;
+    }
+
+    &::after {
+      content: '*';
+      color: #ff4b4b;
+      margin-left: 4px;
+    }
+  }
+
+  .password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 6px;
+
+    input {
+      width: 100% !important;
+      padding: 12px 48px 12px 16px !important;
+      font-size: 14px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      transition: all 0.2s;
+      background: #ffffff;
+      color: #000;
+      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: #7cd64b;
+        box-shadow: 0 0 0 3px rgba(124, 214, 75, 0.15);
+      }
+
+      &.error {
+        border-color: #ff4b4b;
+        background: rgba(255, 75, 75, 0.05);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &::placeholder {
+        color: #999999;
+      }
+    }
+
+    .toggle-password-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #7cd64b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 4px;
+      transition: all 0.2s;
+
+      &:hover:not(:disabled) {
+        background: rgba(124, 214, 75, 0.12);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      svg {
+        color: #7cd64b;
+      }
+    }
+  }
+
+  .hint {
+    display: block;
+    font-size: 12px;
+    color: #666666;
+    margin-top: 6px;
+    font-style: italic;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.4;
+  }
+}
+
+// ===============================
+// Small responsive tweaks
+// ===============================
+@media (max-width: 768px) {
+  .filter-dropdown {
+    .filter-selected {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+
+    .filter-options .filter-item {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+  }
+
+  .deactivate-password-group {
+    .password-input-wrapper input {
+      padding: 11px 44px 11px 14px !important;
+      font-size: 13px;
+    }
+
+    .hint {
+      font-size: 11px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-dropdown {
+    .filter-selected {
+      padding: 9px 12px;
+      font-size: 12px;
+    }
+  }
+
+  .readonly-tag {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .deactivate-password-group {
+    .password-input-wrapper input {
+      padding: 10px 40px 10px 12px !important;
+      font-size: 12px;
+    }
+
+    .password-input-wrapper .toggle-password-btn {
+      right: 8px;
+      padding: 4px;
+    }
+  }
+}

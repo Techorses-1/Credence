@@ -175,6 +175,19 @@ const employeeSchema = new mongoose.Schema(
     phone: String,
     password: { type: String, required: true },
     isActive: { type: Boolean, default: true },
+
+    /**
+     * NEW: Employee lifecycle mode
+     * - "normal"  → Active employee (isActive = true)
+     * - "admin"   → Deactivated; password changed; admin can log in to finish work (isActive = false)
+     * - "deleted" → Soft-deleted; hidden from list; cannot log in (isActive = false)
+     */
+    mode: {
+      type: String,
+      enum: ["normal", "admin", "deleted"],
+      default: "normal"
+    },
+
     createdBy: { type: String },
 
     /**
@@ -207,5 +220,8 @@ employeeSchema.index({ employeeId: 1, 'viewedFiles.clientId': 1 });
 employeeSchema.index({ 'auditedFiles.clientId': 1, 'auditedFiles.year': 1, 'auditedFiles.month': 1 });
 employeeSchema.index({ 'auditedFiles.fileName': 1 });
 employeeSchema.index({ employeeId: 1, 'auditedFiles.clientId': 1 });
+
+// Index on mode for fast /all filtering
+employeeSchema.index({ mode: 1 });
 
 module.exports = mongoose.model("Employee", employeeSchema);

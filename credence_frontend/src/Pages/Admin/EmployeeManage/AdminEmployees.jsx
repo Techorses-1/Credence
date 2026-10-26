@@ -29,7 +29,8 @@ import {
   FiArchive,
   FiFileText,
   FiInfo,
-  FiChevronDown
+  FiChevronDown,
+  FiLock
 } from "react-icons/fi";
 import "./AdminEmployees.scss";
 // Import General Task Modal Components
@@ -51,6 +52,7 @@ const employeeSchema = Yup.object().shape({
     .min(6, "Password must be at least 6 characters")
     .optional()
 });
+
 const assignSchema = Yup.object().shape({
   clientId: Yup.string().required("Client is required"),
   year: Yup.number()
@@ -65,36 +67,71 @@ const assignSchema = Yup.object().shape({
     .min(1, "Select at least one task")
     .required("Select at least one task")
 });
+
+// ===== Filter dropdown options =====
+const employeeFilterOptions = [
+  { value: "all", label: "All Employees" },
+  { value: "active", label: "Active" },
+  { value: "admin", label: "Admin Mode" },
+  { value: "deleted", label: "Deleted" }
+];
+
 const AdminEmployees = () => {
   // State declarations
   const [employees, setEmployees] = useState([]);
+  const [deletedEmployees, setDeletedEmployees] = useState([]);
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingDeleted, setLoadingDeleted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Filter state
+  const [employeeFilter, setEmployeeFilter] = useState("all");
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const filterDropdownRef = useRef(null);
+
   const [showPassword, setShowPassword] = useState(false);
+
   // Modal states
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showRemoveConfirmModal, setShowRemoveConfirmModal] = useState(false);
+
+  // Deactivate smart modal state
+  const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+  const [deactivateCheckLoading, setDeactivateCheckLoading] = useState(false);
+  const [deactivateCheck, setDeactivateCheck] = useState(null);
+  const [deactivatePassword, setDeactivatePassword] = useState("");
+  const [showDeactivatePassword, setShowDeactivatePassword] = useState(false);
+
+  // Delete confirm modal state
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+  const [deleteCheckLoading, setDeleteCheckLoading] = useState(false);
+  const [deleteCheck, setDeleteCheck] = useState(null);
+
   // General Task Modal states
   const [showGeneralTaskModal, setShowGeneralTaskModal] = useState(false);
   const [showViewGeneralTasksModal, setShowViewGeneralTasksModal] = useState(false);
+
   // Selected items
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [assigningEmployee, setAssigningEmployee] = useState(null);
   const [employeeToConfirm, setEmployeeToConfirm] = useState(null);
-  const [confirmAction, setConfirmAction] = useState(""); // "deactivate" or "activate"
+  const [confirmAction, setConfirmAction] = useState("");
   const [confirmMessage, setConfirmMessage] = useState("");
   const [assignmentToRemove, setAssignmentToRemove] = useState(null);
+
   // Client task status state
   const [clientTaskStatus, setClientTaskStatus] = useState(null);
   const [loadingTaskStatus, setLoadingTaskStatus] = useState(false);
-  // Mobile search states for client dropdown
+
+  // Client dropdown state
   const [clientSearchTerm, setClientSearchTerm] = useState("");
   const [showClientDropdown, setShowClientDropdown] = useState(false);
   const dropdownRef = useRef(null);
+
   // Task options
   const taskOptions = [
     { value: "Bookkeeping", label: "Bookkeeping" },
@@ -103,11 +140,13 @@ const AdminEmployees = () => {
     { value: "Financial Statement Generation", label: "Financial Statement Generation" },
     { value: "Audit", label: "Audit" }
   ];
+
   // Current month/year
   const currentMonth = {
     year: new Date().getFullYear(),
     month: new Date().getMonth() + 1
   };
+
   // Formik for Add/Edit Employee
   const employeeFormik = useFormik({
     initialValues: {
@@ -125,18 +164,15 @@ const AdminEmployees = () => {
           email: values.email,
           phone: values.phone
         };
-        // Only include password if provided
         if (values.password && values.password.trim() !== "") {
           payload.password = values.password;
         }
-        // For new employees, check if password exists
         if (!selectedEmployee && !values.password) {
           toast.error("Password is required for new employees");
           setLoading(false);
           return;
         }
         if (selectedEmployee) {
-          // Update existing employee
           const response = await axios.put(
             `${import.meta.env.VITE_API_URL}/admin-employee/update/${selectedEmployee.employeeId}`,
             payload,
@@ -148,7 +184,6 @@ const AdminEmployees = () => {
             theme: "dark"
           });
         } else {
-          // Create new employee
           if (!values.password) {
             toast.error("Password is required for new employees", {
               position: "top-right",
@@ -183,22 +218,19 @@ const AdminEmployees = () => {
       }
     }
   });
-  // Formik for Assign Client (UPDATED WITH MULTIPLE TASKS - DOCUMENT CHECK REMOVED)
+
+  // Formik for Assign Client
   const assignFormik = useFormik({
     initialValues: {
       clientId: "",
       year: currentMonth.year,
       month: currentMonth.month,
-      tasks: []  // Changed from single task to array
+      tasks: []
     },
     validationSchema: assignSchema,
     onSubmit: async (values) => {
       try {
         setLoading(true);
-
-        // ===== DOCUMENT CHECK REMOVED - Proceed directly with assignment =====
-
-        // Proceed with multiple tasks assignment
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/admin-employee/assign-client`,
           {
@@ -206,7 +238,7 @@ const AdminEmployees = () => {
             clientId: values.clientId,
             year: Number(values.year),
             month: Number(values.month),
-            tasks: values.tasks  // Send array of tasks
+            tasks: values.tasks
           },
           { withCredentials: true }
         );
@@ -217,7 +249,6 @@ const AdminEmployees = () => {
         });
         resetAssignForm();
         loadEmployees();
-        // Refresh client task status after assignment
         if (values.clientId && values.year && values.month) {
           loadClientTaskStatus(values.clientId, values.year, values.month);
         }
@@ -233,8 +264,7 @@ const AdminEmployees = () => {
       }
     }
   });
-  // ✅ FIXED: loadEmployees now returns fresh data so handleRemoveAssignment
-  // can use it directly instead of reading from stale state
+
   const loadEmployees = async () => {
     try {
       setLoading(true);
@@ -243,7 +273,7 @@ const AdminEmployees = () => {
         { withCredentials: true }
       );
       setEmployees(res.data);
-      return res.data; // ← CHANGED: return fresh data
+      return res.data;
     } catch (error) {
       console.error("Error loading employees:", error);
       toast.error("Failed to load employees", {
@@ -251,11 +281,30 @@ const AdminEmployees = () => {
         autoClose: 3000,
         theme: "dark"
       });
-      return null; // ← CHANGED: return null on error
+      return null;
     } finally {
       setLoading(false);
     }
   };
+
+  const loadDeletedEmployees = async () => {
+    try {
+      setLoadingDeleted(true);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/admin-employee/all-deleted`,
+        { withCredentials: true }
+      );
+      setDeletedEmployees(res.data || []);
+      return res.data;
+    } catch (error) {
+      console.warn("Deleted employees route not yet available:", error.message);
+      setDeletedEmployees([]);
+      return [];
+    } finally {
+      setLoadingDeleted(false);
+    }
+  };
+
   const loadClients = async () => {
     try {
       const res = await axios.get(
@@ -267,36 +316,16 @@ const AdminEmployees = () => {
       console.error("Error loading clients:", error);
     }
   };
+
   const loadClientTaskStatus = async (clientId, year, month) => {
     try {
       setLoadingTaskStatus(true);
       setClientTaskStatus(null);
-      console.log("📡 Loading task status for:", { clientId, year, month });
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/admin-employee/client-tasks-status/${clientId}?year=${year}&month=${month}`,
         { withCredentials: true }
       );
-      console.log("✅ Task status received:", res.data);
-      const expectedYear = Number(year);
-      const expectedMonth = Number(month);
-      const receivedYear = Number(res.data.year);
-      const receivedMonth = Number(res.data.month);
-      if (res.data.clientId === clientId &&
-        receivedYear === expectedYear &&
-        receivedMonth === expectedMonth) {
-        setClientTaskStatus(res.data);
-        console.log("✅ Task status SET in state");
-      } else {
-        console.warn("⚠️ Response doesn't match current selection", {
-          expected: { clientId, year: expectedYear, month: expectedMonth },
-          received: {
-            clientId: res.data.clientId,
-            year: receivedYear,
-            month: receivedMonth
-          }
-        });
-        setClientTaskStatus(res.data);
-      }
+      setClientTaskStatus(res.data);
     } catch (error) {
       console.error("❌ Error loading client task status:", error);
       setClientTaskStatus(null);
@@ -304,13 +333,21 @@ const AdminEmployees = () => {
       setLoadingTaskStatus(false);
     }
   };
+
   useEffect(() => {
     loadEmployees();
     loadClients();
   }, []);
-  // Handle click outside dropdown
+
+  // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
+      if (
+        filterDropdownRef.current &&
+        !filterDropdownRef.current.contains(event.target)
+      ) {
+        setShowFilterDropdown(false);
+      }
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowClientDropdown(false);
       }
@@ -320,20 +357,26 @@ const AdminEmployees = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   // Load task status when client/date changes
   useEffect(() => {
     if (!showAssignModal) return;
     setClientTaskStatus(null);
     const { clientId, year, month } = assignFormik.values;
-    if (!clientId || !year || !month) {
-      return;
-    }
+    if (!clientId || !year || !month) return;
     const timer = setTimeout(() => {
       loadClientTaskStatus(clientId, year, month);
     }, 300);
     return () => clearTimeout(timer);
   }, [showAssignModal, assignFormik.values.clientId, assignFormik.values.year, assignFormik.values.month]);
-  // Open Edit Modal
+
+  // Load deleted employees when filter changes
+  useEffect(() => {
+    if (employeeFilter === "deleted") {
+      loadDeletedEmployees();
+    }
+  }, [employeeFilter]);
+
   const openEditModal = (employee) => {
     setSelectedEmployee(employee);
     employeeFormik.setValues({
@@ -344,64 +387,208 @@ const AdminEmployees = () => {
     });
     setShowEditModal(true);
   };
-  // Open Assign Modal (UPDATED)
+
   const openAssignModal = (employee) => {
     setAssigningEmployee(employee);
     assignFormik.setValues({
       clientId: "",
       year: currentMonth.year,
       month: currentMonth.month,
-      tasks: []  // Initialize empty array
+      tasks: []
     });
     setClientTaskStatus(null);
-    setClientSearchTerm(""); // Reset client search
+    setClientSearchTerm("");
     setShowClientDropdown(false);
     setShowAssignModal(true);
   };
-  // Open General Task Modal
+
   const openGeneralTaskModal = (employee) => {
     setAssigningEmployee(employee);
     setShowGeneralTaskModal(true);
   };
-  // Open View General Tasks Modal
+
   const openViewGeneralTasksModal = (employee) => {
     setAssigningEmployee(employee);
     setShowViewGeneralTasksModal(true);
   };
-  // Handle General Task Created
+
   const handleGeneralTaskCreated = async () => {
     await loadEmployees();
   };
-  // Handle View General Tasks Updated
+
   const handleViewGeneralTasksUpdated = async () => {
     await loadEmployees();
   };
-  // Open Confirm Modal for Deactivate
-  const openDeactivateConfirm = (employee) => {
+
+  // Deactivate modal
+  const openDeactivateModal = async (employee) => {
     setEmployeeToConfirm(employee);
-    setConfirmAction("deactivate");
-    setConfirmMessage(`Are you sure you want to deactivate "${employee.name}"? This will remove their current month task assignments from clients.`);
-    setShowConfirmModal(true);
+    setDeactivateCheck(null);
+    setDeactivatePassword("");
+    setShowDeactivatePassword(false);
+    setShowDeactivateModal(true);
+    setDeactivateCheckLoading(true);
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/admin-employee/deactivate-check/${employee.employeeId}`,
+        { withCredentials: true }
+      );
+      setDeactivateCheck(res.data);
+    } catch (error) {
+      console.error("Error checking deactivate eligibility:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to check employee status",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "dark"
+        }
+      );
+      closeDeactivateModal();
+    } finally {
+      setDeactivateCheckLoading(false);
+    }
   };
-  // Open Confirm Modal for Activate
+
+  const closeDeactivateModal = () => {
+    setShowDeactivateModal(false);
+    setEmployeeToConfirm(null);
+    setDeactivateCheck(null);
+    setDeactivatePassword("");
+    setShowDeactivatePassword(false);
+  };
+
+  const handleDeactivateSubmit = async () => {
+    if (!employeeToConfirm || !deactivateCheck) return;
+    if (!deactivateCheck.willDelete) {
+      if (!deactivatePassword || deactivatePassword.trim() === "") {
+        toast.error("Password is required", {
+          position: "top-right",
+          autoClose: 3000,
+          theme: "dark"
+        });
+        return;
+      }
+      if (deactivatePassword.length < 6) {
+        toast.error("Password must be at least 6 characters", {
+          position: "top-right",
+          autoClose: 3000,
+          theme: "dark"
+        });
+        return;
+      }
+    }
+    try {
+      setLoading(true);
+      const body = deactivateCheck.willDelete ? {} : { password: deactivatePassword };
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/admin-employee/deactivate/${employeeToConfirm.employeeId}`,
+        body,
+        { withCredentials: true }
+      );
+      toast.success(response.data.message || "Employee deactivated", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark"
+      });
+      closeDeactivateModal();
+      loadEmployees();
+      if (employeeFilter === "deleted") {
+        loadDeletedEmployees();
+      }
+    } catch (error) {
+      console.error("Error deactivating employee:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to deactivate employee",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "dark"
+        }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete confirm modal
+  const openDeleteConfirm = async (employee) => {
+    setEmployeeToConfirm(employee);
+    setDeleteCheck(null);
+    setShowDeleteConfirmModal(true);
+    setDeleteCheckLoading(true);
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/admin-employee/deactivate-check/${employee.employeeId}`,
+        { withCredentials: true }
+      );
+      setDeleteCheck(res.data);
+    } catch (error) {
+      console.error("Error checking delete status:", error);
+      setDeleteCheck({ pendingCount: 0 });
+    } finally {
+      setDeleteCheckLoading(false);
+    }
+  };
+
+  const closeDeleteConfirmModal = () => {
+    setShowDeleteConfirmModal(false);
+    setEmployeeToConfirm(null);
+    setDeleteCheck(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!employeeToConfirm) return;
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/admin-employee/delete/${employeeToConfirm.employeeId}`,
+        {},
+        { withCredentials: true }
+      );
+      toast.success(
+        response.data.message || "Employee deleted successfully!",
+        {
+          position: "top-right",
+          autoClose: 3000,
+          theme: "dark"
+        }
+      );
+      closeDeleteConfirmModal();
+      loadEmployees();
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+      toast.error(
+        error.response?.data?.message || "Failed to delete employee",
+        {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "dark"
+        }
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const openActivateConfirm = (employee) => {
     setEmployeeToConfirm(employee);
     setConfirmAction("activate");
-    setConfirmMessage(`Activate "${employee.name}"? Employee will be available for new task assignments.`);
+    setConfirmMessage(
+      `Activate "${employee.name}"? Employee will be available for new task assignments. Password will stay as previously set.`
+    );
     setShowConfirmModal(true);
   };
-  // Open Remove Assignment Confirmation
+
   const openRemoveAssignmentConfirm = (assignment) => {
     setAssignmentToRemove(assignment);
     setShowRemoveConfirmModal(true);
   };
-  // ✅ FIXED: Use freshEmployees returned from loadEmployees() instead of
-  // reading stale employees state (which hasn't re-rendered yet at that point)
+
   const handleRemoveAssignment = async () => {
     if (!assignmentToRemove || !assigningEmployee) return;
     try {
       setLoading(true);
-      // Store these values before they get cleared
       const clientId = assignmentToRemove.clientId;
       const year = assignmentToRemove.year;
       const month = assignmentToRemove.month;
@@ -423,9 +610,7 @@ const AdminEmployees = () => {
         autoClose: 3000,
         theme: "dark"
       });
-      // Close modal first
       closeRemoveConfirmModal();
-      // ✅ CHANGED: use returned fresh data directly instead of stale state
       const freshEmployees = await loadEmployees();
       if (freshEmployees) {
         const updatedEmployee = freshEmployees.find(
@@ -435,7 +620,6 @@ const AdminEmployees = () => {
           setAssigningEmployee(updatedEmployee);
         }
       }
-      // Refresh task status with the stored values
       if (clientId && year && month) {
         await loadClientTaskStatus(clientId, year, month);
       }
@@ -450,39 +634,26 @@ const AdminEmployees = () => {
       setLoading(false);
     }
   };
-  // Handle Confirm Action (Deactivate/Activate)
+
   const handleConfirmAction = async () => {
     if (!employeeToConfirm) return;
     try {
       setLoading(true);
-      if (confirmAction === "deactivate") {
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/admin-employee/deactivate/${employeeToConfirm.employeeId}`,
-          {},
-          { withCredentials: true }
-        );
-        toast.success(response.data.message || "Employee deactivated successfully!", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "dark"
-        });
-      } else {
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/admin-employee/activate/${employeeToConfirm.employeeId}`,
-          {},
-          { withCredentials: true }
-        );
-        toast.success(response.data.message || "Employee activated successfully!", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "dark"
-        });
-      }
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/admin-employee/activate/${employeeToConfirm.employeeId}`,
+        {},
+        { withCredentials: true }
+      );
+      toast.success(response.data.message || "Employee activated successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark"
+      });
       loadEmployees();
       closeConfirmModal();
     } catch (error) {
-      console.error(`Error ${confirmAction}ing employee:`, error);
-      toast.error(error.response?.data?.message || `Failed to ${confirmAction} employee`, {
+      console.error("Error activating employee:", error);
+      toast.error(error.response?.data?.message || "Failed to activate employee", {
         position: "top-right",
         autoClose: 5000,
         theme: "dark"
@@ -491,46 +662,45 @@ const AdminEmployees = () => {
       setLoading(false);
     }
   };
-  // Handle task selection (checkbox)
+
   const handleTaskToggle = (taskValue) => {
     const currentTasks = assignFormik.values.tasks;
     let newTasks;
     if (currentTasks.includes(taskValue)) {
-      // Remove task if already selected
       newTasks = currentTasks.filter(t => t !== taskValue);
     } else {
-      // Add task if not selected
       newTasks = [...currentTasks, taskValue];
     }
     assignFormik.setFieldValue('tasks', newTasks);
   };
-  // Handle select all tasks
+
   const handleSelectAllTasks = () => {
     const availableTasks = getAvailableTasks().map(t => t.value);
     assignFormik.setFieldValue('tasks', availableTasks);
   };
-  // Handle clear all tasks
+
   const handleClearAllTasks = () => {
     assignFormik.setFieldValue('tasks', []);
   };
-  // Handle client selection from dropdown
+
   const handleClientSelect = (clientId) => {
     assignFormik.setFieldValue('clientId', clientId);
     setShowClientDropdown(false);
     setClientSearchTerm("");
   };
-  // Close modals
+
   const closeConfirmModal = () => {
     setShowConfirmModal(false);
     setEmployeeToConfirm(null);
     setConfirmAction("");
     setConfirmMessage("");
   };
+
   const closeRemoveConfirmModal = () => {
     setShowRemoveConfirmModal(false);
     setAssignmentToRemove(null);
   };
-  // Reset forms
+
   const resetEmployeeForm = () => {
     employeeFormik.resetForm();
     setSelectedEmployee(null);
@@ -538,6 +708,7 @@ const AdminEmployees = () => {
     setShowEditModal(false);
     setShowPassword(false);
   };
+
   const resetAssignForm = () => {
     assignFormik.resetForm({
       values: {
@@ -553,16 +724,17 @@ const AdminEmployees = () => {
     setShowClientDropdown(false);
     setShowAssignModal(false);
   };
-  // Reset General Task Modals
+
   const resetGeneralTaskModal = () => {
     setShowGeneralTaskModal(false);
     setAssigningEmployee(null);
   };
+
   const resetViewGeneralTasksModal = () => {
     setShowViewGeneralTasksModal(false);
     setAssigningEmployee(null);
   };
-  // Format month name
+
   const getMonthName = (month) => {
     const months = [
       "January", "February", "March", "April", "May", "June",
@@ -570,33 +742,66 @@ const AdminEmployees = () => {
     ];
     return months[month - 1] || "";
   };
-  // Format month-year string
+
   const getMonthYear = (month, year) => {
     return `${getMonthName(month)} ${year}`;
   };
-  // Format phone number
+
   const formatPhone = (phone) => {
+    if (!phone) return "";
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 10) {
       return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
     }
     return phone;
   };
-  // Get assigned tasks count
+
   const getAssignedCount = (employee) => {
     return employee.assignedClients?.filter(ac => !ac.isRemoved).length || 0;
   };
-  // Filtered employees based on search
-  const filteredEmployees = employees.filter(emp =>
-    emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    emp.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  // Filtered clients based on search (for mobile dropdown)
+
+  const getEmployeeMode = (employee) => {
+    if (employee.mode === "deleted") return "deleted";
+    if (employee.mode === "admin") return "admin";
+    if (employee.isActive === true) return "normal";
+    return employee.mode || "normal";
+  };
+
+  const getFilteredByMode = (list) => {
+    if (employeeFilter === "active") {
+      return list.filter(emp => getEmployeeMode(emp) === "normal");
+    }
+    if (employeeFilter === "admin") {
+      return list.filter(emp => getEmployeeMode(emp) === "admin");
+    }
+    if (employeeFilter === "deleted") {
+      return list.filter(emp => getEmployeeMode(emp) === "deleted");
+    }
+    return list;
+  };
+
+  const sourceEmployees =
+    employeeFilter === "deleted" ? deletedEmployees : employees;
+
+  const modeOrder = { normal: 0, admin: 1, deleted: 2 };
+
+  const filteredEmployees = getFilteredByMode(sourceEmployees)
+    .filter(emp =>
+      emp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      emp.email.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      const aMode = modeOrder[getEmployeeMode(a)] ?? 99;
+      const bMode = modeOrder[getEmployeeMode(b)] ?? 99;
+      if (aMode !== bMode) return aMode - bMode;
+      return (a.name || "").localeCompare(b.name || "");
+    });
+
   const filteredClients = clients.filter(client =>
     client.name.toLowerCase().includes(clientSearchTerm.toLowerCase()) ||
     (client.email && client.email.toLowerCase().includes(clientSearchTerm.toLowerCase()))
   );
-  // Get current month assignments
+
   const getCurrentMonthAssignments = (employee) => {
     const currentYear = new Date().getFullYear();
     const currentMonthNum = new Date().getMonth() + 1;
@@ -606,7 +811,7 @@ const AdminEmployees = () => {
         !assignment.isRemoved
     ) || [];
   };
-  // Get past assignments for display
+
   const getPastAssignments = (employee) => {
     if (!employee?.assignedClients) return [];
     return [...employee.assignedClients]
@@ -616,7 +821,7 @@ const AdminEmployees = () => {
         return b.month - a.month;
       });
   };
-  // Get available tasks (filter out already assigned tasks)
+
   const getAvailableTasks = () => {
     if (!clientTaskStatus || !clientTaskStatus.taskStatus) {
       return taskOptions;
@@ -628,18 +833,36 @@ const AdminEmployees = () => {
       !assignedTasks.includes(taskOption.value)
     );
   };
-  // Check if task is already assigned
+
   const isTaskAlreadyAssigned = (task) => {
     if (!clientTaskStatus || !clientTaskStatus.taskStatus) return false;
     const taskStatus = clientTaskStatus.taskStatus.find(t => t.task === task);
     return taskStatus ? taskStatus.isAssigned : false;
   };
-  // Get selected client name
+
   const getSelectedClientName = () => {
     if (!assignFormik.values.clientId) return "Select a client";
     const client = clients.find(c => c.clientId === assignFormik.values.clientId);
     return client ? client.name : "Select a client";
   };
+
+  const getCurrentFilterLabel = () => {
+    const found = employeeFilterOptions.find(o => o.value === employeeFilter);
+    return found ? found.label : "All Employees";
+  };
+
+  const handleFilterSelect = (value) => {
+    setEmployeeFilter(value);
+    setShowFilterDropdown(false);
+  };
+
+  const isDeletedRow = (employee) => getEmployeeMode(employee) === "deleted";
+
+  const isFetching =
+    employeeFilter === "deleted"
+      ? loadingDeleted
+      : loading;
+
   return (
     <AdminLayout>
       <ToastContainer />
@@ -664,6 +887,7 @@ const AdminEmployees = () => {
             </button>
           </div>
         </div>
+
         {/* Employees Table */}
         <div className="table-container">
           <div className="table-header">
@@ -681,19 +905,50 @@ const AdminEmployees = () => {
               </div>
             </div>
             <div className="table-controls">
-              <div className="search-box">
-                <FiSearch size={18} />
-                <input
-                  type="text"
-                  placeholder="Search employees by name or email..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  disabled={loading}
-                />
+              <div className="search-filter-row">
+                <div className="filter-dropdown" ref={filterDropdownRef}>
+                  <div
+                    className="filter-selected"
+                    onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+                  >
+                    <span>{getCurrentFilterLabel()}</span>
+                    <FiChevronDown size={16} />
+                  </div>
+                  {showFilterDropdown && (
+                    <div className="filter-options">
+                      {employeeFilterOptions.map((option) => (
+                        <div
+                          key={option.value}
+                          className={`filter-item ${employeeFilter === option.value ? "selected" : ""}`}
+                          onClick={() => handleFilterSelect(option.value)}
+                        >
+                          {option.label}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="search-box">
+                  <FiSearch size={18} />
+                  <input
+                    type="text"
+                    name="employeeSearchFilter"
+                    placeholder="Search employees by name or email..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck="false"
+                    disabled={isFetching}
+                  />
+                </div>
               </div>
             </div>
           </div>
-          {loading && filteredEmployees.length === 0 ? (
+
+          {isFetching && filteredEmployees.length === 0 ? (
             <div className="empty-state">
               <div className="loading-spinner"></div>
               <p>Loading employees...</p>
@@ -701,15 +956,31 @@ const AdminEmployees = () => {
           ) : filteredEmployees.length === 0 ? (
             <div className="empty-state">
               <div className="empty-icon">👥</div>
-              <h4>No employees found</h4>
-              <p>{searchTerm ? "Try a different search term" : "Add your first employee to get started"}</p>
-              <button
-                className="empty-action-btn"
-                onClick={() => setShowAddModal(true)}
-                disabled={loading}
-              >
-                <FiPlus size={16} /> Add Employee
-              </button>
+              <h4>
+                {employeeFilter === "deleted"
+                  ? "No deleted employees"
+                  : "No employees found"}
+              </h4>
+              <p>
+                {searchTerm
+                  ? "Try a different search term"
+                  : employeeFilter === "deleted"
+                    ? "No deleted employees to display"
+                    : employeeFilter === "active"
+                      ? "No active employees"
+                      : employeeFilter === "admin"
+                        ? "No employees in Admin Mode"
+                        : "Add your first employee to get started"}
+              </p>
+              {employeeFilter === "all" && (
+                <button
+                  className="empty-action-btn"
+                  onClick={() => setShowAddModal(true)}
+                  disabled={loading}
+                >
+                  <FiPlus size={16} /> Add Employee
+                </button>
+              )}
             </div>
           ) : (
             <div className="responsive-table">
@@ -727,8 +998,14 @@ const AdminEmployees = () => {
                   {filteredEmployees.map((employee) => {
                     const currentAssignments = getCurrentMonthAssignments(employee);
                     const hasCurrentAssignments = currentAssignments.length > 0;
+                    const empMode = getEmployeeMode(employee);
+                    const isDeleted = isDeletedRow(employee);
+
                     return (
-                      <tr key={employee.employeeId} className="employee-row">
+                      <tr
+                        key={employee.employeeId}
+                        className={`employee-row ${isDeleted ? "deleted-row" : ""}`}
+                      >
                         <td className="employee-info">
                           <div className="avatar">
                             {employee.name.charAt(0).toUpperCase()}
@@ -769,19 +1046,27 @@ const AdminEmployees = () => {
                           </div>
                         </td>
                         <td className="status-column">
-                          {employee.isActive ? (
+                          {empMode === "normal" && (
                             <span className="status-badge active">
                               <FiUserCheck size={12} /> Active
                             </span>
-                          ) : (
+                          )}
+                          {empMode === "admin" && (
+                            <span className="status-badge admin-mode">
+                              <FiLock size={12} /> Admin Mode
+                            </span>
+                          )}
+                          {empMode === "deleted" && (
                             <span className="status-badge inactive">
-                              <FiUserX size={12} /> Inactive
+                              <FiUserX size={12} /> Deleted
                             </span>
                           )}
                         </td>
                         <td className="actions-column">
                           <div className="action-buttons">
-                            {employee.isActive ? (
+                            {isDeleted ? (
+                              <span className="readonly-tag">Read-only</span>
+                            ) : empMode === "normal" ? (
                               <>
                                 <button
                                   className="edit-btn"
@@ -803,7 +1088,7 @@ const AdminEmployees = () => {
                                 </button>
                                 <button
                                   className="delete-btn"
-                                  onClick={() => openDeactivateConfirm(employee)}
+                                  onClick={() => openDeactivateModal(employee)}
                                   title="Deactivate employee"
                                   disabled={loading}
                                 >
@@ -811,17 +1096,28 @@ const AdminEmployees = () => {
                                   <span>Deactivate</span>
                                 </button>
                               </>
-                            ) : (
-                              <button
-                                className="activate-btn"
-                                onClick={() => openActivateConfirm(employee)}
-                                title="Activate employee"
-                                disabled={loading}
-                              >
-                                <FiUserCheck size={16} />
-                                <span>Activate</span>
-                              </button>
-                            )}
+                            ) : empMode === "admin" ? (
+                              <>
+                                <button
+                                  className="activate-btn"
+                                  onClick={() => openActivateConfirm(employee)}
+                                  title="Activate employee (back to normal)"
+                                  disabled={loading}
+                                >
+                                  <FiUserCheck size={16} />
+                                  <span>Activate</span>
+                                </button>
+                                <button
+                                  className="delete-btn"
+                                  onClick={() => openDeleteConfirm(employee)}
+                                  title="Delete employee permanently"
+                                  disabled={loading}
+                                >
+                                  <FiTrash2 size={16} />
+                                  <span>Delete</span>
+                                </button>
+                              </>
+                            ) : null}
                           </div>
                         </td>
                       </tr>
@@ -832,6 +1128,7 @@ const AdminEmployees = () => {
             </div>
           )}
         </div>
+
         {/* Add/Edit Employee Modal */}
         {(showAddModal || showEditModal) && (
           <div className="modal-overlay">
@@ -849,7 +1146,7 @@ const AdminEmployees = () => {
                   )}
                 </h3>
                 <button
-                  className="close-modal"
+                  className="modal-close-btn"
                   onClick={resetEmployeeForm}
                   disabled={loading}
                 >
@@ -857,7 +1154,7 @@ const AdminEmployees = () => {
                 </button>
               </div>
               <div className="modal-body">
-                <form onSubmit={employeeFormik.handleSubmit} className="modal-form">
+                <form onSubmit={employeeFormik.handleSubmit} className="modal-form" autoComplete="off">
                   <div className="form-group">
                     <label htmlFor="name">
                       <FiUser size={16} /> Full Name *
@@ -875,6 +1172,7 @@ const AdminEmployees = () => {
                           ? "error"
                           : ""
                       }
+                      autoComplete="off"
                       disabled={loading}
                     />
                     {employeeFormik.touched.name && employeeFormik.errors.name && (
@@ -898,6 +1196,7 @@ const AdminEmployees = () => {
                           ? "error"
                           : ""
                       }
+                      autoComplete="off"
                       disabled={loading}
                     />
                     {employeeFormik.touched.email && employeeFormik.errors.email && (
@@ -921,6 +1220,7 @@ const AdminEmployees = () => {
                           ? "error"
                           : ""
                       }
+                      autoComplete="off"
                       disabled={loading}
                       maxLength="10"
                     />
@@ -968,6 +1268,9 @@ const AdminEmployees = () => {
                           ? "error"
                           : ""
                       }
+                      autoComplete="off"
+                      readOnly
+                      onFocus={(e) => e.target.removeAttribute("readonly")}
                       disabled={loading}
                     />
                     {employeeFormik.touched.password && employeeFormik.errors.password && (
@@ -1007,7 +1310,8 @@ const AdminEmployees = () => {
             </div>
           </div>
         )}
-        {/* Assign Tasks Modal - UPDATED WITH MULTIPLE TASKS AND MOBILE SEARCH - DOCUMENT CHECK REMOVED */}
+
+        {/* Assign Tasks Modal */}
         {showAssignModal && assigningEmployee && (
           <div className="modal-overlay">
             <div className="modal assign-modal">
@@ -1017,7 +1321,7 @@ const AdminEmployees = () => {
                   Assign Tasks to {assigningEmployee.name}
                 </h3>
                 <button
-                  className="close-modal"
+                  className="modal-close-btn"
                   onClick={resetAssignForm}
                   disabled={loading}
                 >
@@ -1038,8 +1342,6 @@ const AdminEmployees = () => {
                   </div>
                 </div>
 
-                {/* ========== NEW: General Task Action Buttons ========== */}
-                {/* Position: AFTER Employee Info Card, BEFORE Select Client */}
                 <div className="general-task-actions">
                   <button
                     type="button"
@@ -1068,15 +1370,12 @@ const AdminEmployees = () => {
                     View General Tasks
                   </button>
                 </div>
-                {/* ========== END General Task Action Buttons ========== */}
 
                 <form onSubmit={assignFormik.handleSubmit} className="modal-form">
-                  {/* Client Selection with Mobile Search */}
                   <div className="form-group">
                     <label htmlFor="clientId">
                       <FiBriefcase size={16} /> Select Client *
                     </label>
-                    {/* Custom dropdown with search for all devices */}
                     <div className="custom-dropdown" ref={dropdownRef}>
                       <div
                         className={`dropdown-selected ${assignFormik.touched.clientId && assignFormik.errors.clientId ? 'error' : ''}`}
@@ -1094,6 +1393,7 @@ const AdminEmployees = () => {
                               placeholder="Search clients by name or email..."
                               value={clientSearchTerm}
                               onChange={(e) => setClientSearchTerm(e.target.value)}
+                              autoComplete="off"
                               autoFocus
                             />
                           </div>
@@ -1122,7 +1422,7 @@ const AdminEmployees = () => {
                       <div className="error-text">{assignFormik.errors.clientId}</div>
                     )}
                   </div>
-                  {/* Date Selection */}
+
                   <div className="date-selection">
                     <div className="form-group">
                       <label htmlFor="year">
@@ -1178,7 +1478,7 @@ const AdminEmployees = () => {
                       )}
                     </div>
                   </div>
-                  {/* Multiple Tasks Selection with Checkboxes */}
+
                   <div className="form-group tasks-selection">
                     <div className="task-selection-header">
                       <label>
@@ -1191,7 +1491,6 @@ const AdminEmployees = () => {
                         </div>
                       )}
                     </div>
-                    {/* Bulk Actions */}
                     {getAvailableTasks().length > 0 && (
                       <div className="bulk-actions">
                         <button
@@ -1212,7 +1511,6 @@ const AdminEmployees = () => {
                         </button>
                       </div>
                     )}
-                    {/* Tasks Checkbox List */}
                     <div className="tasks-checkbox-list">
                       {loadingTaskStatus ? (
                         <div className="tasks-loading">
@@ -1243,7 +1541,6 @@ const AdminEmployees = () => {
                         ))
                       )}
                     </div>
-                    {/* Selected Tasks Summary */}
                     {assignFormik.values.tasks.length > 0 && (
                       <div className="selected-tasks-summary">
                         <strong>Selected ({assignFormik.values.tasks.length}):</strong>
@@ -1266,7 +1563,6 @@ const AdminEmployees = () => {
                     {assignFormik.touched.tasks && assignFormik.errors.tasks && (
                       <div className="error-text">{assignFormik.errors.tasks}</div>
                     )}
-                    {/* Task Status Display */}
                     {clientTaskStatus && clientTaskStatus.taskStatus && (
                       <div className="task-status-display">
                         <h5>Current Task Status for {getMonthName(assignFormik.values.month)} {assignFormik.values.year}:</h5>
@@ -1291,7 +1587,7 @@ const AdminEmployees = () => {
                       </div>
                     )}
                   </div>
-                  {/* Assignment Summary */}
+
                   <div className="assignment-summary">
                     <h4>Task Assignment Summary</h4>
                     <div className="summary-details">
@@ -1323,9 +1619,7 @@ const AdminEmployees = () => {
                       )}
                     </div>
                   </div>
-                  {/* Document Status Check Section - REMOVED */}
 
-                  {/* Buttons */}
                   <div className="modal-actions">
                     <button
                       type="button"
@@ -1355,7 +1649,7 @@ const AdminEmployees = () => {
                       )}
                     </button>
                   </div>
-                  {/* Past Assignments Table */}
+
                   {getPastAssignments(assigningEmployee).length > 0 && (
                     <div className="past-assignments">
                       <h4>
@@ -1425,17 +1719,250 @@ const AdminEmployees = () => {
             </div>
           </div>
         )}
-        {/* Confirmation Modal for Deactivate/Activate */}
-        {showConfirmModal && employeeToConfirm && (
+
+        {/* Smart Deactivate Modal */}
+        {showDeactivateModal && employeeToConfirm && (
           <div className="modal-overlay">
             <div className="modal confirm-modal">
               <div className="modal-header">
                 <h3>
                   <FiAlertTriangle size={24} />
-                  {confirmAction === "deactivate" ? "Deactivate Employee" : "Activate Employee"}
+                  Deactivate Employee
                 </h3>
                 <button
-                  className="close-modal"
+                  className="modal-close-btn"
+                  onClick={closeDeactivateModal}
+                  disabled={loading || deactivateCheckLoading}
+                >
+                  <FiX size={24} />
+                </button>
+              </div>
+              <div className="modal-body">
+                {deactivateCheckLoading ? (
+                  <div className="empty-state">
+                    <div className="loading-spinner"></div>
+                    <p>Checking pending tasks...</p>
+                  </div>
+                ) : !deactivateCheck ? (
+                  <div className="empty-state">
+                    <p>Unable to load employee status.</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="confirmation-content">
+                      <div className="confirmation-icon">
+                        <div className="icon-deactivate">
+                          <FiUserX size={48} />
+                        </div>
+                      </div>
+                      <div className="confirmation-details">
+                        <h4>{employeeToConfirm.name}</h4>
+                        <p className="employee-email">{employeeToConfirm.email}</p>
+                        {deactivateCheck.willDelete ? (
+                          <div className="warning-note">
+                            <FiAlertTriangle size={16} />
+                            <span>
+                              <strong>This employee has 0 pending tasks.</strong>{" "}
+                              They will be <strong>permanently deleted</strong> (hidden from list, cannot log in).
+                              This action cannot be undone. No password change will be applied.
+                            </span>
+                          </div>
+                        ) : (
+                          <>
+                            <p className="confirmation-message">
+                              This employee has{" "}
+                              <strong>{deactivateCheck.pendingCount}</strong>{" "}
+                              pending task
+                              {deactivateCheck.pendingCount === 1 ? "" : "s"}{" "}
+                              (across all months). They will be moved to{" "}
+                              <strong>Admin Mode</strong>. You can log in with the new
+                              password to finish their work.
+                            </p>
+                            <div className="warning-note">
+                              <FiAlertTriangle size={16} />
+                              <span>
+                                <strong>Note:</strong> Password will be changed. No
+                                email will be sent to the employee. Assignments will
+                                NOT be removed.
+                              </span>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    {!deactivateCheck.willDelete && (
+                      <div className="form-group deactivate-password-group">
+                        <label htmlFor="deactivatePassword">
+                          <FiLock size={16} /> New Password *
+                        </label>
+                        <div className="password-input-wrapper">
+                          <input
+                            id="deactivatePassword"
+                            name="deactivatePassword"
+                            type={showDeactivatePassword ? "text" : "password"}
+                            placeholder="Enter new password (min 6 chars)"
+                            value={deactivatePassword}
+                            onChange={(e) => setDeactivatePassword(e.target.value)}
+                            autoComplete="off"
+                            autoCorrect="off"
+                            autoCapitalize="off"
+                            spellCheck="false"
+                            readOnly
+                            onFocus={(e) => e.target.removeAttribute("readonly")}
+                            disabled={loading}
+                          />
+                          <button
+                            type="button"
+                            className="toggle-password-btn"
+                            onClick={() =>
+                              setShowDeactivatePassword(!showDeactivatePassword)
+                            }
+                            disabled={loading}
+                            aria-label="Toggle password visibility"
+                          >
+                            {showDeactivatePassword ? (
+                              <FiEyeOff size={16} />
+                            ) : (
+                              <FiEye size={16} />
+                            )}
+                          </button>
+                        </div>
+                        <small className="hint">
+                          Admin will use this password to log in as the employee and
+                          finish their pending work.
+                        </small>
+                      </div>
+                    )}
+                    <div className="modal-actions">
+                      <button
+                        type="button"
+                        className="secondary-btn"
+                        onClick={closeDeactivateModal}
+                        disabled={loading}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="danger-btn"
+                        onClick={handleDeactivateSubmit}
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <span className="spinner"></span>
+                        ) : deactivateCheck.willDelete ? (
+                          <>
+                            <FiCheck size={18} /> Yes, Delete Employee
+                          </>
+                        ) : (
+                          <>
+                            <FiCheck size={18} /> Yes, Deactivate to Admin Mode
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirm Modal */}
+        {showDeleteConfirmModal && employeeToConfirm && (
+          <div className="modal-overlay">
+            <div className="modal confirm-modal">
+              <div className="modal-header">
+                <h3>
+                  <FiTrash2 size={24} />
+                  Delete Employee
+                </h3>
+                <button
+                  className="modal-close-btn"
+                  onClick={closeDeleteConfirmModal}
+                  disabled={loading || deleteCheckLoading}
+                >
+                  <FiX size={24} />
+                </button>
+              </div>
+              <div className="modal-body">
+                {deleteCheckLoading ? (
+                  <div className="empty-state">
+                    <div className="loading-spinner"></div>
+                    <p>Checking pending tasks...</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="confirmation-content">
+                      <div className="confirmation-icon">
+                        <div className="icon-deactivate">
+                          <FiAlertTriangle size={48} />
+                        </div>
+                      </div>
+                      <div className="confirmation-details">
+                        <h4>{employeeToConfirm.name}</h4>
+                        <p className="employee-email">{employeeToConfirm.email}</p>
+                        <div className="warning-note">
+                          <FiAlertTriangle size={16} />
+                          <span>
+                            <strong>This action cannot be undone.</strong> The
+                            employee will be hidden from the list and will not be
+                            able to log in.
+                          </span>
+                        </div>
+                        {deleteCheck && (
+                          <p className="confirmation-message">
+                            There are{" "}
+                            <strong>{deleteCheck.pendingCount}</strong> pending
+                            accounting task
+                            {deleteCheck.pendingCount === 1 ? "" : "s"} across all
+                            months in both schemas. These assignments will{" "}
+                            <strong>not</strong> be removed (kept for history).
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="modal-actions">
+                      <button
+                        type="button"
+                        className="secondary-btn"
+                        onClick={closeDeleteConfirmModal}
+                        disabled={loading}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="danger-btn"
+                        onClick={handleDeleteConfirm}
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <span className="spinner"></span>
+                        ) : (
+                          <>
+                            <FiTrash2 size={18} /> Yes, Delete Employee
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Activate confirm */}
+        {showConfirmModal && employeeToConfirm && confirmAction === "activate" && (
+          <div className="modal-overlay">
+            <div className="modal confirm-modal">
+              <div className="modal-header">
+                <h3>
+                  <FiAlertTriangle size={24} /> Activate Employee
+                </h3>
+                <button
+                  className="modal-close-btn"
                   onClick={closeConfirmModal}
                   disabled={loading}
                 >
@@ -1445,29 +1972,14 @@ const AdminEmployees = () => {
               <div className="modal-body">
                 <div className="confirmation-content">
                   <div className="confirmation-icon">
-                    {confirmAction === "deactivate" ? (
-                      <div className="icon-deactivate">
-                        <FiUserX size={48} />
-                      </div>
-                    ) : (
-                      <div className="icon-activate">
-                        <FiUserCheck size={48} />
-                      </div>
-                    )}
+                    <div className="icon-activate">
+                      <FiUserCheck size={48} />
+                    </div>
                   </div>
                   <div className="confirmation-details">
                     <h4>{employeeToConfirm.name}</h4>
                     <p className="employee-email">{employeeToConfirm.email}</p>
                     <p className="confirmation-message">{confirmMessage}</p>
-                    {confirmAction === "deactivate" && (
-                      <div className="warning-note">
-                        <FiAlertTriangle size={16} />
-                        <span>
-                          <strong>Note:</strong> This will remove all current month task assignments from clients.
-                          Other employees' tasks for the same clients will not be affected.
-                        </span>
-                      </div>
-                    )}
                   </div>
                 </div>
                 <div className="modal-actions">
@@ -1481,16 +1993,12 @@ const AdminEmployees = () => {
                   </button>
                   <button
                     type="button"
-                    className={confirmAction === "deactivate" ? "danger-btn" : "success-btn"}
+                    className="success-btn"
                     onClick={handleConfirmAction}
                     disabled={loading}
                   >
                     {loading ? (
                       <span className="spinner"></span>
-                    ) : confirmAction === "deactivate" ? (
-                      <>
-                        <FiCheck size={18} /> Yes, Deactivate
-                      </>
                     ) : (
                       <>
                         <FiCheck size={18} /> Yes, Activate
@@ -1502,6 +2010,7 @@ const AdminEmployees = () => {
             </div>
           </div>
         )}
+
         {/* Remove Assignment Confirmation Modal */}
         {showRemoveConfirmModal && assignmentToRemove && (
           <div className="modal-overlay">
@@ -1512,7 +2021,7 @@ const AdminEmployees = () => {
                   Remove Task Assignment
                 </h3>
                 <button
-                  className="close-modal"
+                  className="modal-close-btn"
                   onClick={closeRemoveConfirmModal}
                   disabled={loading}
                 >
@@ -1572,6 +2081,7 @@ const AdminEmployees = () => {
             </div>
           </div>
         )}
+
         {/* General Task Modal */}
         {showGeneralTaskModal && assigningEmployee && (
           <AssignGeneralTaskModal
@@ -1581,17 +2091,19 @@ const AdminEmployees = () => {
             onTaskCreated={handleGeneralTaskCreated}
           />
         )}
+
         {/* View General Tasks Modal */}
         {showViewGeneralTasksModal && assigningEmployee && (
           <ViewGeneralTasksModal
             isOpen={showViewGeneralTasksModal}
             onClose={resetViewGeneralTasksModal}
             employee={assigningEmployee}
-            onTaskUpdated={handleViewGeneralTasksUpdated}
+            onTaskCreated={handleViewGeneralTasksUpdated}
           />
         )}
       </div>
     </AdminLayout>
   );
 };
+
 export default AdminEmployees;
