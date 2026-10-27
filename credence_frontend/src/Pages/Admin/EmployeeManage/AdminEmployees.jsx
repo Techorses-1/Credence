@@ -99,7 +99,7 @@ const AdminEmployees = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showRemoveConfirmModal, setShowRemoveConfirmModal] = useState(false);
 
-  // Deactivate smart modal state
+  // Deactivate modal state
   const [showDeactivateModal, setShowDeactivateModal] = useState(false);
   const [deactivateCheckLoading, setDeactivateCheckLoading] = useState(false);
   const [deactivateCheck, setDeactivateCheck] = useState(null);
@@ -420,7 +420,7 @@ const AdminEmployees = () => {
     await loadEmployees();
   };
 
-  // Deactivate modal
+  // ===== Deactivate modal (always goes to Admin Mode) =====
   const openDeactivateModal = async (employee) => {
     setEmployeeToConfirm(employee);
     setDeactivateCheck(null);
@@ -460,30 +460,30 @@ const AdminEmployees = () => {
 
   const handleDeactivateSubmit = async () => {
     if (!employeeToConfirm || !deactivateCheck) return;
-    if (!deactivateCheck.willDelete) {
-      if (!deactivatePassword || deactivatePassword.trim() === "") {
-        toast.error("Password is required", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "dark"
-        });
-        return;
-      }
-      if (deactivatePassword.length < 6) {
-        toast.error("Password must be at least 6 characters", {
-          position: "top-right",
-          autoClose: 3000,
-          theme: "dark"
-        });
-        return;
-      }
+
+    // Password is ALWAYS required now
+    if (!deactivatePassword || deactivatePassword.trim() === "") {
+      toast.error("Password is required", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark"
+      });
+      return;
     }
+    if (deactivatePassword.length < 6) {
+      toast.error("Password must be at least 6 characters", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "dark"
+      });
+      return;
+    }
+
     try {
       setLoading(true);
-      const body = deactivateCheck.willDelete ? {} : { password: deactivatePassword };
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/admin-employee/deactivate/${employeeToConfirm.employeeId}`,
-        body,
+        { password: deactivatePassword },
         { withCredentials: true }
       );
       toast.success(response.data.message || "Employee deactivated", {
@@ -1720,7 +1720,7 @@ const AdminEmployees = () => {
           </div>
         )}
 
-        {/* Smart Deactivate Modal */}
+        {/* Deactivate Modal (always Admin Mode) */}
         {showDeactivateModal && employeeToConfirm && (
           <div className="modal-overlay">
             <div className="modal confirm-modal">
@@ -1758,81 +1758,69 @@ const AdminEmployees = () => {
                       <div className="confirmation-details">
                         <h4>{employeeToConfirm.name}</h4>
                         <p className="employee-email">{employeeToConfirm.email}</p>
-                        {deactivateCheck.willDelete ? (
-                          <div className="warning-note">
-                            <FiAlertTriangle size={16} />
-                            <span>
-                              <strong>This employee has 0 pending tasks.</strong>{" "}
-                              They will be <strong>permanently deleted</strong> (hidden from list, cannot log in).
-                              This action cannot be undone. No password change will be applied.
-                            </span>
-                          </div>
-                        ) : (
-                          <>
-                            <p className="confirmation-message">
-                              This employee has{" "}
-                              <strong>{deactivateCheck.pendingCount}</strong>{" "}
-                              pending task
-                              {deactivateCheck.pendingCount === 1 ? "" : "s"}{" "}
-                              (across all months). They will be moved to{" "}
-                              <strong>Admin Mode</strong>. You can log in with the new
-                              password to finish their work.
-                            </p>
-                            <div className="warning-note">
-                              <FiAlertTriangle size={16} />
-                              <span>
-                                <strong>Note:</strong> Password will be changed. No
-                                email will be sent to the employee. Assignments will
-                                NOT be removed.
-                              </span>
-                            </div>
-                          </>
-                        )}
+                        <p className="confirmation-message">
+                          This employee has{" "}
+                          <strong>{deactivateCheck.pendingCount}</strong>{" "}
+                          pending task
+                          {deactivateCheck.pendingCount === 1 ? "" : "s"}{" "}
+                          (across all months). They will be moved to{" "}
+                          <strong>Admin Mode</strong>. You can log in with the new
+                          password to finish their work.
+                        </p>
+                        <div className="warning-note">
+                          <FiAlertTriangle size={16} />
+                          <span>
+                            <strong>Note:</strong> Password will be changed. No
+                            email will be sent to the employee. Assignments will
+                            NOT be removed. To permanently remove them later, use
+                            the Delete button after deactivation.
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    {!deactivateCheck.willDelete && (
-                      <div className="form-group deactivate-password-group">
-                        <label htmlFor="deactivatePassword">
-                          <FiLock size={16} /> New Password *
-                        </label>
-                        <div className="password-input-wrapper">
-                          <input
-                            id="deactivatePassword"
-                            name="deactivatePassword"
-                            type={showDeactivatePassword ? "text" : "password"}
-                            placeholder="Enter new password (min 6 chars)"
-                            value={deactivatePassword}
-                            onChange={(e) => setDeactivatePassword(e.target.value)}
-                            autoComplete="off"
-                            autoCorrect="off"
-                            autoCapitalize="off"
-                            spellCheck="false"
-                            readOnly
-                            onFocus={(e) => e.target.removeAttribute("readonly")}
-                            disabled={loading}
-                          />
-                          <button
-                            type="button"
-                            className="toggle-password-btn"
-                            onClick={() =>
-                              setShowDeactivatePassword(!showDeactivatePassword)
-                            }
-                            disabled={loading}
-                            aria-label="Toggle password visibility"
-                          >
-                            {showDeactivatePassword ? (
-                              <FiEyeOff size={16} />
-                            ) : (
-                              <FiEye size={16} />
-                            )}
-                          </button>
-                        </div>
-                        <small className="hint">
-                          Admin will use this password to log in as the employee and
-                          finish their pending work.
-                        </small>
+
+                    <div className="form-group deactivate-password-group">
+                      <label htmlFor="deactivatePassword">
+                        <FiLock size={16} /> New Password *
+                      </label>
+                      <div className="password-input-wrapper">
+                        <input
+                          id="deactivatePassword"
+                          name="deactivatePassword"
+                          type={showDeactivatePassword ? "text" : "password"}
+                          placeholder="Enter new password (min 6 chars)"
+                          value={deactivatePassword}
+                          onChange={(e) => setDeactivatePassword(e.target.value)}
+                          autoComplete="off"
+                          autoCorrect="off"
+                          autoCapitalize="off"
+                          spellCheck="false"
+                          readOnly
+                          onFocus={(e) => e.target.removeAttribute("readonly")}
+                          disabled={loading}
+                        />
+                        <button
+                          type="button"
+                          className="toggle-password-btn"
+                          onClick={() =>
+                            setShowDeactivatePassword(!showDeactivatePassword)
+                          }
+                          disabled={loading}
+                          aria-label="Toggle password visibility"
+                        >
+                          {showDeactivatePassword ? (
+                            <FiEyeOff size={16} />
+                          ) : (
+                            <FiEye size={16} />
+                          )}
+                        </button>
                       </div>
-                    )}
+                      <small className="hint">
+                        Admin will use this password to log in as the employee and
+                        finish their pending work.
+                      </small>
+                    </div>
+
                     <div className="modal-actions">
                       <button
                         type="button"
@@ -1850,10 +1838,6 @@ const AdminEmployees = () => {
                       >
                         {loading ? (
                           <span className="spinner"></span>
-                        ) : deactivateCheck.willDelete ? (
-                          <>
-                            <FiCheck size={18} /> Yes, Delete Employee
-                          </>
                         ) : (
                           <>
                             <FiCheck size={18} /> Yes, Deactivate to Admin Mode

@@ -1297,8 +1297,8 @@ router.get("/client-tasks-status/:clientId", auth, async (req, res) => {
 
 /* ===============================
    CHECK DEACTIVATE ELIGIBILITY (READ-ONLY)
-   Returns pending task count so the frontend can show
-   the correct modal (password/admin mode OR delete).
+   Returns pending task count so the frontend can show it in the modal.
+   NO auto-delete anymore — Deactivate always goes to Admin Mode.
 ================================ */
 router.get("/deactivate-check/:employeeId", auth, async (req, res) => {
     try {
@@ -1334,7 +1334,6 @@ router.get("/deactivate-check/:employeeId", auth, async (req, res) => {
         logToConsole("INFO", "DEACTIVATE_CHECK_COMPLETE", {
             employeeId,
             pendingCount: counts.total,
-            willDelete: counts.total === 0,
             adminId: req.user.adminId
         });
 
@@ -1347,8 +1346,7 @@ router.get("/deactivate-check/:employeeId", auth, async (req, res) => {
                 oldSchemaPending: counts.oldPending,
                 newSchemaPending: counts.newPending
             },
-            willDelete: counts.total === 0,
-            mode: counts.total === 0 ? "delete" : "admin"
+            mode: "admin"
         });
 
     } catch (error) {
@@ -1366,11 +1364,16 @@ router.get("/deactivate-check/:employeeId", auth, async (req, res) => {
     }
 });
 
+
+
+
 /* ===============================
-   DEACTIVATE EMPLOYEE (UPDATED - SMART FLOW)
-   - Pending tasks > 0 → change password + mode="admin" (isActive=false)
-   - Pending tasks = 0 → skip password + mode="deleted" (isActive=false)
-   - NO assignment removal in either branch
+   DEACTIVATE EMPLOYEE (ALWAYS ADMIN MODE)
+   - Always requires password (min 6 chars)
+   - Always sets mode="admin", isActive=false
+   - Never auto-deletes, even with 0 pending tasks
+   - Does NOT touch assignments in either schema
+   - No email sent
 ================================ */
 router.post("/deactivate/:employeeId", auth, async (req, res) => {
     try {
@@ -1406,7 +1409,28 @@ router.post("/deactivate/:employeeId", auth, async (req, res) => {
             });
         }
 
-        // ===== 2. COUNT PENDING TASKS (BOTH SCHEMAS, ALL MONTHS) =====
+        // ===== 2. VALIDATE PASSWORD (ALWAYS REQUIRED) =====
+        if (!password || password.trim() === "") {
+            logToConsole("WARN", "DEACTIVATE_PASSWORD_MISSING", {
+                employeeId,
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                message: "Password is required to deactivate an employee"
+            });
+        }
+
+        if (password.length < 6) {
+            logToConsole("WARN", "DEACTIVATE_PASSWORD_TOO_SHORT", {
+                employeeId,
+                adminId: req.user.adminId
+            });
+            return res.status(400).json({
+                message: "Password must be at least 6 characters"
+            });
+        }
+
+        // ===== 3. COUNT PENDING TASKS (for activity log info only) =====
         const counts = await countPendingTasks(employee);
 
         logToConsole("INFO", "DEACTIVATE_PENDING_COUNT", {
@@ -1417,73 +1441,14 @@ router.post("/deactivate/:employeeId", auth, async (req, res) => {
             adminId: req.user.adminId
         });
 
-        // ===== 3A. NO PENDING TASKS → DELETE (skip password) =====
-        if (counts.total === 0) {
-            employee.isActive = false;
-            employee.mode = "deleted";
-            employee.updatedAt = new Date();
-            await employee.save();
-
-            try {
-                await ActivityLog.create({
-                    userName: req.user.name,
-                    role: "ADMIN",
-                    adminId: req.user.adminId,
-                    employeeId,
-                    employeeName: employee.name,
-                    action: "EMPLOYEE_DELETED",
-                    details: `Employee "${employee.name}" deleted automatically on Deactivate (no pending tasks). Password NOT changed.`,
-                    dateTime: new Date(),
-                    metadata: {
-                        pendingCount: 0,
-                        passwordChanged: false,
-                        action: "auto_delete_on_deactivate"
-                    }
-                });
-            } catch (logError) {
-                logToConsole("ERROR", "ACTIVITY_LOG_FAILED", { error: logError.message });
-            }
-
-            logToConsole("SUCCESS", "EMPLOYEE_AUTO_DELETED", {
-                employeeId,
-                employeeName: employee.name,
-                adminId: req.user.adminId
-            });
-
-            return res.json({
-                action: "deleted",
-                message: `Employee "${employee.name}" had no pending tasks and has been deleted.`,
-                data: {
-                    employeeId,
-                    employeeName: employee.name,
-                    mode: "deleted",
-                    isActive: false,
-                    pendingCount: 0,
-                    passwordChanged: false,
-                    deletedAt: new Date()
-                }
-            });
-        }
-
-        // ===== 3B. HAS PENDING TASKS → ADMIN MODE (require password) =====
-        if (!password || password.trim() === "") {
-            return res.status(400).json({
-                message: "Password is required to deactivate an employee with pending tasks"
-            });
-        }
-
-        if (password.length < 6) {
-            return res.status(400).json({
-                message: "Password must be at least 6 characters"
-            });
-        }
-
+        // ===== 4. ALWAYS → ADMIN MODE (no auto-delete branch) =====
         employee.password = await bcrypt.hash(password, 10);
         employee.isActive = false;
         employee.mode = "admin";
         employee.updatedAt = new Date();
         await employee.save();
 
+        // ===== 5. ACTIVITY LOG =====
         try {
             await ActivityLog.create({
                 userName: req.user.name,
@@ -1492,7 +1457,7 @@ router.post("/deactivate/:employeeId", auth, async (req, res) => {
                 employeeId,
                 employeeName: employee.name,
                 action: "EMPLOYEE_DEACTIVATED",
-                details: `Employee "${employee.name}" deactivated → Admin Mode. Password changed. Pending tasks: ${counts.total}. No email sent.`,
+                details: `Employee "${employee.name}" deactivated → Admin Mode. Password changed. Pending tasks at deactivation: ${counts.total}. No email sent.`,
                 dateTime: new Date(),
                 metadata: {
                     pendingCount: counts.total,
@@ -1516,7 +1481,7 @@ router.post("/deactivate/:employeeId", auth, async (req, res) => {
 
         return res.json({
             action: "admin_mode",
-            message: `Employee "${employee.name}" moved to Admin Mode. Password changed. ${counts.total} pending task${counts.total === 1 ? '' : 's'} remain. No email sent.`,
+            message: `Employee "${employee.name}" moved to Admin Mode. Password changed. ${counts.total} pending task${counts.total === 1 ? '' : 's'}. No email sent.`,
             data: {
                 employeeId,
                 employeeName: employee.name,
